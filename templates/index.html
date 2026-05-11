@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Healthcare Document Parser</title>
+</head>
+
+<body>
+
+    <h1>Healthcare Document Parser</h1>
+
+    <label for="documentType">Document Type:</label>
+
+    <select id="documentType" name="documentType">
+        <option value="prescription">Prescription</option>
+        <option value="referral">Referral</option>
+    </select>
+
+    <br><br>
+
+    <textarea
+        id="documentText"
+        rows="10"
+        cols="60"
+        placeholder="Paste document text here">
+    </textarea>
+
+    <br><br>
+
+    <button onclick="analyzeDocument()">
+        Analyze
+    </button>
+
+    <br><br>
+
+    <pre id="result"></pre>
+    <div id="confidenceBox"></div>
+
+    <script src="/static/script.js"></script>
+
+</body>
+</html>
