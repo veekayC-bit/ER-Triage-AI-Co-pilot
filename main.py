@@ -34,10 +34,40 @@ def get_client():
     return OpenAI(api_key=api_key)
 
 
+def load_knowledge_context(document_type: str):
+    knowledge = ""
+
+    try:
+        if document_type == "prescription":
+            with open(
+                "knowledge_base/antibiotics_guidelines.txt",
+                "r"
+            ) as file:
+                knowledge += file.read() + "\n"
+
+            with open(
+                "knowledge_base/pain_management_guidelines.txt",
+                "r"
+            ) as file:
+                knowledge += file.read() + "\n"
+
+        elif document_type == "referral":
+            with open(
+                "knowledge_base/cardiology_guidelines.txt",
+                "r"
+            ) as file:
+                knowledge += file.read() + "\n"
+
+    except Exception as e:
+        print("KNOWLEDGE LOAD ERROR:", str(e))
+
+    return knowledge
+
+
 def extract_prescription(text: str):
     try:
         client = get_client()
-
+        knowledge_context = load_knowledge_context("prescription")
         prompt = f"""
 Extract prescription details.
 
@@ -64,6 +94,9 @@ Return strictly in JSON format:
 Rules:
 - Each medication should be a separate object
 - If information is missing or unclear, mark as "Missing"
+- "as needed" or PRN instructions represent frequency/usage guidance, not duration
+- Do not mark duration as missing if medication is clearly intended for symptom-based use
+- Only mark duration as missing if a fixed treatment course is expected but absent
 - Add issues for ambiguity or missing fields
 - If multiple medications create confusion, add an issue
 - Add a confidence level:
@@ -71,6 +104,9 @@ Rules:
   - Medium = minor ambiguity or missing information
   - Low = major ambiguity, OCR issues, or unclear interpretation
 - If confidence is Low, recommendation should advise human review
+
+Knowledge Context:
+{knowledge_context}
 
 Prescription:
 {text}
@@ -93,7 +129,7 @@ Prescription:
 def extract_referral(text: str):
     try:
         client = get_client()
-
+        knowledge_context = load_knowledge_context("referral")
         prompt = f"""
 Extract referral details.
 
@@ -116,6 +152,9 @@ Rules:
 - Add issues for ambiguity or unclear text
 - Confidence should reflect clarity of the referral
 - If confidence is Low, recommendation should advise human review
+
+Knowledge Context:
+{knowledge_context}
 
 Referral:
 {text}
