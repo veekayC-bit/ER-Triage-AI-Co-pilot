@@ -3,40 +3,60 @@
 
 <head>
     <title>Healthcare Document Parser</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
+<div class="container">
+
     <h1>Healthcare Document Parser</h1>
 
-    <label for="documentType">Document Type:</label>
+    <div class="input-section">
 
-    <select id="documentType" name="documentType">
-        <option value="prescription">Prescription</option>
-        <option value="referral">Referral</option>
-    </select>
+        <label for="documentType">Document Type</label>
 
-    <br><br>
+        <select id="documentType" name="documentType">
+            <option value="prescription">Prescription</option>
+            <option value="referral">Referral</option>
+        </select>
 
-    <textarea
-        id="documentText"
-        rows="10"
-        cols="60"
-        placeholder="Paste document text here">
-    </textarea>
+        <br><br>
 
-    <br><br>
+        <textarea
+            id="documentText"
+            rows="10"
+            cols="60"
+            placeholder="Paste healthcare document text here">
+        </textarea>
 
-    <button onclick="analyzeDocument()">
-        Analyze
-    </button>
+        <br><br>
 
-    <br><br>
+        <button onclick="analyzeDocument()">
+            Analyze Document
+        </button>
 
-    <pre id="result"></pre>
-    <div id="confidenceBox"></div>
+    </div>
 
-    <script src="/static/script.js"></script>
+    <div class="output-section">
+
+        <div id="loadingBox"></div>
+
+        <div id="errorBox"></div>
+
+        <div id="confidenceBox"></div>
+
+        <div id="summaryBox"></div>
+
+        <div id="issuesBox"></div>
+
+        <div id="recommendationBox"></div>
+
+    </div>
+
+</div>
+
+<script src="/static/script.js?v=5"></script>
 
 </body>
 </html>

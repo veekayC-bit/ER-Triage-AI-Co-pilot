@@ -21,9 +21,15 @@ st.markdown("""
 
 st.markdown("## Input")
 
-# Ensure API key exists
+document_type = st.selectbox(
+    "Select Document Type",
+    ["prescription", "referral"]
+    )
 
-uploaded_file = st.file_uploader("Upload prescription (image or pdf):", type=["png", "jpg", "jpeg", "pdf"])
+uploaded_file = st.file_uploader(
+    f"Upload {document_type} document:",
+    type=["png", "jpg", "jpeg", "pdf"]
+)
 
 def extract_text_from_image(file):
     try:
@@ -66,12 +72,13 @@ def llm_clean_text(text: str):
         st.error(f"LLM cleanup failed: {response.status_code}")
         return text
     
-def extract_prescription(text: str):
+def extract_document(text: str):
     url = "http://127.0.0.1:8000/extract"
 
     payload = {
-        "text": text
-    }
+    "text": text,
+    "document_type": document_type
+        }
 
     response = requests.post(url, json=payload, timeout=10)
 
@@ -85,6 +92,9 @@ def extract_prescription(text: str):
 # Input handling
 if uploaded_file is not None:
     raw_text = extract_text_from_image(uploaded_file)
+    if not raw_text.strip():
+        st.error("Unable to extract text from uploaded document")
+        st.stop()
     cleaned_text = clean_ocr_text(raw_text)
     llm_cleaned_text = llm_clean_text(cleaned_text)
     st.subheader("Extracted Text")
@@ -95,16 +105,26 @@ if uploaded_file is not None:
 
     text = llm_cleaned_text
 else:
-    text = st.text_area("Enter prescription text:")
+    text = st.text_area(f"Enter {document_type} text:", height=200)
 
 if st.button("Process"):
     if not text or text.strip() == "":
         st.warning("Please provide input")
     else:
         try:
-            output = extract_prescription(text)
+            output = extract_document(text)
 
-            st.subheader("Output")
+            st.subheader("AI Analysis Result")
+
+            confidence = output.get("confidence", "Low")
+
+            if confidence == "High":
+                st.success("✅ High Confidence Extraction")
+            elif confidence == "Medium":
+                st.warning("⚠ Medium Confidence Extraction")
+            else:
+                st.error("❌ Low Confidence Extraction")
+
             st.json(output)
 
         except Exception as e:
