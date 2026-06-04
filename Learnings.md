@@ -1,5 +1,190 @@
 # AI Workflow System — Learnings
 
+# AI Build Master Roadmap
+
+## Project Philosophy
+
+Learn While Building
+
+### Principles
+
+1. Build a simple working implementation first.
+2. Complete an end-to-end capability before introducing complexity.
+3. Progress toward production-capable architecture.
+4. Experiment with alternative technologies after the capability works.
+5. Document tradeoffs, costs, ROI, and operational implications.
+6. Compare implementations to understand engineering decisions.
+
+### Learning Approach
+
+Capability First
+      ↓
+Simple Working Implementation
+      ↓
+End-to-End Completion
+      ↓
+Production-Capable Implementation
+      ↓
+Technology Experiments
+      ↓
+Tradeoff Analysis
+      ↓
+Cost / ROI Analysis
+
+### Examples From This Project
+
+Frontend Evolution
+
+Streamlit
+    ↓
+HTML/CSS/JavaScript
+
+Retrieval Evolution
+
+BM25
+   ↓
+Embeddings
+
+Future Vector Database Evolution
+
+FAISS
+   ↓
+Qdrant / Pinecone / Chroma
+
+Deployment Evolution
+
+Local Development
+    ↓
+Render
+    ↓
+AWS
+
+## Master Roadmap
+
+### Phase 1 — Workflow Foundations ✅
+
+1.1 Basic AI Prompting
+1.2 FastAPI Backend Architecture
+1.3 Confidence & Validation
+
+### Phase 2 — AI Product Foundations ✅
+
+2.1 Streamlit Application
+2.2 OCR Document Ingestion
+2.3 Structured Rendering (Streamlit)
+2.4 Frontend Transition (HTML/CSS/JS)
+2.5 Advanced Structured Rendering
+2.6 Engineering Discipline & Debugging
+
+### Phase 3 — Retrieval Foundations ✅
+
+3.1 Basic RAG Foundations
+3.2 Prompt Reasoning Improvements
+3.3 BM25 Retrieval Engineering
+
+### Phase 4 — Semantic Retrieval ✅
+
+4.1 Embeddings
+4.2 Cosine Similarity
+4.3 Semantic Retrieval
+
+### Phase 5 — Vector Databases (Current Phase)
+
+Goal:
+Move from in-memory vector search to scalable vector indexing.
+
+Learning Path:
+5.1 FAISS
+
+Production Recommendation:
+Qdrant
+
+Technology Experiments:
+5.2 Chroma
+5.3 Qdrant
+5.4 Pinecone
+5.5 Weaviate
+
+### Phase 6 — Hybrid Retrieval
+
+Learning Path:
+BM25 + Embeddings + RRF
+
+Production Recommendation:
+Hybrid Retrieval Pipeline
+
+Technology Experiments:
+LangChain Retrievers
+Custom Hybrid Search
+
+### Phase 7 — Evaluation & Observability
+
+Technology Experiments:
+LangSmith
+Weights & Biases Weave
+OpenTelemetry
+Custom Evaluation Framework
+
+### Phase 8 — Agent Foundations
+
+Technology Experiments:
+Pure Python Agents
+LangChain Agents
+PydanticAI
+OpenAI Tool Calling
+
+### Phase 9 — LangGraph Workflows
+
+Technology Experiments:
+LangGraph
+CrewAI
+AutoGen
+Semantic Kernel
+
+### Phase 10 — Memory Systems
+
+Technology Experiments:
+Airtable
+PostgreSQL
+Redis
+SQLite
+Vector Memory
+
+### Phase 11 — Multi-Agent Systems
+
+Technology Experiments:
+LangGraph
+CrewAI
+AutoGen
+Agent-to-Agent Communication
+
+### Phase 12 — AI Product Engineering
+
+Learning Path:
+Render
+
+Production Recommendation:
+AWS
+
+Technology Experiments:
+Google Cloud
+Railway
+Fly.io
+Docker
+GitHub Actions
+n8n
+
+## Current Status
+
+Completed:
+- Workflow Foundations
+- AI Product Foundations
+- Retrieval Foundations
+- Semantic Retrieval
+
+Current Focus:
+- Phase 5.1 FAISS
+
 ---
 
 # Phase 1 — Basic AI Prompting
@@ -161,48 +346,381 @@ AI systems require domain-specific reasoning constraints in addition to retrieva
 
 ---
 
-# Current Learning Stage
+# Phase 9 — Retrieval Engineering Foundations
 
-## Your NEXT STEP
-You are now ready for:
+## What Was Built
+- knowledge_base folder structure
+- Domain-specific knowledge documents
+- Document loader (`loader.py`)
+- Chunking engine (`chunker.py`)
+- Chunk metadata model
+- BM25 retrieval engine (`retriever.py`)
+- Retrieval testing workflow
 
-keyword-based retrieval
+## Knowledge Base Created
 
-Before embeddings.
+The knowledge base was separated from user-uploaded documents.
 
-## This Teaches
-- chunk selection
-- retrieval filtering
-- context relevance
-- retrieval optimization
+Knowledge documents include:
+- antibiotic guidelines
+- prescription validation rules
+- referral validation rules
+- confidence evaluation rules
 
-## Why This Matters
+Key learning:
+
+User uploads are inputs.
+
+Knowledge base documents are the searchable corpus used for retrieval.
+
+## Key Learning
+
+Retrieval is a separate system from the LLM.
+
+Before this phase:
+
+Prescription
+    ↓
+Prompt
+    ↓
+LLM
+
+After this phase:
+
+Knowledge Base
+      ↓
+Loader
+      ↓
+Chunker
+      ↓
+Retriever
+      ↓
+Relevant Knowledge
+
+The system now retrieves relevant information instead of relying on the entire knowledge base being injected into the prompt.
+
+## Concepts Learned
+
+### Knowledge Corpus Design
+- Difference between input documents and knowledge documents
+- Building a searchable knowledge base
+- Organizing domain knowledge
+
+### Document Loading
+- Converting files into structured document objects
+- Standardized document representation
+- Category and source tracking
+
+### Chunking
+- Breaking large documents into smaller retrieval units
+- Chunk size and overlap concepts
+- Retrieval granularity
+- Context preservation
+
+### Metadata
+- Source tracking
+- Category tagging
+- Traceability
+- Retrieval debugging
+
+### BM25 Retrieval
+- Keyword-based retrieval
+- Tokenization
+- Relevance scoring
+- Ranking search results
+- Top-K retrieval
+
+### Retrieval Evaluation
+- Testing retrieval quality
+- Verifying relevance of returned chunks
+- Understanding retrieval failures
+- Measuring retrieval accuracy
+
+## Most Important Insight
+
+RAG is not:
+
+LLM + Documents
+
+RAG is:
+
+Retrieval
++
+Generation
+
+Today focused entirely on the Retrieval portion.
+
+The LLM has not yet been connected to the retriever.
+
+## Current Learning Stage
+
+### Current Status
+
+Completed:
+- Knowledge base creation
+- Document loading
+- Chunk generation
+- Metadata creation
+- BM25 retrieval
+- Retrieval testing
+
+### Your NEXT STEP
+
+Connect retrieval results to the OpenAI workflow.
+
+Build:
+
+Question
+      ↓
+Retriever
+      ↓
+Relevant Chunks
+      ↓
+Prompt Context
+      ↓
+LLM
+      ↓
+Answer
+
+### This Teaches
+- Retrieval-Augmented Generation (RAG)
+- Context construction
+- Prompt grounding with retrieved knowledge
+- End-to-end RAG architecture
+
+### Why This Matters
+
 This becomes the bridge between:
 
-manual retrieval
+retrieval systems
 
 and:
 
-semantic retrieval using embeddings.
+semantic retrieval using embeddings and vector databases.
 
 ---
+
+---
+
+# Phase 10 — Embeddings & Semantic Retrieval
+
+## What Was Built
+
+- OpenAI embedding integration (`embedding.py`)
+- Embedding generation using `text-embedding-3-small`
+- Cosine similarity engine (`similarity.py`)
+- Semantic similarity testing
+- Semantic retriever (`semantic_retriever.py`)
+- Embedding-based retrieval evaluation
+
+## Key Learning
+
+Embeddings transform text into vectors that represent meaning rather than words.
+
+This enables semantic retrieval, where different words expressing similar concepts can still be matched.
+
+---
+
+## BM25 Failure Demonstrated
+
+Query:
+
+```text
+drug course length
+```
+
+Expected concept:
+
+```text
+antibiotic duration
+```
+
+BM25 Result:
+
+```text
+Score = 0.00
+```
+
+for all chunks.
+
+Reason:
+
+BM25 requires keyword overlap.
+
+---
+
+## First Embedding Generated
+
+Created:
+
+```text
+rag/embedding.py
+```
+
+Model:
+
+```text
+text-embedding-3-small
+```
+
+Observation:
+
+The embedding returned a vector containing:
+
+```text
+1536 dimensions
+```
+
+### What A Vector Is
+
+A vector is a numerical representation of meaning.
+
+Example:
+
+```text
+Text
+   ↓
+Embedding Model
+   ↓
+[0.12, -0.45, 0.88, ...]
+```
+
+The vector represents the location of a piece of text within a high-dimensional semantic space.
+
+---
+
+## Cosine Similarity
+
+Cosine similarity measures how similar two vectors are.
+
+Purpose:
+
+```text
+Vector A
+      ↓
+Cosine Similarity
+      ↑
+Vector B
+```
+
+Higher scores indicate more similar meanings.
+
+---
+
+## Semantic Similarity Experiment
+
+Results:
+
+| Text A | Text B | Similarity |
+|----------|----------|----------|
+| antibiotic duration | drug course length | 0.5351 |
+| antibiotic duration | referral specialist | 0.1008 |
+| missing specialty information | specialist details absent | 0.6531 |
+
+Key observation:
+
+Different words can still produce high similarity when they express the same idea.
+
+---
+
+## Semantic Retrieval Test
+
+Query:
+
+```text
+drug course length
+```
+
+Top Result:
+
+```text
+antibiotics_guidelines.md
+```
+
+Similarity:
+
+```text
+0.4236
+```
+
+This was a successful retrieval.
+
+The semantic retriever correctly identified the antibiotic duration guideline even though none of the query words appeared in the document.
+
+---
+
+## Most Important Insight
+
+BM25 Retrieval:
+
+```text
+Query
+   ↓
+Keyword Match
+   ↓
+Results
+```
+
+Semantic Retrieval:
+
+```text
+Query
+   ↓
+Embedding
+   ↓
+Cosine Similarity
+   ↓
+Results
+```
+
+This is the architectural shift from keyword search to semantic search.
+
+## Current Status
+
+Completed:
+
+- Embedding generation
+- Vector representation
+- Cosine similarity
+- Semantic similarity testing
+- Semantic retrieval
+
+## Next Step
+
+Build a vector index using FAISS.
+
+Goal:
+
+```text
+Embeddings
+      ↓
+Vector Index
+      ↓
+Fast Similarity Search
+      ↓
+Scalable Semantic Retrieval
+```
 
 # Future Learning Roadmap
 
 ## Upcoming Topics
 - Embeddings
+- FAISS
 - Vector databases
 - Semantic search
+- Hybrid retrieval
+- LangChain retrievers
+- LangSmith observability
+- LangGraph workflows
 - Enterprise memory systems
 - Agentic workflows
-- Multi-step orchestration
-- Tool-using AI systems
 
 ## Long-Term Goal
+
 Move from:
 
 prompt-driven AI applications
 
 To:
 
-intelligent AI workflow systems with memory, retrieval, reasoning, and orchestration.
+intelligent AI workflow systems with retrieval, memory, reasoning, observability, and orchestration.

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ER Triage AI Co-pilot — Mockups</title>
+<link rel="stylesheet" href="mockup-styles.css">
+<style>
+body { background: #0f172a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.index-wrap { max-width: 960px; margin: 0 auto; padding: 48px 24px; }
+.index-header { margin-bottom: 40px; }
+.index-header h1 { font-size: 26px; font-weight: 800; color: #f8fafc; margin-bottom: 6px; }
+.index-header p { font-size: 14px; color: #94a3b8; }
+
+.flow-diagram {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 40px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 2;
+  overflow-x: auto;
+}
+
+.flow-diagram .flow-title {
+  color: #60a5fa;
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-family: -apple-system, sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.screen-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.screen-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  display: block;
+}
+
+.screen-card:hover {
+  background: rgba(37,99,235,0.15);
+  border-color: #2563EB;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.screen-card .screen-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563EB;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.screen-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 6px;
+}
+
+.screen-card p {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.screen-card .tag {
+  display: inline-flex;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.tag-primary { background: rgba(37,99,235,0.2); color: #60a5fa; }
+.tag-warning { background: rgba(217,119,6,0.2); color: #fcd34d; }
+.tag-danger { background: rgba(220,38,38,0.2); color: #fca5a5; }
+.tag-info { background: rgba(6,182,212,0.15); color: #67e8f9; }
+.tag-success { background: rgba(22,163,74,0.2); color: #86efac; }
+.tag-muted { background: rgba(100,116,139,0.2); color: #94a3b8; }
+.tag-purple { background: rgba(124,58,237,0.2); color: #c4b5fd; }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #475569;
+  margin-bottom: 12px;
+  margin-top: 32px;
+}
+
+.legend {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-top: 24px;
+}
+
+.legend-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 10px; }
+.legend-row { display: flex; gap: 20px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #94a3b8; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+</style>
+</head>
+<body>
+<div class="index-wrap">
+
+  <div class="index-header">
+    <h1>⚕ ER Triage AI Co-pilot</h1>
+    <p>UI Mockups — Generated from PRD v1 Draft (May 28, 2026) &nbsp;·&nbsp; Single-site MVP scope</p>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-title">Primary User Flow</div>
+    <pre>
+  Nurse opens intake
+        │
+        ▼
+  [1] Intake — Normal State   ←──────────────────────────────────────┐
+        │  (typing chief complaint, AI suggestions appear in sidebar)  │
+        │                                                              │
+        ├── confidence 70–89% ──▶  [2] Intake — Moderate Alert        │
+        │                                  │ nurse reviews & acknowledges
+        ├── confidence ≥ 90% ───▶  [3] Intake — Critical Alert        │
+        │                                  │ urgency banner + audio    │
+        │                                                              │
+        ▼                                                              │
+  [4] Intake Summary Review                                           │
+        │  nurse signs off → submit to EMR                            │
+        │                                                              │
+        └── EMR offline? ───────▶  [6] Manual Mode  ─────────────────┘
+
+
+  Side access at any time:
+        └── [5] Queue Priority Panel (read-only acuity dashboard)
+    </pre>
+  </div>
+
+  <div class="section-label">Primary Intake Flow</div>
+  <div class="screen-grid">
+
+    <a class="screen-card" href="intake-normal.html">
+      <div class="screen-num">Screen 1</div>
+      <h3>Intake — Normal State</h3>
+      <p>Nurse opens intake for a new patient. AI parses chief complaint in real-time and suggests structured fields in sidebar. No critical flags detected.</p>
+      <span class="tag tag-primary">Triage Nurse</span>
+      <span class="tag tag-info">AI Active</span>
+    </a>
+
+    <a class="screen-card" href="intake-flag-moderate.html">
+      <div class="screen-num">Screen 2</div>
+      <h3>Intake — Moderate Flag Alert</h3>
+      <p>AI detects a critical flag with 70–89% confidence. Alert card appears in sidebar with flag name, confidence score, and source text citation. Nurse must acknowledge.</p>
+      <span class="tag tag-warning">Moderate Alert</span>
+      <span class="tag tag-primary">Triage Nurse</span>
+    </a>
+
+    <a class="screen-card" href="intake-flag-critical.html">
+      <div class="screen-num">Screen 3</div>
+      <h3>Intake — Critical Flag Alert</h3>
+      <p>AI confidence ≥ 90%. Urgent alert banner activates, alert card pulses in red. Audio alert indicator shown. Nurse must explicitly confirm before proceeding.</p>
+      <span class="tag tag-danger">Critical Alert</span>
+      <span class="tag tag-primary">Triage Nurse</span>
+    </a>
+
+    <a class="screen-card" href="intake-summary.html">
+      <div class="screen-num">Screen 4</div>
+      <h3>Intake Summary — Nurse Sign-off</h3>
+      <p>All AI-suggested and nurse-entered fields shown for final review before EMR submission. Each field tagged by source. Nurse signs off and submits. Nothing enters EMR without this step.</p>
+      <span class="tag tag-success">Pre-submission</span>
+      <span class="tag tag-primary">Triage Nurse</span>
+    </a>
+
+  </div>
+
+  <div class="section-label">Supporting Screens</div>
+  <div class="screen-grid">
+
+    <a class="screen-card" href="queue-panel.html">
+      <div class="screen-num">Screen 5</div>
+      <h3>Queue Priority Panel</h3>
+      <p>Read-only acuity distribution dashboard. Shows current waiting room patient count by ESI level, wait times, and chief complaint summaries. Updated as intakes complete.</p>
+      <span class="tag tag-info">Read Only</span>
+      <span class="tag tag-muted">All Roles</span>
+    </a>
+
+    <a class="screen-card" href="manual-mode.html">
+      <div class="screen-num">Screen 6</div>
+      <h3>Manual Mode — EMR Offline</h3>
+      <p>EMR integration failure triggers silent fallback to manual mode. AI sidebar is disabled. Full manual intake form remains operational. No data loss. Purple banner signals degraded state.</p>
+      <span class="tag tag-purple">Degraded State</span>
+      <span class="tag tag-muted">Fallback</span>
+    </a>
+
+  </div>
+
+  <div class="legend">
+    <div class="legend-title">Acuity Legend (ESI Scale)</div>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>ESI 1 — Resuscitation (immediate)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>ESI 2 — Emergent</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#eab308"></div>ESI 3 — Urgent</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>ESI 4 — Less Urgent</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>ESI 5 — Non-urgent</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

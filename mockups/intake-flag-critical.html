@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake — Critical Alert | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+<style>
+@keyframes urgent-flash {
+  0%, 100% { background: #dc2626; }
+  50% { background: #b91c1c; }
+}
+.urgent-banner { animation: urgent-flash 1.5s infinite; }
+</style>
+</head>
+<body>
+
+<div class="screen-label">Screen 3 — Intake: Critical Flag Alert (≥90%) &nbsp;|&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.6)">← All Screens</a></div>
+
+<header class="app-header" style="background:#7f1d1d;">
+  <div class="logo">
+    <div class="logo-icon" style="background:#dc2626;">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">New Patient Intake</span>
+    <span class="sep">|</span>
+    <span>Bay 2</span>
+    <span class="sep">|</span>
+    <span>Arrived 15:09</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Day Shift · 07:00–19:00</span>
+    <span>RN J. Osei</span>
+  </div>
+</header>
+
+<!-- CRITICAL URGENCY BANNER -->
+<div class="urgent-banner" style="background:#dc2626;color:#fff;padding:10px 24px;display:flex;align-items:center;gap:12px;font-weight:800;font-size:14px;letter-spacing:0.3px;">
+  <span style="font-size:18px">🔴</span>
+  CRITICAL FLAG — ANAPHYLAXIS · 96% Confidence
+  <span style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;opacity:0.9;">
+    <span>🔊 Audio alert active</span>
+    <span style="opacity:0.6">|</span>
+    Nurse confirmation required
+  </span>
+</div>
+
+<div class="intake-layout">
+
+  <!-- LEFT: FORM PANEL -->
+  <section class="form-panel" style="border-right-color:#fecaca;">
+
+    <div class="section-title" style="color:#991b1b;">⚠ CRITICAL: Anaphylaxis Protocol — Patient Intake</div>
+
+    <div class="patient-info-bar" style="background:#fef2f2;border-color:#fecaca;">
+      <div class="patient-info-field">
+        <label>Encounter ID</label>
+        <span>ENC-2026-04831</span>
+      </div>
+      <div class="patient-info-field">
+        <label>Name</label>
+        <span>D. Tran</span>
+      </div>
+      <div class="patient-info-field">
+        <label>DOB / Age</label>
+        <span>1994-06-22 · 31</span>
+      </div>
+      <div class="patient-info-field">
+        <label>Sex</label>
+        <span>Female</span>
+      </div>
+      <div class="patient-info-field">
+        <label>MRN</label>
+        <span>MRN-891023</span>
+      </div>
+    </div>
+
+    <!-- Chief Complaint — red highlight -->
+    <div class="card" style="border:2px solid var(--danger);background:#fff5f5;">
+      <div class="card-title" style="color:#991b1b;">🔴 Chief Complaint <span style="font-size:10px;font-weight:600;text-transform:none;letter-spacing:0;color:#dc2626;">&nbsp;— Critical flag triggered from this input</span></div>
+      <div class="form-group">
+        <label>Free-text complaint (nurse transcription)</label>
+        <textarea style="border:2px solid var(--danger);background:#fff;">Bee sting about 5 minutes ago, throat feels tight, tongue feels like it's swelling up. Husband says she had a bad reaction to a bee sting before but no Epi-pen on her.</textarea>
+      </div>
+      <div class="ai-parsing-indicator" style="color:var(--danger)">
+        <div class="pulse-dot" style="background:var(--danger)"></div>
+        CRITICAL FLAG: Anaphylaxis pattern detected — immediate nurse review required
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🩺 Vitals</div>
+      <div class="vitals-grid">
+        <div class="form-group">
+          <label>BP (mmHg)</label>
+          <input type="text" value="98 / 60" style="border-color:var(--danger);color:var(--danger);font-weight:700;">
+        </div>
+        <div class="form-group">
+          <label>HR (bpm)</label>
+          <input type="text" value="128" style="border-color:var(--danger);color:var(--danger);font-weight:700;">
+        </div>
+        <div class="form-group">
+          <label>SpO₂ (%)</label>
+          <input type="text" value="93" style="border-color:var(--danger);color:var(--danger);font-weight:700;">
+        </div>
+        <div class="form-group">
+          <label>RR (breaths/min)</label>
+          <input type="text" value="24" style="border-color:var(--warning);color:var(--warning);font-weight:700;">
+        </div>
+        <div class="form-group">
+          <label>Temp (°C)</label>
+          <input type="text" value="37.0">
+        </div>
+        <div class="form-group">
+          <label>GCS</label>
+          <input type="text" value="14">
+        </div>
+      </div>
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);padding:8px 12px;font-size:12px;color:#991b1b;margin-top:8px;font-weight:600;">
+        ⚠ AI cross-reference: hypotension + tachycardia + SpO₂ 93% + throat tightness = multi-system involvement. Anaphylaxis confidence increased to 96%.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Additional Context</div>
+      <div class="form-group">
+        <label>Allergies</label>
+        <input type="text" value="Bee sting — prior anaphylaxis (per husband, no documented record in EMR)" style="border-color:var(--danger);">
+      </div>
+      <div class="form-group">
+        <label>Current Medications</label>
+        <input type="text" value="None known. No Epi-pen prescribed / carried.">
+      </div>
+      <div class="form-group">
+        <label>Relevant History</label>
+        <textarea style="min-height:50px">Prior bee sting reaction — severity unknown. No current Epi-pen. No other relevant PMHx per husband.</textarea>
+      </div>
+    </div>
+
+    <div class="card" style="background:#fef2f2;border-color:#fecaca;">
+      <div class="card-title" style="color:#991b1b;">🎯 Acuity — Nurse Assigned (ESI)</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <select style="width:auto;padding:10px 14px;font-size:15px;font-weight:800;border:2px solid var(--danger);color:#991b1b;">
+          <option value="1" selected>ESI 1 — Resuscitation (Immediate)</option>
+          <option value="2">ESI 2 — Emergent</option>
+          <option value="3">ESI 3 — Urgent</option>
+          <option value="4">ESI 4 — Less Urgent</option>
+          <option value="5">ESI 5 — Non-urgent</option>
+        </select>
+        <span style="font-size:12px;color:var(--text-muted)">AI does not assign ESI — nurse judgment only</span>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <span style="font-size:12px;color:var(--danger);font-weight:600;">⚠ Cannot proceed until critical alert is confirmed in sidebar</span>
+      <button class="btn btn-secondary" disabled style="opacity:0.4;cursor:not-allowed;">Review & Submit →</button>
+    </div>
+  </section>
+
+  <!-- RIGHT: AI SIDEBAR with CRITICAL Alert -->
+  <aside class="ai-sidebar" style="background:#fef2f2;">
+    <div class="sidebar-header" style="background:#7f1d1d;">
+      AI Triage Assistant — CRITICAL ALERT
+      <div class="ai-status">
+        <div class="status-dot" style="background:#fca5a5;animation:pulse 0.8s infinite;"></div>
+        🔊 Urgency Active
+      </div>
+    </div>
+
+    <!-- CRITICAL ALERT CARD -->
+    <div class="sidebar-section" style="background:#fef2f2;padding-bottom:20px;">
+      <div class="sidebar-section-title" style="color:#991b1b;font-size:13px;">🔴 CRITICAL FLAG — IMMEDIATE ACTION</div>
+
+      <div class="alert-card alert-card-critical">
+        <div class="alert-flag-name" style="font-size:15px;">
+          🔴 Anaphylaxis
+          <span class="confidence-badge" style="background:#991b1b;font-size:12px;">96% confidence</span>
+        </div>
+        <div style="font-size:11px;color:#991b1b;margin-bottom:8px;font-weight:600;">
+          Condition from monitored list · HIGHEST URGENCY
+        </div>
+        <div class="alert-source" style="border-color:var(--danger);">
+          Source text: <em>"Bee sting about 5 minutes ago, throat feels tight, tongue feels like it's swelling up"</em>
+        </div>
+        <div style="font-size:11px;color:#991b1b;margin-bottom:8px;font-weight:600;background:#fff;border-radius:4px;padding:8px 10px;border:1px solid #fecaca;">
+          Vitals cross-reference: BP 98/60 (hypotension) + HR 128 (tachycardia) + SpO₂ 93% + respiratory symptoms = confirmed multi-system anaphylaxis pattern
+        </div>
+        <div class="alert-actions">
+          <button class="btn" style="background:#991b1b;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-weight:800;padding:8px 16px;">
+            ✓ Confirm — Initiating Protocol
+          </button>
+        </div>
+        <div style="margin-top:8px;font-size:10px;color:#b91c1c;">Dismissal not recommended at this confidence level — dismissal will require mandatory escalation note</div>
+      </div>
+
+      <!-- Protocol Checklist -->
+      <div style="background:#fff;border:1px solid #fecaca;border-radius:var(--radius);padding:12px 14px;margin-top:10px;">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;color:#991b1b;margin-bottom:8px;">Anaphylaxis Protocol Reminder</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:2;">
+          <div>☐ Epinephrine 0.3mg IM (lateral thigh)</div>
+          <div>☐ Supine position / elevate legs</div>
+          <div>☐ High-flow O₂</div>
+          <div>☐ Large bore IV access</div>
+          <div>☐ Call physician / senior clinician now</div>
+        </div>
+        <div style="font-size:10px;color:#b91c1c;margin-top:8px;font-style:italic;">Reminder only — nurse confirms all clinical actions. Not a prescription.</div>
+      </div>
+    </div>
+
+    <!-- Suggested Fields (secondary once alert is cleared) -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Suggested Structured Fields</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;font-style:italic;">Complete after confirming critical alert above</div>
+
+      <div class="suggestion-row">
+        <div class="suggestion-body">
+          <div class="field-name">Chief Complaint Category</div>
+          <div class="field-value">Anaphylaxis — Insect Sting</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn btn-accept btn-sm">✓</button>
+          <button class="btn btn-dismiss btn-sm">✕</button>
+        </div>
+      </div>
+
+      <div class="suggestion-row">
+        <div class="suggestion-body">
+          <div class="field-name">Onset</div>
+          <div class="field-value">Acute — 5 minutes ago</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn btn-accept btn-sm">✓</button>
+          <button class="btn btn-dismiss btn-sm">✕</button>
+        </div>
+      </div>
+
+      <div class="suggestion-row">
+        <div class="suggestion-body">
+          <div class="field-name">Trigger</div>
+          <div class="field-value">Hymenoptera (bee) sting</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn btn-accept btn-sm">✓</button>
+          <button class="btn btn-dismiss btn-sm">✕</button>
+        </div>
+      </div>
+
+      <div class="suggestion-row">
+        <div class="suggestion-body">
+          <div class="field-name">Epinephrine Available</div>
+          <div class="field-value">No (no Epi-pen on patient)</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn btn-accept btn-sm">✓</button>
+          <button class="btn btn-dismiss btn-sm">✕</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+</body>
+</html>

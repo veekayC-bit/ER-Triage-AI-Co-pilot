@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Mode — EMR Offline | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+</head>
+<body>
+
+<div class="screen-label">Screen 6 — Manual Mode: EMR Integration Failure &nbsp;|&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.6)">← All Screens</a></div>
+
+<header class="app-header" style="background:#3b1f6e;">
+  <div class="logo">
+    <div class="logo-icon" style="background:#7c3aed;">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">New Patient Intake</span>
+    <span class="sep">|</span>
+    <span>Bay 9</span>
+    <span class="sep">|</span>
+    <span>Arrived 15:22</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Day Shift · 07:00–19:00</span>
+    <span>RN J. Osei</span>
+  </div>
+</header>
+
+<!-- MANUAL MODE BANNER -->
+<div class="manual-mode-banner">
+  <span style="font-size:16px">⚙</span>
+  Manual Mode Active — EMR connection unavailable. AI Co-pilot suspended. Continue intake manually — no data will be lost.
+  <span style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:500;opacity:0.85;">
+    <span style="background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:4px;">Since 15:20:43</span>
+    <span>Retry automatically</span>
+  </span>
+</div>
+
+<div class="intake-layout">
+
+  <!-- LEFT: FORM PANEL — identical to normal intake, fully editable -->
+  <section class="form-panel">
+    <div class="section-title" style="color:#6d28d9;">
+      Patient Intake
+      <span style="font-size:12px;font-weight:500;color:#7c3aed;margin-left:8px;text-transform:none;letter-spacing:0;">· Manual mode — all fields editable</span>
+    </div>
+
+    <div class="patient-info-bar" style="background:#f5f3ff;border-color:#ddd6fe;">
+      <div class="patient-info-field">
+        <label>Encounter ID</label>
+        <span>ENC-2026-04842</span>
+      </div>
+      <div class="patient-info-field">
+        <label>Name</label>
+        <input type="text" value="T. Bergstrom" style="border:1.5px solid #ddd6fe;border-radius:4px;padding:2px 6px;font-size:13px;font-weight:600;background:white;">
+      </div>
+      <div class="patient-info-field">
+        <label>DOB / Age</label>
+        <input type="text" value="1989-11-30 · 36" style="border:1.5px solid #ddd6fe;border-radius:4px;padding:2px 6px;font-size:13px;background:white;">
+      </div>
+      <div class="patient-info-field">
+        <label>Sex</label>
+        <input type="text" value="Male" style="border:1.5px solid #ddd6fe;border-radius:4px;padding:2px 6px;font-size:13px;background:white;">
+      </div>
+      <div class="patient-info-field">
+        <label>MRN</label>
+        <input type="text" value="" placeholder="Enter MRN" style="border:1.5px solid #ddd6fe;border-radius:4px;padding:2px 6px;font-size:13px;background:#fffbff;">
+      </div>
+    </div>
+
+    <!-- Chief Complaint — no AI indicator -->
+    <div class="card" style="border-color:#ddd6fe;">
+      <div class="card-title">📝 Chief Complaint</div>
+      <div class="form-group">
+        <label>Free-text complaint (nurse transcription)</label>
+        <textarea placeholder="Type or transcribe patient's chief complaint…">Cut on right hand from kitchen knife, bleeding was heavy but patient applied pressure. Currently controlled.</textarea>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:6px;font-size:11px;color:#7c3aed;font-weight:500;">
+        <span>⊘</span>
+        AI parsing suspended — manual documentation only
+      </div>
+    </div>
+
+    <!-- Chief Complaint Structured Fields — manual entry -->
+    <div class="card" style="border-color:#ddd6fe;">
+      <div class="card-title">📋 Structured Fields <span style="font-size:10px;font-weight:500;text-transform:none;letter-spacing:0;color:#7c3aed;">&nbsp;(manual entry — AI suggestions unavailable)</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label>Complaint Category</label>
+          <input type="text" placeholder="Enter manually…" value="Laceration">
+        </div>
+        <div class="form-group">
+          <label>Body Site</label>
+          <input type="text" placeholder="Enter manually…" value="Right hand">
+        </div>
+        <div class="form-group">
+          <label>Onset</label>
+          <input type="text" placeholder="Enter manually…" value="Acute — ~20 min ago">
+        </div>
+        <div class="form-group">
+          <label>Bleeding Status</label>
+          <input type="text" placeholder="Enter manually…" value="Controlled (pressure applied)">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🩺 Vitals</div>
+      <div class="vitals-grid">
+        <div class="form-group">
+          <label>BP (mmHg)</label>
+          <input type="text" value="126 / 82">
+        </div>
+        <div class="form-group">
+          <label>HR (bpm)</label>
+          <input type="text" value="82">
+        </div>
+        <div class="form-group">
+          <label>SpO₂ (%)</label>
+          <input type="text" value="99">
+        </div>
+        <div class="form-group">
+          <label>RR (breaths/min)</label>
+          <input type="text" value="15">
+        </div>
+        <div class="form-group">
+          <label>Temp (°C)</label>
+          <input type="text" value="36.8">
+        </div>
+        <div class="form-group">
+          <label>GCS</label>
+          <input type="text" value="15">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Additional Context</div>
+      <div class="form-group">
+        <label>Allergies</label>
+        <input type="text" value="NKDA">
+      </div>
+      <div class="form-group">
+        <label>Current Medications</label>
+        <input type="text" placeholder="Enter medications…" value="None">
+      </div>
+      <div class="form-group">
+        <label>Relevant History</label>
+        <textarea style="min-height:50px" placeholder="PMHx…">No significant PMHx. Up to date on tetanus.</textarea>
+      </div>
+    </div>
+
+    <!-- Critical Flag — Manual Screening -->
+    <div class="card" style="background:#f5f3ff;border-color:#ddd6fe;">
+      <div class="card-title" style="color:#6d28d9;">⚠ Manual Critical Flag Screening</div>
+      <div style="font-size:12px;color:#7c3aed;margin-bottom:12px;">AI screening unavailable. Complete manual review below.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text);">
+          <input type="checkbox" checked style="accent-color:#7c3aed;"> Stroke symptoms reviewed — not applicable
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text);">
+          <input type="checkbox" checked> Acute MI — not applicable
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text);">
+          <input type="checkbox" checked> Anaphylaxis — not applicable
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text);">
+          <input type="checkbox" checked> Sepsis indicators — not applicable
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text);">
+          <input type="checkbox" checked> Suicidal ideation — not applicable
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text);">
+          <input type="checkbox" checked> Respiratory distress — not applicable
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 Acuity — Nurse Assigned (ESI)</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <select style="width:auto;padding:10px 14px;font-size:15px;font-weight:700;">
+          <option value="">Select ESI Level</option>
+          <option value="1">ESI 1 — Resuscitation</option>
+          <option value="2">ESI 2 — Emergent</option>
+          <option value="3">ESI 3 — Urgent</option>
+          <option value="4" selected>ESI 4 — Less Urgent</option>
+          <option value="5">ESI 5 — Non-urgent</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <a href="index.html" class="btn btn-secondary">Cancel</a>
+      <button class="btn" style="background:#7c3aed;color:#fff;">Save to Local Draft</button>
+      <button class="btn btn-primary">Complete Intake (manual) →</button>
+    </div>
+  </section>
+
+  <!-- RIGHT: AI SIDEBAR — OFFLINE STATE -->
+  <aside class="ai-sidebar" style="background:#f5f3ff;">
+    <div class="sidebar-header" style="background:#3b1f6e;">
+      AI Triage Assistant
+      <div class="ai-status">
+        <div class="status-dot offline"></div>
+        Offline
+      </div>
+    </div>
+
+    <!-- Offline Notice -->
+    <div class="manual-sidebar" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:32px;">
+      <div class="manual-sidebar-icon">⊘</div>
+      <h3>AI Co-pilot Suspended</h3>
+      <p>EMR connection lost at 15:20:43. AI parsing, structured field suggestions, and critical flag screening are unavailable until connection is restored.</p>
+
+      <div style="background:#fff;border:1px solid #ddd6fe;border-radius:var(--radius);padding:14px 16px;margin-top:20px;text-align:left;width:100%;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:#6d28d9;margin-bottom:8px;">What to do</div>
+        <ul style="font-size:12px;color:#4c1d95;line-height:2;padding-left:16px;">
+          <li>Complete intake manually using the form</li>
+          <li>Use manual critical flag checklist on the left</li>
+          <li>Record will auto-sync when connection restores</li>
+          <li>No data will be lost</li>
+        </ul>
+      </div>
+
+      <div style="background:#ede9fe;border:1px solid #c4b5fd;border-radius:var(--radius);padding:12px 16px;margin-top:14px;width:100%;">
+        <div style="font-size:11px;font-weight:700;color:#5b21b6;margin-bottom:4px;">Connection Status</div>
+        <div style="font-size:12px;color:#6d28d9;">
+          <div style="margin-bottom:4px;">EMR (Epic): <span style="color:var(--danger);font-weight:700;">Offline · 00:01:43</span></div>
+          <div style="margin-bottom:4px;">AI Engine: <span style="color:var(--danger);font-weight:700;">Suspended</span></div>
+          <div>Last successful sync: <span style="font-weight:600;">15:20:31</span></div>
+        </div>
+        <button style="margin-top:10px;width:100%;background:#7c3aed;color:#fff;border:none;border-radius:4px;padding:7px;font-size:12px;font-weight:700;cursor:pointer;">Retry Connection</button>
+      </div>
+
+      <div style="margin-top:16px;font-size:11px;color:#7c3aed;text-align:center;line-height:1.5;padding:0 8px;">
+        System automatically retries every 30s.<br>Notify IT if outage exceeds 5 minutes.
+      </div>
+    </div>
+  </aside>
+</div>
+
+</body>
+</html>

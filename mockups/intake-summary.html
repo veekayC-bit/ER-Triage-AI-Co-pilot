@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake Summary — Nurse Sign-off | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+</head>
+<body>
+
+<div class="screen-label">Screen 4 — Intake Summary: Nurse Sign-off &nbsp;|&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.6)">← All Screens</a></div>
+
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-icon">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">Intake Review — ENC-2026-04817</span>
+    <span class="sep">|</span>
+    <span>M. Okonkwo · Bay 4</span>
+    <span class="sep">|</span>
+    <span>14:32 — 14:48</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Day Shift · 07:00–19:00</span>
+    <span>RN J. Osei</span>
+  </div>
+</header>
+
+<div style="background:#eff6ff;border-bottom:1px solid #bfdbfe;padding:8px 24px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#1e40af;">
+  <span>ℹ</span>
+  Pre-submission review — nothing has been sent to the EMR yet. Review all fields and sign off to submit.
+  <span style="margin-left:auto;font-size:11px;font-weight:400;color:#3b82f6;">All AI suggestions shown as "AI Suggested" · Nurse-entered shown as "Nurse"</span>
+</div>
+
+<div class="summary-layout">
+
+  <!-- Patient Header -->
+  <div class="card" style="margin-bottom:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:20px;font-weight:800;color:var(--text);">M. Okonkwo</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:2px;">DOB: 1968-03-11 · 58M · MRN-774920 · ENC-2026-04817 · Bay 4</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:24px;font-weight:900;color:var(--accent);">ESI 3</div>
+        <div style="font-size:11px;color:var(--text-muted);">Urgent · Nurse assigned</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;">
+
+    <!-- MAIN SUMMARY FIELDS -->
+    <div>
+
+      <!-- Chief Complaint & Structured Fields -->
+      <div class="card">
+        <div class="card-title">📝 Chief Complaint & Structured Fields</div>
+
+        <div class="summary-field-row">
+          <div class="summary-field-label">Free-text Complaint</div>
+          <div class="summary-field-value">Feeling dizzy for 2 days, not eating well, some nausea.</div>
+          <span class="source-tag source-nurse">Nurse</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Complaint Category</div>
+          <div class="summary-field-value">Dizziness / Vertigo</div>
+          <span class="source-tag source-ai">AI Suggested</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Duration</div>
+          <div class="summary-field-value">2 days</div>
+          <span class="source-tag source-ai">AI Suggested</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Onset Type</div>
+          <div class="summary-field-value">Gradual</div>
+          <span class="source-tag source-ai">AI Suggested</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Associated Symptoms</div>
+          <div class="summary-field-value">Nausea, reduced oral intake</div>
+          <span class="source-tag source-ai">AI Suggested</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Relevant History</div>
+          <div class="summary-field-value">T2DM, HTN — managed. No recent hospitalizations.</div>
+          <span class="source-tag source-nurse">Nurse</span>
+        </div>
+      </div>
+
+      <!-- Vitals -->
+      <div class="card">
+        <div class="card-title">🩺 Vitals</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">Blood Pressure</div>
+            <div style="font-size:18px;font-weight:700;">138 / 86</div>
+            <div style="font-size:10px;color:var(--text-muted);">mmHg</div>
+          </div>
+          <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">Heart Rate</div>
+            <div style="font-size:18px;font-weight:700;">88</div>
+            <div style="font-size:10px;color:var(--text-muted);">bpm</div>
+          </div>
+          <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">SpO₂</div>
+            <div style="font-size:18px;font-weight:700;">97%</div>
+            <div style="font-size:10px;color:var(--text-muted);">pulse oximetry</div>
+          </div>
+          <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">Resp Rate</div>
+            <div style="font-size:18px;font-weight:700;">16</div>
+            <div style="font-size:10px;color:var(--text-muted);">breaths/min</div>
+          </div>
+          <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">Temperature</div>
+            <div style="font-size:18px;font-weight:700;">37.1°C</div>
+            <div style="font-size:10px;color:var(--text-muted);">oral</div>
+          </div>
+          <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">GCS</div>
+            <div style="font-size:18px;font-weight:700;">15 / 15</div>
+            <div style="font-size:10px;color:var(--text-muted);">alert and oriented</div>
+          </div>
+        </div>
+        <div style="text-align:right;margin-top:8px;"><span class="source-tag source-nurse">Nurse entered</span></div>
+      </div>
+
+      <!-- Medications & Allergies -->
+      <div class="card">
+        <div class="card-title">💊 Medications & Allergies</div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Allergies</div>
+          <div class="summary-field-value">NKDA</div>
+          <span class="source-tag source-nurse">Nurse</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Current Medications</div>
+          <div class="summary-field-value">Metformin 500mg BD, Lisinopril 10mg OD</div>
+          <span class="source-tag source-nurse">Nurse</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: AI SUMMARY PANEL -->
+    <div>
+
+      <!-- Critical Flag Summary -->
+      <div class="card" style="background:var(--success-bg);border-color:var(--success-border);">
+        <div class="card-title" style="color:var(--success);">✓ AI Flag Screening</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--success);">
+          <span>✓</span> No critical flags detected
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">
+          10 conditions screened · 0 alerts surfaced · Confidence below threshold (70%) for all monitored conditions
+        </div>
+      </div>
+
+      <!-- AI Suggestion Audit -->
+      <div class="card">
+        <div class="card-title">AI Suggestion Audit</div>
+        <div style="display:flex;gap:12px;margin-bottom:12px;">
+          <div style="flex:1;text-align:center;background:var(--success-bg);border-radius:var(--radius);padding:10px;">
+            <div style="font-size:22px;font-weight:800;color:var(--success);">4</div>
+            <div style="font-size:10px;font-weight:700;color:var(--success);text-transform:uppercase;">Accepted</div>
+          </div>
+          <div style="flex:1;text-align:center;background:var(--muted-bg);border-radius:var(--radius);padding:10px;">
+            <div style="font-size:22px;font-weight:800;color:var(--text-muted);">0</div>
+            <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Dismissed</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);">4 of 4 AI suggestions accepted by nurse. All accepted suggestions will be tagged "AI Assisted" in the EMR record.</div>
+      </div>
+
+      <!-- Dismissed Fields (empty in this case) -->
+      <div class="card">
+        <div class="card-title">Dismissed Suggestions</div>
+        <div class="empty-state" style="padding:16px;">
+          <div class="empty-icon" style="font-size:20px;">—</div>
+          <p>No suggestions dismissed</p>
+        </div>
+      </div>
+
+      <!-- Nurse Sign-off -->
+      <div class="card" style="background:#f0fdf4;border-color:var(--success-border);">
+        <div class="card-title" style="color:var(--success);">🖊 Nurse Sign-off</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">
+          By submitting, I confirm all fields above are accurate. AI-suggested fields have been reviewed and accepted. This record will be submitted to the EMR under my credentials.
+        </div>
+        <div class="form-group">
+          <label>Nurse ID Confirmation</label>
+          <input type="text" value="RN-Osei-4471" style="border-color:var(--success);">
+        </div>
+        <div class="form-group">
+          <label>Additional Notes (optional)</label>
+          <textarea style="min-height:50px;border-color:var(--border);" placeholder="Any notes for the treating team…"></textarea>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:12px;">
+          <a href="intake-normal.html" class="btn btn-secondary" style="flex:1;text-align:center;">← Edit Intake</a>
+          <button class="btn btn-success" style="flex:1;font-size:14px;font-weight:800;">Submit to EMR ✓</button>
+        </div>
+        <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--text-muted);">This action is logged and irreversible. Submission time: 14:48:23</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

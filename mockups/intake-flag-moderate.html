@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake — Moderate Alert | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+</head>
+<body>
+
+<div class="screen-label">Screen 2 — Intake: Moderate Flag Alert (70–89%) &nbsp;|&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.6)">← All Screens</a></div>
+
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-icon">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">New Patient Intake</span>
+    <span class="sep">|</span>
+    <span>Bay 7</span>
+    <span class="sep">|</span>
+    <span>Arrived 14:51</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Day Shift · 07:00–19:00</span>
+    <span>RN J. Osei</span>
+  </div>
+</header>
+
+<!-- Amber alert banner -->
+<div style="background:#d97706;color:#fff;padding:8px 24px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;">
+  <span>⚠</span>
+  AI flag detected — please review the alert in the sidebar before submitting.
+  <span style="margin-left:auto;font-size:11px;font-weight:400;opacity:0.85;">Nurse must acknowledge before record is updated</span>
+</div>
+
+<div class="intake-layout">
+
+  <!-- LEFT: FORM PANEL -->
+  <section class="form-panel">
+    <div class="section-title">Patient Intake</div>
+
+    <div class="patient-info-bar">
+      <div class="patient-info-field">
+        <label>Encounter ID</label>
+        <span>ENC-2026-04823</span>
+      </div>
+      <div class="patient-info-field">
+        <label>Name</label>
+        <span>A. Ferreira</span>
+      </div>
+      <div class="patient-info-field">
+        <label>DOB / Age</label>
+        <span>1951-09-04 · 74</span>
+      </div>
+      <div class="patient-info-field">
+        <label>Sex</label>
+        <span>Female</span>
+      </div>
+      <div class="patient-info-field">
+        <label>MRN</label>
+        <span>MRN-332185</span>
+      </div>
+    </div>
+
+    <!-- Chief Complaint — highlighted because alert triggered from here -->
+    <div class="card" style="border-color:var(--warning-border);background:var(--warning-bg);">
+      <div class="card-title" style="color:#92400e;">⚠ Chief Complaint <span style="font-size:10px;font-weight:500;text-transform:none;letter-spacing:0;color:#b45309;">&nbsp;— AI flag detected from this input</span></div>
+      <div class="form-group">
+        <label>Free-text complaint (nurse transcription)</label>
+        <textarea style="border-color:var(--warning);background:#fff;">Rash spreading across her torso and arms, started about 3 hours ago after taking a new antibiotic her doctor prescribed yesterday.</textarea>
+      </div>
+      <div class="ai-parsing-indicator" style="color:var(--warning)">
+        <div class="pulse-dot" style="background:var(--warning)"></div>
+        AI parsed — possible allergic reaction detected in sidebar
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🩺 Vitals</div>
+      <div class="vitals-grid">
+        <div class="form-group">
+          <label>BP (mmHg)</label>
+          <input type="text" value="122 / 78">
+        </div>
+        <div class="form-group">
+          <label>HR (bpm)</label>
+          <input type="text" value="96">
+        </div>
+        <div class="form-group">
+          <label>SpO₂ (%)</label>
+          <input type="text" value="98">
+        </div>
+        <div class="form-group">
+          <label>RR (breaths/min)</label>
+          <input type="text" value="18">
+        </div>
+        <div class="form-group">
+          <label>Temp (°C)</label>
+          <input type="text" value="37.4">
+        </div>
+        <div class="form-group">
+          <label>GCS</label>
+          <input type="text" value="15">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Additional Context</div>
+      <div class="form-group">
+        <label>Allergies</label>
+        <input type="text" value="Penicillin (rash — documented)">
+      </div>
+      <div class="form-group">
+        <label>Current Medications</label>
+        <input type="text" value="Amoxicillin-Clavulanate 875mg (new, yesterday) — note penicillin allergy">
+      </div>
+      <div class="form-group">
+        <label>Relevant History</label>
+        <textarea style="min-height:60px">COPD (moderate), HTN. Penicillin allergy on file — prescribing MD may not have reviewed allergy list.</textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 Acuity — Nurse Assigned (ESI)</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <select style="width:auto;padding:10px 14px;font-size:15px;font-weight:700;border-color:var(--warning);">
+          <option value="">Select ESI Level</option>
+          <option value="1">ESI 1 — Resuscitation</option>
+          <option value="2" selected>ESI 2 — Emergent</option>
+          <option value="3">ESI 3 — Urgent</option>
+          <option value="4">ESI 4 — Less Urgent</option>
+          <option value="5">ESI 5 — Non-urgent</option>
+        </select>
+        <span style="font-size:12px;color:var(--text-muted)">AI does not assign ESI — nurse judgment only</span>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <a href="index.html" class="btn btn-secondary">Cancel</a>
+      <a href="intake-summary.html" class="btn btn-primary">Review & Submit →</a>
+    </div>
+  </section>
+
+  <!-- RIGHT: AI SIDEBAR with Moderate Alert -->
+  <aside class="ai-sidebar">
+    <div class="sidebar-header" style="background:#92400e;">
+      AI Triage Assistant — Flag Active
+      <div class="ai-status">
+        <div class="status-dot" style="background:#fbbf24;"></div>
+        Alert · Awaiting acknowledgment
+      </div>
+    </div>
+
+    <!-- ALERT CARD — Moderate -->
+    <div class="sidebar-section" style="background:var(--warning-bg);">
+      <div class="sidebar-section-title" style="color:#92400e;">⚠ Critical Flag Detected</div>
+
+      <div class="alert-card alert-card-warning">
+        <div class="alert-flag-name">
+          ⚠ Possible Allergic Reaction
+          <span class="confidence-badge" style="background:var(--warning)">72% confidence</span>
+        </div>
+        <div style="font-size:11px;color:#92400e;margin-bottom:6px;">
+          Condition from monitored list · Monitoring for escalation
+        </div>
+        <div class="alert-source">
+          Source text: <em>"rash spreading… 3 hours ago after taking a new antibiotic"</em>
+        </div>
+        <div style="font-size:11px;color:#92400e;margin-bottom:8px;">
+          Cross-reference: documented penicillin allergy + new amoxicillin-clavulanate prescription detected
+        </div>
+        <div class="alert-actions">
+          <button class="btn btn-sm" style="background:var(--warning);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-weight:700;padding:6px 12px;">
+            ✓ Acknowledge
+          </button>
+          <button class="btn btn-sm btn-dismiss">Dismiss</button>
+        </div>
+        <div style="margin-top:8px;font-size:10px;color:#b45309;">Dismiss requires reason — text field will appear</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--warning-border);border-radius:var(--radius);padding:10px 12px;font-size:12px;margin-top:8px;">
+        <span style="font-weight:700;color:#92400e;">Why this flag?</span><br>
+        <span style="color:var(--text-muted);">Rash + new drug onset within 3 hrs + known penicillin allergy cross-class risk. Confidence 72% — below critical urgency threshold (90%), monitoring for throat tightness or respiratory symptoms.</span>
+      </div>
+    </div>
+
+    <!-- Suggested Fields -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Suggested Structured Fields</div>
+
+      <div class="suggestion-row suggestion-accepted">
+        <div class="suggestion-body">
+          <div class="field-name">Chief Complaint Category</div>
+          <div class="field-value">Allergic Reaction / Drug Reaction</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn btn-sm" style="background:var(--success);color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">✓</button>
+        </div>
+      </div>
+
+      <div class="suggestion-row suggestion-accepted">
+        <div class="suggestion-body">
+          <div class="field-name">Onset</div>
+          <div class="field-value">Acute (3 hours)</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn btn-sm" style="background:var(--success);color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">✓</button>
+        </div>
+      </div>
+
+      <div class="suggestion-row">
+        <div class="suggestion-body">
+          <div class="field-name">Precipitating Factor</div>
+          <div class="field-value">New antibiotic initiated yesterday</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn btn-accept btn-sm">✓</button>
+          <button class="btn btn-dismiss btn-sm">✕</button>
+        </div>
+      </div>
+
+      <div class="suggestion-row">
+        <div class="suggestion-body">
+          <div class="field-name">Distribution</div>
+          <div class="field-value">Torso and arms (spreading)</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn btn-accept btn-sm">✓</button>
+          <button class="btn btn-dismiss btn-sm">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Watchlist -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Symptom Watchlist</div>
+      <div style="font-size:11px;color:var(--text-muted);background:var(--white);border-radius:var(--radius);padding:10px 12px;border:1px solid var(--border);">
+        AI will auto-escalate alert to CRITICAL if nurse enters or transcribes any of:<br>
+        <ul style="margin-top:6px;padding-left:16px;line-height:2;">
+          <li>Throat tightness / stridor</li>
+          <li>SpO₂ drop (&lt; 95%)</li>
+          <li>Hypotension (systolic &lt; 90)</li>
+          <li>Facial / tongue swelling</li>
+          <li>Wheezing / bronchospasm</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Queue Snapshot -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Queue Snapshot</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;">
+        <div style="background:#fef2f2;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#dc2626">1</div><div style="font-size:10px;color:#ef4444;font-weight:600">ESI 1</div></div>
+        <div style="background:#fff7ed;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#ea580c">4</div><div style="font-size:10px;color:#f97316;font-weight:600">ESI 2</div></div>
+        <div style="background:#fefce8;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#ca8a04">8</div><div style="font-size:10px;color:#eab308;font-weight:600">ESI 3</div></div>
+        <div style="background:#f0fdf4;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#16a34a">5</div><div style="font-size:10px;color:#22c55e;font-weight:600">ESI 4</div></div>
+        <div style="background:#eff6ff;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#2563eb">4</div><div style="font-size:10px;color:#3b82f6;font-weight:600">ESI 5</div></div>
+      </div>
+      <a href="queue-panel.html" style="display:block;text-align:center;margin-top:10px;font-size:11px;color:var(--accent);font-weight:600;text-decoration:none;">View full queue →</a>
+    </div>
+  </aside>
+</div>
+
+</body>
+</html>
