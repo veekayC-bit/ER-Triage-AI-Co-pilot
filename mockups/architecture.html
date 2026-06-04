@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ER Triage AI Co-pilot — Architecture</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+  min-height: 100vh;
+  padding: 32px 24px 48px;
+}
+
+/* ── Page Header ── */
+.page-header {
+  max-width: 1300px;
+  margin: 0 auto 32px;
+}
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #f0f6fc;
+  margin-bottom: 4px;
+}
+.page-header .subtitle {
+  font-size: 13px;
+  color: #7d8590;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.stack-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── Diagram Canvas ── */
+.diagram {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Layer ── */
+.layer {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  border-radius: 0;
+  position: relative;
+}
+
+.layer-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  text-align: center;
+  border-radius: 10px 0 0 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  line-height: 1.4;
+  gap: 8px;
+}
+
+.layer-label .layer-icon { font-size: 24px; }
+
+.layer-body {
+  padding: 20px 20px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 0 10px 10px 0;
+}
+
+/* ── Layer Colors ── */
+.layer-frontend .layer-label { background: #1c2b4a; color: #79c0ff; }
+.layer-frontend .layer-body { background: #161b22; border: 1px solid #30363d; border-left: 4px solid #2f81f7; }
+
+.layer-api .layer-label { background: #1a2a1a; color: #7ee787; }
+.layer-api .layer-body { background: #161b22; border: 1px solid #30363d; border-left: 4px solid #3fb950; }
+
+.layer-n8n .layer-label { background: #2a1f1a; color: #ffa657; }
+.layer-n8n .layer-body { background: #161b22; border: 1px solid #30363d; border-left: 4px solid #d29922; }
+
+.layer-ai .layer-label { background: #2a1a2a; color: #d2a8ff; }
+.layer-ai .layer-body { background: #161b22; border: 1px solid #30363d; border-left: 4px solid #8b949e; }
+
+.layer-data .layer-label { background: #1a2535; color: #a5d6ff; }
+.layer-data .layer-body { background: #161b22; border: 1px solid #30363d; border-left: 4px solid #58a6ff; }
+
+/* ── Arrow Connector ── */
+.arrow-connector {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  height: 40px;
+  position: relative;
+}
+
+.arrow-spacer { }
+
+.arrow-line {
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  position: relative;
+}
+
+.arrow-line::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--arrow-color), transparent);
+}
+
+.arrow-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 36px;
+  font-size: 11px;
+  color: var(--arrow-color);
+  font-weight: 600;
+}
+
+.arrow-label .step-num {
+  background: var(--arrow-color);
+  color: #0d1117;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* ── Component Boxes ── */
+.component-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.component {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 14px;
+  flex: 1;
+  min-width: 160px;
+}
+
+.component-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f0f6fc;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.component-desc {
+  font-size: 11px;
+  color: #8b949e;
+  line-height: 1.5;
+}
+
+.component-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.ctag {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.ctag-blue { background: rgba(47,129,247,0.2); color: #79c0ff; border: 1px solid rgba(47,129,247,0.3); }
+.ctag-green { background: rgba(63,185,80,0.15); color: #7ee787; border: 1px solid rgba(63,185,80,0.3); }
+.ctag-orange { background: rgba(210,153,34,0.2); color: #ffa657; border: 1px solid rgba(210,153,34,0.3); }
+.ctag-purple { background: rgba(139,97,255,0.2); color: #d2a8ff; border: 1px solid rgba(139,97,255,0.3); }
+.ctag-red { background: rgba(248,81,73,0.15); color: #ff7b72; border: 1px solid rgba(248,81,73,0.3); }
+.ctag-gray { background: rgba(139,148,158,0.15); color: #8b949e; border: 1px solid rgba(139,148,158,0.3); }
+
+.component.highlight { border-color: rgba(210,153,34,0.5); background: #1f1d17; }
+.component.highlight-ai { border-color: rgba(139,97,255,0.4); background: #1a1625; }
+.component.highlight-alert { border-color: rgba(248,81,73,0.4); background: #1c1519; }
+
+/* ── Workflow Boxes (N8N) ── */
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.workflow-box {
+  background: #1f1d17;
+  border: 1px solid rgba(210,153,34,0.35);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.workflow-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffa657;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.workflow-id {
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(210,153,34,0.25);
+  color: #d29922;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.workflow-steps {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.workflow-steps li {
+  font-size: 10px;
+  color: #7d8590;
+  padding: 2px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  line-height: 1.4;
+}
+
+.workflow-steps li::before {
+  content: '→';
+  color: #d29922;
+  font-size: 9px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── OpenAI Prompts ── */
+.prompt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.prompt-box {
+  background: #1a1625;
+  border: 1px solid rgba(139,97,255,0.3);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.prompt-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #d2a8ff;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-model {
+  font-size: 9px;
+  background: rgba(139,97,255,0.2);
+  color: #a5d6ff;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.io-block {
+  background: rgba(0,0,0,0.2);
+  border-radius: 5px;
+  padding: 7px 9px;
+  margin-top: 7px;
+  font-size: 10px;
+  color: #8b949e;
+  font-family: 'SF Mono', 'Fira Mono', monospace;
+  line-height: 1.6;
+}
+
+.io-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: #d2a8ff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+/* ── Data Stores ── */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.data-store {
+  background: #1a2030;
+  border: 1px solid rgba(88,166,255,0.25);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.data-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #a5d6ff;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.data-items {
+  list-style: none;
+  font-size: 10px;
+  color: #7d8590;
+  line-height: 2;
+}
+
+/* ── Legend ── */
+.legend {
+  max-width: 1300px;
+  margin: 28px auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.legend-box {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.legend-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #7d8590;
+  margin-bottom: 12px;
+}
+
+.flow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.flow-step .num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.flow-step .text {
+  font-size: 12px;
+  color: #8b949e;
+  line-height: 1.5;
+}
+
+.flow-step .text strong { color: #e6edf3; }
+
+/* ── Security / Non-goal callouts ── */
+.callout-row {
+  max-width: 1300px;
+  margin: 16px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.callout {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 11px;
+}
+
+.callout-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.callout-label.green { color: #3fb950; }
+.callout-label.red { color: #ff7b72; }
+.callout-label.yellow { color: #d29922; }
+
+.callout ul {
+  list-style: none;
+  line-height: 1.8;
+  color: #7d8590;
+}
+
+.callout ul li::before { margin-right: 5px; }
+.callout.green-c ul li::before { content: '✓'; color: #3fb950; }
+.callout.red-c ul li::before { content: '✕'; color: #ff7b72; }
+.callout.yellow-c ul li::before { content: '⚠'; color: #d29922; }
+
+</style>
+</head>
+<body>
+
+<!-- ── Page Header ── -->
+<div class="page-header">
+  <h1>⚕ ER Triage AI Co-pilot — System Architecture</h1>
+  <div class="subtitle">
+    <span>V1 MVP · Single-site deployment</span>
+    <span class="stack-pill">🖥 Frontend: Claude HTML/CSS/JS</span>
+    <span class="stack-pill">⚙ Backend: N8N Workflows</span>
+    <span class="stack-pill">🤖 AI: OpenAI GPT-4o</span>
+    <span class="stack-pill">🏥 EMR: Read-only (V1)</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- LAYER 1 — FRONTEND -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="diagram">
+
+<div class="layer layer-frontend">
+  <div class="layer-label">
+    <span class="layer-icon">🖥</span>
+    Frontend<br>Claude<br>HTML/CSS/JS
+  </div>
+  <div class="layer-body">
+    <div class="component-row">
+
+      <div class="component highlight">
+        <div class="component-title">📝 Intake Form</div>
+        <div class="component-desc">Chief complaint textarea (debounced 300ms trigger). Vitals entry. Allergy + medication fields. ESI selector (nurse-only).</div>
+        <div class="component-tags">
+          <span class="ctag ctag-blue">intake-normal.html</span>
+          <span class="ctag ctag-gray">fetch() on keyup</span>
+        </div>
+      </div>
+
+      <div class="component highlight-alert">
+        <div class="component-title">⚠ AI Sidebar</div>
+        <div class="component-desc">Real-time suggestion panel. Accepts structured field suggestions from N8N. Renders alert cards (amber ≥70%, red ≥90%). Accept / Dismiss per field.</div>
+        <div class="component-tags">
+          <span class="ctag ctag-orange">intake-flag-moderate.html</span>
+          <span class="ctag ctag-red">intake-flag-critical.html</span>
+        </div>
+      </div>
+
+      <div class="component">
+        <div class="component-title">✅ Intake Summary</div>
+        <div class="component-desc">Pre-submission review. Each field tagged: AI Suggested / Nurse. Nurse signs off. POST to N8N submit endpoint. Nothing enters EMR without this step.</div>
+        <div class="component-tags">
+          <span class="ctag ctag-green">intake-summary.html</span>
+          <span class="ctag ctag-gray">nurse-gated submit</span>
+        </div>
+      </div>
+
+      <div class="component">
+        <div class="component-title">📊 Queue Panel</div>
+        <div class="component-desc">Read-only acuity dashboard. Polls N8N queue endpoint every 60s. ESI 1–5 breakdown, per-patient cards, AI flag badges.</div>
+        <div class="component-tags">
+          <span class="ctag ctag-blue">queue-panel.html</span>
+          <span class="ctag ctag-gray">60s polling</span>
+        </div>
+      </div>
+
+      <div class="component">
+        <div class="component-title">⊘ Manual Mode</div>
+        <div class="component-desc">EMR offline fallback. AI sidebar hidden. Manual critical flag checklist shown. Purple state banner. Full form remains editable — zero data loss.</div>
+        <div class="component-tags">
+          <span class="ctag ctag-purple">manual-mode.html</span>
+          <span class="ctag ctag-gray">auto-detect offline</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Arrow 1 -->
+<div class="arrow-connector">
+  <div class="arrow-spacer"></div>
+  <div class="arrow-line" style="--arrow-color:#2f81f7;">
+    <div class="arrow-label">
+      <div class="step-num">1</div>
+      Nurse types chief complaint → JS debounce (300ms) → fetch() POST to N8N webhook — JSON payload: {encounter_id, complaint_text, vitals}
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- LAYER 2 — N8N WEBHOOK API -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="layer layer-api">
+  <div class="layer-label">
+    <span class="layer-icon">🔗</span>
+    N8N<br>Webhook<br>Endpoints
+  </div>
+  <div class="layer-body">
+    <div class="component-row">
+
+      <div class="component">
+        <div class="component-title">POST <code style="font-size:11px;color:#7ee787;">/parse-complaint</code></div>
+        <div class="component-desc">Triggers on every debounced keystroke. Routes to WF-1 (Parser) and WF-2 (Flag Detector) in parallel. Returns structured JSON within 800ms SLA.</div>
+        <div class="component-tags">
+          <span class="ctag ctag-green">primary endpoint</span>
+          <span class="ctag ctag-gray">SLA: &lt;800ms</span>
+        </div>
+      </div>
+
+      <div class="component">
+        <div class="component-title">POST <code style="font-size:11px;color:#7ee787;">/submit-intake</code></div>
+        <div class="component-desc">Nurse-triggered on sign-off. Payload contains only nurse-confirmed fields (accepted AI suggestions + manual entries). Routes to WF-3 (EMR write).</div>
+        <div class="component-tags">
+          <span class="ctag ctag-green">nurse-gated</span>
+          <span class="ctag ctag-red">writes EMR (V2)</span>
+        </div>
+      </div>
+
+      <div class="component">
+        <div class="component-title">GET <code style="font-size:11px;color:#7ee787;">/queue-state</code></div>
+        <div class="component-desc">Polled every 60s by Queue Panel. Routes to WF-4. Returns current ESI distribution, patient card list, per-patient AI flag summary.</div>
+        <div class="component-tags">
+          <span class="ctag ctag-green">read-only</span>
+          <span class="ctag ctag-gray">60s poll interval</span>
+        </div>
+      </div>
+
+      <div class="component">
+        <div class="component-title">GET <code style="font-size:11px;color:#7ee787;">/health</code></div>
+        <div class="component-desc">Polled by frontend every 30s to detect EMR connection status. Returns {emr_status, ai_status, latency_ms}. Failure triggers Manual Mode in UI.</div>
+        <div class="component-tags">
+          <span class="ctag ctag-green">heartbeat</span>
+          <span class="ctag ctag-gray">30s interval</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Arrow 2 -->
+<div class="arrow-connector">
+  <div class="arrow-spacer"></div>
+  <div class="arrow-line" style="--arrow-color:#3fb950;">
+    <div class="arrow-label">
+      <div class="step-num">2</div>
+      N8N webhook receives POST → validates payload → fan-out: WF-1 (parse) + WF-2 (flag detect) run in parallel → merge results → return JSON response
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- LAYER 3 — N8N WORKFLOWS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="layer layer-n8n">
+  <div class="layer-label">
+    <span class="layer-icon">⚙</span>
+    N8N<br>Workflow<br>Engine
+  </div>
+  <div class="layer-body">
+    <div class="workflow-grid">
+
+      <div class="workflow-box">
+        <div class="workflow-title">
+          <span class="workflow-id">WF-1</span>
+          Complaint Parser
+        </div>
+        <ul class="workflow-steps">
+          <li>Webhook trigger node</li>
+          <li>Validate: complaint_text not empty</li>
+          <li>Build OpenAI prompt (extraction)</li>
+          <li>OpenAI node → GPT-4o call</li>
+          <li>JSON parse structured output</li>
+          <li>Return: {category, duration, onset, symptoms[]}</li>
+        </ul>
+      </div>
+
+      <div class="workflow-box">
+        <div class="workflow-title">
+          <span class="workflow-id">WF-2</span>
+          Flag Detector
+        </div>
+        <ul class="workflow-steps">
+          <li>Receives same payload as WF-1</li>
+          <li>Build flag detection prompt (10 conditions)</li>
+          <li>OpenAI node → GPT-4o (temp 0)</li>
+          <li>IF node: confidence ≥ 70%?</li>
+          <li>IF ≥ 90% → set urgency: critical</li>
+          <li>Return: {flags[], highest_confidence}</li>
+        </ul>
+      </div>
+
+      <div class="workflow-box">
+        <div class="workflow-title">
+          <span class="workflow-id">WF-3</span>
+          Intake Submitter
+        </div>
+        <ul class="workflow-steps">
+          <li>POST /submit-intake trigger</li>
+          <li>Validate nurse_id present</li>
+          <li>Strip any non-confirmed fields</li>
+          <li>Write audit log (DB node)</li>
+          <li>EMR API write (V2 — stubbed V1)</li>
+          <li>Return: {encounter_id, status, timestamp}</li>
+        </ul>
+      </div>
+
+      <div class="workflow-box">
+        <div class="workflow-title">
+          <span class="workflow-id">WF-4</span>
+          Queue Reader
+        </div>
+        <ul class="workflow-steps">
+          <li>GET /queue-state trigger</li>
+          <li>EMR read: active encounters</li>
+          <li>DB read: AI flag summary per encounter</li>
+          <li>Compute ESI distribution</li>
+          <li>Sort by acuity + wait time</li>
+          <li>Return: {esi_counts, patients[]}</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Arrow 3 -->
+<div class="arrow-connector">
+  <div class="arrow-spacer"></div>
+  <div class="arrow-line" style="--arrow-color:#d29922;">
+    <div class="arrow-label">
+      <div class="step-num">3</div>
+      N8N OpenAI node makes API call with system prompt + complaint text → temperature 0 (flag detection) / 0.2 (extraction) → structured JSON response (max 800ms)
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- LAYER 4 — OPENAI AGENT -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="layer layer-ai">
+  <div class="layer-label">
+    <span class="layer-icon">🤖</span>
+    OpenAI<br>Agent<br>GPT-4o
+  </div>
+  <div class="layer-body">
+    <div class="prompt-grid">
+
+      <div class="prompt-box">
+        <div class="prompt-title">
+          Prompt A — Structured Extraction
+          <span class="prompt-model">GPT-4o · temp 0.2 · JSON mode</span>
+        </div>
+        <div class="io-block">
+          <div class="io-label">System</div>
+          You are a clinical NLP assistant. Extract structured fields from ER triage chief complaints. Return JSON only. Never infer beyond what is stated. If field is unclear, return null.
+        </div>
+        <div class="io-block">
+          <div class="io-label">Input</div>
+          complaint_text: "Bee sting 5 min ago, throat feels tight, tongue swelling"
+        </div>
+        <div class="io-block">
+          <div class="io-label">Output (JSON)</div>
+          { "complaint_category": "Insect sting / allergic reaction",<br>
+            "onset": "acute — 5 minutes",<br>
+            "symptoms": ["throat tightness", "tongue swelling"],<br>
+            "trigger": "bee sting" }
+        </div>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-title">
+          Prompt B — Flag Detection
+          <span class="prompt-model">GPT-4o · temp 0 · JSON mode</span>
+        </div>
+        <div class="io-block">
+          <div class="io-label">System</div>
+          You are a critical flag detector for ER triage. Assess the following 10 conditions: stroke, acute MI, anaphylaxis, sepsis, respiratory distress, suicidal ideation, major trauma, hypertensive crisis, altered mental status, anaphylactoid reaction. Return confidence 0–100 and source_text citation. Do not surface flags below 70.
+        </div>
+        <div class="io-block">
+          <div class="io-label">Input</div>
+          complaint_text + vitals (BP, HR, SpO₂, RR)
+        </div>
+        <div class="io-block">
+          <div class="io-label">Output (JSON)</div>
+          { "flags": [{ "condition": "anaphylaxis",<br>
+            "confidence": 96,<br>
+            "urgency": "critical",<br>
+            "source_text": "throat feels tight, tongue swelling" }] }
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Guardrails -->
+    <div style="background:rgba(0,0,0,0.2);border:1px solid rgba(139,97,255,0.2);border-radius:8px;padding:12px 16px;margin-top:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Confidence Gate</div>
+        <div style="font-size:11px;color:#7d8590;">Flag surfaces only if confidence ≥ 70%. Urgency banner triggers at ≥ 90%. Below 70 → silent drop.</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Rejection Rule</div>
+        <div style="font-size:11px;color:#7d8590;">If complaint_text &lt; 10 chars or ambiguous → return "Insufficient detail" — no low-confidence guess.</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Nurse Override</div>
+        <div style="font-size:11px;color:#7d8590;">Nurse-confirmed field always wins. AI never overwrites a manually accepted value.</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">EMR Safety</div>
+        <div style="font-size:11px;color:#7d8590;">AI output never touches EMR directly. All writes go through nurse sign-off on /submit-intake only.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Arrow 4 -->
+<div class="arrow-connector">
+  <div class="arrow-spacer"></div>
+  <div class="arrow-line" style="--arrow-color:#8b949e;">
+    <div class="arrow-label">
+      <div class="step-num">4</div>
+      WF-3/WF-4 read EMR for context display + queue state (V1: read-only). WF-3 writes EMR only on nurse-confirmed /submit-intake (V1: stubbed, V2: live write).
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- LAYER 5 — DATA LAYER -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="layer layer-data">
+  <div class="layer-label">
+    <span class="layer-icon">🗄</span>
+    Data<br>Layer
+  </div>
+  <div class="layer-body">
+    <div class="data-grid">
+
+      <div class="data-store">
+        <div class="data-title">🏥 EMR System</div>
+        <ul class="data-items">
+          <li>Epic / Cerner (pilot site)</li>
+          <li>V1: Read-only (patient context, queue)</li>
+          <li>V2: Write via confirmed submit</li>
+          <li>Access: REST / FHIR R4</li>
+          <li>Auth: OAuth 2.0 (SMART on FHIR)</li>
+        </ul>
+      </div>
+
+      <div class="data-store">
+        <div class="data-title">📋 N8N Database</div>
+        <ul class="data-items">
+          <li>Intake session state</li>
+          <li>AI suggestion audit log (per field)</li>
+          <li>Nurse accept / dismiss events</li>
+          <li>Alert surfaced + confidence history</li>
+          <li>Override rate metrics (for KPIs)</li>
+        </ul>
+      </div>
+
+      <div class="data-store">
+        <div class="data-title">📊 Metrics Store</div>
+        <ul class="data-items">
+          <li>Critical flag recall rate</li>
+          <li>Documentation time per intake</li>
+          <li>Alert override rate (&lt;20% target)</li>
+          <li>False positive rate (&lt;15% target)</li>
+          <li>AI latency p95 (&lt;800ms SLA)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- end .diagram -->
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- DATA FLOW LEGEND + CALLOUTS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="legend">
+
+  <div class="legend-box">
+    <div class="legend-title">Numbered Data Flow — Happy Path</div>
+
+    <div class="flow-step">
+      <div class="num" style="background:#2f81f7;color:#000;">1</div>
+      <div class="text"><strong>Nurse types</strong> chief complaint → JS debounce 300ms → <strong>POST /parse-complaint</strong> with complaint text + vitals</div>
+    </div>
+    <div class="flow-step">
+      <div class="num" style="background:#3fb950;color:#000;">2</div>
+      <div class="text">N8N receives → <strong>fans out WF-1 + WF-2 in parallel</strong> → merges structured fields + flag array → returns JSON to frontend in &lt;800ms</div>
+    </div>
+    <div class="flow-step">
+      <div class="num" style="background:#d29922;color:#000;">3</div>
+      <div class="text">WF-1/WF-2 each <strong>call OpenAI GPT-4o</strong> with domain-specific system prompt → structured JSON response (JSON mode, temp 0–0.2)</div>
+    </div>
+    <div class="flow-step">
+      <div class="num" style="background:#8b949e;color:#000;">4</div>
+      <div class="text"><strong>Sidebar updates</strong> with suggestions + alert cards. Nurse accepts / dismisses. On sign-off → <strong>POST /submit-intake</strong> → WF-3 → EMR write</div>
+    </div>
+    <div class="flow-step">
+      <div class="num" style="background:#58a6ff;color:#000;">5</div>
+      <div class="text"><strong>/health</strong> polled every 30s. EMR offline detected → frontend switches to <strong>Manual Mode</strong> silently. No data loss. Auto-reconnect on restore.</div>
+    </div>
+  </div>
+
+  <div class="legend-box">
+    <div class="legend-title">Alert Confidence Routing</div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="background:#1c1519;border:1px solid rgba(248,81,73,0.3);border-radius:6px;padding:10px 14px;">
+        <div style="font-size:11px;font-weight:700;color:#ff7b72;margin-bottom:4px;">🔴 CRITICAL · Confidence ≥ 90%</div>
+        <div style="font-size:11px;color:#7d8590;">Red pulsing alert card + urgency banner + audio indicator. Submit <strong>blocked</strong> until nurse explicitly confirms. Dismissal requires mandatory escalation note.</div>
+      </div>
+      <div style="background:#1f1c15;border:1px solid rgba(210,153,34,0.3);border-radius:6px;padding:10px 14px;">
+        <div style="font-size:11px;font-weight:700;color:#ffa657;margin-bottom:4px;">⚠ MODERATE · Confidence 70–89%</div>
+        <div style="font-size:11px;color:#7d8590;">Amber alert card in sidebar. Source text citation shown. Nurse may accept or dismiss. Dismissed alerts logged with optional free-text reason.</div>
+      </div>
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 14px;">
+        <div style="font-size:11px;font-weight:700;color:#7d8590;margin-bottom:4px;">— NO FLAG · Confidence &lt; 70%</div>
+        <div style="font-size:11px;color:#7d8590;">Silent. Flag is not surfaced. "Insufficient detail" shown if complaint too short to parse. No low-confidence guesses exposed to nurse.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── V1 Scope Callouts ── -->
+<div class="callout-row">
+
+  <div class="callout green-c">
+    <div class="callout-label green">✓ In Scope — V1 MVP</div>
+    <ul>
+      <li>Chief complaint NLP parsing</li>
+      <li>10-condition critical flag detection</li>
+      <li>Confidence-gated alert surfacing</li>
+      <li>Structured field suggestions (nurse-confirmed)</li>
+      <li>EMR read for context + queue state</li>
+      <li>Nurse sign-off gating on all EMR writes</li>
+      <li>Manual mode fallback (EMR offline)</li>
+      <li>AI suggestion audit log</li>
+    </ul>
+  </div>
+
+  <div class="callout red-c">
+    <div class="callout-label red">✕ Out of Scope — V1</div>
+    <ul>
+      <li>Autonomous ESI scoring (nurse only)</li>
+      <li>EMR write access (V2)</li>
+      <li>Vitals hardware integration</li>
+      <li>Queue optimisation / staffing</li>
+      <li>Medication / referral doc ingestion (Phase 2)</li>
+      <li>Multi-site deployment</li>
+      <li>Non-English complaint parsing</li>
+      <li>Paediatric flag threshold tuning</li>
+    </ul>
+  </div>
+
+  <div class="callout yellow-c">
+    <div class="callout-label yellow">⚠ Open Decisions</div>
+    <ul>
+      <li>EMR system at pilot site (Epic vs Cerner)</li>
+      <li>N8N Cloud vs self-hosted</li>
+      <li>OpenAI API key management + cost cap</li>
+      <li>FDA SaMD classification (legal review needed)</li>
+      <li>Translation / language barrier handling</li>
+      <li>Paediatric flag threshold values</li>
+      <li>Auth: nurse login / SSO integration</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>
