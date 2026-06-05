@@ -44,9 +44,13 @@ We believe that surfacing AI-generated critical flag alerts and structured intak
 
 ---
 
-## 4. Solution
+## 4. Solution Vision
 
-### What we are building (V1 MVP)
+### End-State Product Vision
+
+The long-term vision is an AI-powered Emergency Department Operations Copilot that assists triage nurses by identifying critical conditions, reducing documentation burden, synthesizing clinical context, and improving operational awareness while preserving clinician ownership of all medical decisions.
+
+The product will be delivered incrementally through multiple MVP stages. The workflow and capabilities described below represent the intended end-state experience, while the Product Roadmap & Capability Evolution section defines the phased delivery plan.
 
 A real-time AI assistance layer that runs alongside the existing triage workflow. The system surfaces structured suggestions and critical flag alerts in a sidebar — visible to the nurse during intake — and requires explicit nurse confirmation before anything enters the clinical record.
 
@@ -104,7 +108,174 @@ A real-time AI assistance layer that runs alongside the existing triage workflow
 
 ---
 
-## 5. Non-Goals (V1)
+## 5. MVP 1 Scope — Critical Flag Detection Assistant
+
+### Objective
+
+Validate that AI can reliably identify high-risk patient presentations from chief complaints before introducing workflow changes or documentation assistance.
+
+### Problem Solved
+
+Critical conditions may be missed or recognized late during periods of high triage volume and cognitive load. Before integrating AI into clinical workflows, the system must demonstrate that it can reliably identify clinically significant presentations.
+
+### Included Scope
+
+#### Clinical Input Processing
+
+- Free-text chief complaint ingestion
+- Real-time NLP extraction
+- Structured internal representation for model evaluation
+
+#### Data Requirements
+
+##### Objective
+
+Provide the historical clinical data required to train, validate, benchmark, and continuously evaluate critical flag detection performance before any live deployment.
+
+##### Required Data Sources
+
+MVP 1 requires access to historical de-identified triage data from one or more pilot hospitals.
+
+Required fields:
+
+- Chief complaint
+- Nurse intake notes (if available)
+- Patient demographics (age range, gender)
+- Triage acuity level (if available)
+- Vitals captured during intake (if available)
+- Escalation events
+- Final diagnosis
+- Hospital disposition outcome (admit, discharge, transfer)
+- Time-to-provider metrics (if available)
+
+##### Minimum Dataset Requirements
+
+- 5,000+ historical triage encounters
+- Minimum 500 confirmed positive cases across:
+  - Stroke
+  - Acute Myocardial Infarction (MI)
+  - Anaphylaxis
+- Representative mix of low, medium, and high acuity presentations
+- Confirmed diagnosis outcomes for ground-truth validation
+
+##### Accepted Data Delivery Formats
+
+- CSV exports
+- FHIR exports
+- HL7 feeds
+- De-identified database extracts
+
+##### Data Usage
+
+- Prompt development
+- Rule development
+- Model benchmarking
+- Recall measurement
+- Precision measurement
+- False positive analysis
+- Clinical review workflows
+- Shadow-mode evaluation
+
+##### Ground Truth Definition
+
+Ground truth will be established using:
+
+- Final diagnosis codes
+- Escalation actions
+- Clinical review panel validation
+
+Ground truth data will be used to compare AI predictions against actual clinical outcomes.
+
+##### Explicitly Not Required for MVP 1
+
+- EMR write-back integration
+- Documentation generation
+- Workflow automation
+- Triage recommendations
+- Clinical decision automation
+- Ambient audio capture
+
+#### Critical Flag Detection
+
+Initial conditions supported:
+
+- Stroke
+- Acute Myocardial Infarction (MI)
+- Anaphylaxis
+
+#### AI Outputs
+
+- Critical flag prediction
+- Confidence score
+- Evidence citation from source text
+- Audit trail for all predictions
+
+#### Validation Infrastructure
+
+- Shadow-mode deployment
+- Clinical review dashboard
+- Alert logging
+- Outcome comparison reporting
+- Recall and precision measurement
+
+### Excluded Scope
+
+- Nurse-facing alerts
+- Structured field suggestions
+- Documentation assistance
+- Intake summaries
+- Queue dashboards
+- EMR integrations
+- Translation support
+- Medication extraction
+- Referral letter processing
+- Paediatric-specific logic
+- Workflow recommendations
+
+### User Experience
+
+The AI operates in two stages: Offline Validation and Live Shadow Mode.
+
+#### Stage 1 — Offline Validation
+
+Historical triage records are analyzed and AI predictions are compared against confirmed clinical outcomes.
+
+Purpose:
+
+- Establish baseline recall
+- Establish baseline precision
+- Validate critical flag detection logic
+
+#### Stage 2 — Live Shadow Mode
+
+The system evaluates incoming triage data in parallel with existing workflows but does not surface outputs to nurses.
+
+Purpose:
+
+- Validate real-world performance
+- Measure model drift from historical validation
+- Collect clinician feedback
+
+Nurses do not see AI output.
+
+The system evaluates chief complaints in parallel with existing workflows and records:
+
+- Alerts generated
+- Confidence scores
+- Supporting evidence
+- Comparison against actual triage outcomes
+
+No workflow changes occur during MVP 1.
+
+### Success Criteria
+
+- Recall ≥ 98% on validated positive cases
+- Precision ≥ 85%
+- 500+ reviewed shadow-mode cases
+- Clinical review panel approval
+- No patient safety concerns identified
+
+### MVP 1 Non-Goals
 
 - **NOT building full triage acuity scoring.** AI never assigns an ESI score. That is the nurse's clinical judgment. The product surfaces information; it does not decide.
 - **NOT building Outlook, Epic, or Cerner write access in V1.** EMR integration in V1 is read-only for context display; writes require the nurse's explicit submit action through the existing EMR workflow.
@@ -155,11 +326,307 @@ Second pilot site onboarded. Per-facility protocol configuration required. Regul
 
 ---
 
-## 8. Open Questions
+## 8. Product Roadmap & Capability Evolution
+
+The product will be delivered incrementally to reduce clinical, regulatory, and operational risk. Each milestone provides independently measurable value and must be validated before additional capabilities are introduced.
+
+Roadmap Summary
+
+- MVP 1 → Critical Flag Detection Assistant
+- MVP 2 → Nurse Alert Copilot
+- MVP 3A → Structured Documentation Assistant
+- MVP 3B → Ambient Documentation Assistant
+- MVP 4 → Operational Awareness Dashboard
+- V2 → Clinical Context Expansion
+- V3 → Emergency Department Operations Copilot
+
+### MVP 1 — Critical Flag Detection Assistant
+
+**Goal:** Validate that AI can reliably identify high-risk patient presentations from chief complaints.
+
+#### Scope
+
+- Free-text chief complaint ingestion
+- Detection of:
+  - Stroke
+  - Acute MI
+  - Anaphylaxis
+- Confidence scoring
+- Evidence citation
+- Audit logging
+- Shadow-mode deployment
+- Clinical review dashboard
+
+#### Data Prerequisites
+
+- Access to de-identified historical triage records
+- Confirmed diagnosis outcomes
+- Minimum 5,000 encounters
+- Representative positive cases for Stroke, MI, and Anaphylaxis
+- Clinical review panel for ground-truth verification
+
+#### Key Question
+
+Can AI reliably detect clinically significant presentations from chief complaints?
+
+#### Exit Criteria
+
+- Recall ≥ 98%
+- Precision ≥ 85%
+- 500+ validated cases
+- Clinical review approval
+
+### MVP 2 — Nurse Alert Copilot
+
+**Goal:** Introduce explainable AI alerts into the nurse workflow.
+
+#### Added Capabilities
+
+Everything in MVP 1 plus:
+
+- Real-time alert sidebar
+- Nurse alert acknowledgement workflow
+- Alert dismissal reasons
+- Audit trail of nurse interactions
+- Urgency indicators for high-confidence alerts
+
+#### Expanded Clinical Coverage
+
+Adds:
+
+- Sepsis
+- Respiratory Distress
+- Suicidal Ideation
+- Major Trauma
+- Hypertensive Crisis
+- Altered Mental Status
+- Anaphylactoid Reaction
+
+#### Key Question
+
+Will nurses trust and appropriately act on AI-generated alerts?
+
+#### Exit Criteria
+
+- Alert override rate < 30%
+- Nurse satisfaction ≥ 4.0 / 5.0
+- No increase in triage completion time
+- No safety incidents attributable to the system
+
+### MVP 3A — Structured Documentation Assistant
+
+**Goal:** Reduce triage documentation burden through AI-assisted structured data extraction while preserving nurse ownership.
+
+#### Objective
+
+Automatically extract structured clinical information from nurse-entered text and pre-populate documentation fields for review.
+
+#### Workflow
+
+Nurse Types Chief Complaint
+↓
+Clinical Extraction Engine
+↓
+Structured Field Suggestions
+↓
+Documentation Pre-Population
+↓
+Nurse Review & Approval
+
+#### Added Capabilities
+
+Everything in MVP 2 plus:
+
+- Structured field suggestions
+- Symptom extraction
+- Duration extraction
+- Onset extraction
+- Context extraction
+- Documentation pre-population
+- Nurse review and approval workflow
+
+#### Example
+
+Input:
+
+"Patient reports chest tightness and left arm pain that started 20 minutes ago while resting at home."
+
+AI Extracts:
+
+- Chief Complaint: Chest Pain
+- Symptom: Left Arm Pain
+- Duration: 20 Minutes
+- Onset: Acute
+- Context: At Rest
+
+Pre-Populated Form:
+
+- Chief Complaint: Chest Pain
+- Symptoms: Left Arm Pain
+- Duration: 20 Minutes
+- Onset: Acute
+- Context: At Rest
+
+Status: AI Suggested — Nurse Review Required
+
+#### Key Question
+
+Can AI reduce documentation effort through structured extraction while maintaining clinical accuracy?
+
+#### Exit Criteria
+
+- Documentation time reduced by 20%
+- Structured extraction accuracy > 90%
+- Suggestion acceptance rate > 60%
+
+### MVP 3B — Ambient Documentation Assistant
+
+**Goal:** Capture nurse-patient conversations in real time and convert them into structured clinical documentation.
+
+#### Objective
+
+Generate transcripts, extract clinical information, and pre-populate documentation with minimal manual typing.
+
+#### Workflow
+
+Nurse + Patient Conversation
+↓
+Speech-to-Text
+↓
+Clinical Extraction Engine
+↓
+Structured Documentation
+↓
+Nurse Review & Approval
+
+#### Added Capabilities
+
+Everything in MVP 3A plus:
+
+- Real-time speech-to-text
+- Speaker identification (nurse vs patient)
+- Timestamped transcript generation
+- Conversation-to-documentation extraction
+- Intake summary generation
+- Transcript review and correction workflow
+
+#### Example
+
+Conversation:
+
+Nurse: "What brings you in today?"
+
+Patient: "My chest feels tight and the pain is going down my left arm."
+
+Nurse: "When did this start?"
+
+Patient: "About 20 minutes ago."
+
+AI Extracts:
+
+- Chief Complaint: Chest Pain
+- Symptom: Left Arm Pain
+- Duration: 20 Minutes
+- Onset: Acute
+
+Generated Intake Summary:
+
+- Chief Complaint: Chest Pain
+- Associated Symptoms: Left Arm Pain
+- Duration: 20 Minutes
+- Potential Concern: Acute MI
+- Nurse Review: Pending Approval
+
+#### Additional Requirements
+
+- HIPAA-compliant audio storage
+- Audio retention policy
+- Medical terminology recognition
+- Background noise handling
+- Audio consent workflow
+
+#### Key Question
+
+Can ambient documentation significantly reduce documentation burden while maintaining accuracy and clinician trust?
+
+#### Exit Criteria
+
+- Speech recognition accuracy > 95%
+- Medical terminology accuracy > 90%
+- End-to-end latency < 2 seconds
+- Documentation time reduced by 40%
+- Nurse satisfaction ≥ 4.0 / 5.0
+
+### MVP 4 — Operational Awareness Dashboard
+
+**Goal:** Improve situational awareness for triage and charge nurses.
+
+#### Added Capabilities
+
+Everything in MVP 3A and MVP 3B plus:
+
+- Queue distribution dashboard
+- Waiting room acuity visualization
+- Shift-level operational metrics
+- Read-only operational monitoring dashboard
+
+#### Explicitly Excluded
+
+- Queue prioritization
+- Staffing recommendations
+- Automated escalation
+- Autonomous workflow decisions
+
+#### Key Question
+
+Does operational visibility improve awareness during peak-volume periods?
+
+#### Exit Criteria
+
+- Active usage by triage leadership
+- Positive operational feedback from pilot site
+
+### V2 — Clinical Context Expansion
+
+**Goal:** Expand the quality and breadth of clinical context available to the AI system.
+
+#### Added Capabilities
+
+- Referral letter ingestion
+- Medication list extraction
+- OCR document processing
+- Translation support
+- Multi-language intake assistance
+- EMR read integrations
+- Paediatric-specific flag logic
+- Additional critical condition coverage
+
+### V3 — Emergency Department Operations Copilot
+
+**Goal:** Transform from patient-level assistance to department-level operational intelligence.
+
+#### Added Capabilities
+
+- Queue state reasoning
+- Escalation coordination recommendations
+- Waiting room monitoring
+- Risk trend identification
+- Operational bottleneck detection
+- Multi-site deployment support
+- Cross-site benchmarking and analytics
+
+### Long-Term Vision
+
+An AI-powered Emergency Department Operations Copilot that continuously assists triage nurses by identifying critical conditions, reducing documentation burden, synthesizing clinical context, and improving situational awareness while preserving clinician ownership of all medical decisions.
+
+---
+
+## 9. Open Questions
 
 | Question | Owner | Due |
 |---|---|---|
 | What is the baseline intake documentation time and flag miss rate at the pilot site? | Clinical Partnerships | Before Phase 1 build |
+| What historical triage dataset is available for model training and validation (volume, fields, diagnosis outcomes)? | Clinical Partnerships | Before MVP 1 build |
 | Does the intended use statement trigger FDA SaMD Class I or Class II classification? | Legal / Regulatory Counsel | Before Phase 2 sign-off |
 | How are paediatric flag thresholds different from adult norms? | Clinical Advisory Board | Before Phase 0 shadow mode |
 | What is the translation / language barrier handling strategy for non-English chief complaints? | Engineering | Before Phase 1 launch |
