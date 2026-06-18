@@ -15,7 +15,8 @@
 | 3 | RAG & Context Systems | ✅ Complete |
 | 4 | Agentic Architecture | 🔄 In Progress |
 | 5 | Enterprise AI Systems | ⏳ Not Started |
-| 6 | Portfolio + Resume + Public Presence | ⏳ Not Started |
+| 6 | Patient Context Intelligence | ⏳ Not Started |
+| 7 | Portfolio + Resume + Public Presence | ⏳ Not Started |
 
 ---
 
@@ -230,15 +231,122 @@ Hash name and MRN before writing to Supabase. Reversible for authorized queries.
 
 ---
 
-## Phase 6 — Portfolio + Resume + Public Presence
+### P5-6: Audio-to-Text Intake Capture
+**Status:** ⏳ Not started  
+**Effort:** ~3-4 hours  
+**Dependency:** None (parallel to other P5 items)
+
+**What:** Replace the complaint text field with a voice capture button. Nurse speaks the patient complaint; it transcribes in real time and populates the complaint_text field before WF5 is called. Vitals can remain typed (numeric entry is faster than dictating numbers).
+
+**Why:** Typing while a patient is distressed is slow and error-prone. Voice capture matches how nurses already communicate in triage — verbal handoffs, verbal assessments. Reduces intake time and captures richer complaint language (patient's own words, affect, context) vs. abbreviated typed notes.
+
+**Implementation approach:**
+- Browser-native: Web Speech API (no API cost, works offline, limited browser support — Chrome/Edge only)
+- Preferred: OpenAI Whisper API (`/audio/transcriptions` endpoint) via a thin proxy or direct browser call with the OpenAI key scoped to audio only. Handles accents, medical terminology, background noise better than Web Speech.
+- UX: microphone icon button → recording indicator → live transcript appears in complaint_text → nurse reviews and edits before submit
+
+**Scope boundary:** Transcription only. Do not attempt to auto-submit on speech end — nurse must review the transcript before analysis fires.
+
+**Outcome required to close:**
+- Voice complaint → accurate transcript in complaint_text field ✅
+- Medical terms transcribed correctly (e.g., "diaphoresis," "FAST positive," "dyspnea") ✅
+- Nurse can edit transcript before triggering WF5 ✅
+- Fallback: text input still works if mic is unavailable or denied ✅
+- No vitals auto-fill from voice — numbers typed manually ✅
+
+---
+
+## Phase 6 — Patient Context Intelligence
+
+This phase adds longitudinal patient awareness to triage assessments. The system moves from reacting to the current complaint in isolation to understanding the patient's history — prior ER visits from our own system, and full medical history from external EHR systems. Both capabilities directly improve the relevance and safety of AI-generated triage output.
+
+---
+
+### P6-1: Prior Visit History from Internal Supabase
+**Status:** ⏳ Not started  
+**Effort:** ~4-6 hours  
+**Dependency:** P4-4 PII scope resolved (MRN must be available as a lookup key, but not stored as PII — use hashed MRN)
+
+**What:** Before generating the triage assessment, query the `encounters` table for prior visits by the same patient (matched by hashed MRN). Inject a structured visit summary into the WF5 prompt context: last visit date, ESI level at last visit, primary flag, disposition, and nurse action taken.
+
+**Why it matters clinically:** A patient presenting with chest pain who was discharged ESI 3 two weeks ago for the same complaint is a different risk profile from a first-time presenter. A patient with three prior ESI 2 sepsis flags needs aggressive early treatment. Without history, the AI sees every visit as a first encounter — the same blind spot as a walk-in urgent care with no records.
+
+**Architecture:**
+- New N8N node in WF5 (before Quick Classify): `Lookup Prior Visits` → Supabase REST `GET /encounters?patient_mrn_hash=eq.{hash}&order=created_at.desc&limit=3`
+- Output: last 3 visits as structured JSON, injected into Quick Classify and Build Clinical Brief user prompt
+- If no prior visits: field omitted from prompt (no hallucination risk from empty context)
+
+**Prompt injection format:**
+```
+Prior visits (last 3):
+- 2026-05-28: ESI 2 / Sepsis / immediate_bed / accepted
+- 2026-04-10: ESI 3 / Chest Pain / urgent_bed / edited
+```
+
+**Outcome required to close:**
+- WF5 injects prior visits for returning patient ✅
+- Build Clinical Brief references prior history when relevant ("patient had prior ESI 2 sepsis presentation 3 weeks ago — monitor for recurrence") ✅
+- First-time patients: no hallucinated history, no prompt injection ✅
+- History lookup adds < 200ms latency (single indexed Supabase query) ✅
+- MRN stored as SHA-256 hash only — not plaintext ✅
+
+**HHH impact:** Directly improves Helpful (more contextually accurate assessments). Reduces Harmless risk (prior high-acuity presentations increase current-visit ESI floor — catching under-triage for repeat critical patients).
+
+---
+
+### P6-2: External EHR Integration (FHIR R4)
+**Status:** ⏳ Not started  
+**Effort:** ~2-3 weeks (includes EHR sandbox access)  
+**Dependency:** P6-1 live (establishes the pattern for context injection)
+
+**What:** Connect to an external EHR system via HL7 FHIR R4 API to pull the patient's full clinical record at intake time — active medications, known allergies, active diagnoses (conditions), and most recent labs. Inject as structured context into WF5 before triage classification.
+
+**Why it matters:** Current system sees only the presenting complaint and vitals. The EHR layer adds:
+- **Medications:** A patient on warfarin with head trauma is ESI 1, not ESI 2. A patient on metformin with altered mental status needs glucose checked first.
+- **Allergies:** If Build Clinical Brief recommends aspirin for chest pain but patient is allergic, the AI is giving a harmful recommendation.
+- **Active diagnoses:** Chronic CHF patient presenting with dyspnea has a different workup than a healthy 25-year-old with the same complaint.
+- **Recent labs:** Troponin from 6 hours ago at another facility changes everything for a chest pain presentation.
+
+**Integration target (portfolio):** SMART on FHIR sandbox (Epic FHIR R4 sandbox or HAPI FHIR public test server). Does not require production EHR access for a portfolio build — sandbox gives real API behavior.
+
+**FHIR resources to pull:**
+- `Patient/{id}` — demographics confirmation
+- `MedicationRequest?patient={id}&status=active` — current medications
+- `AllergyIntolerance?patient={id}` — allergies and intolerances
+- `Condition?patient={id}&clinical-status=active` — active diagnoses
+- `Observation?patient={id}&category=laboratory&_sort=-date&_count=5` — 5 most recent labs
+
+**Architecture:**
+- New WF6: `Fetch EHR Context` — triggered by WF5 after patient MRN lookup. Calls FHIR endpoints, normalizes responses into a structured summary, returns to WF5.
+- WF5 injects EHR summary into Build Clinical Brief prompt alongside RAG guidelines.
+- Allergy guard: separate prompt instruction — "If recommended treatment conflicts with known allergy, flag it explicitly in clinical_notes with ALLERGY CONFLICT: [drug] — [allergy]."
+
+**Scope boundary for portfolio build:**
+- Read-only. No write-back to EHR.
+- Medications, allergies, conditions, recent labs only. No imaging, no full clinical notes.
+- FHIR sandbox data — not production patient records.
+
+**Outcome required to close:**
+- FHIR patient lookup by MRN → returns active medications, allergies, conditions, recent labs ✅
+- WF5 injects EHR context into Build Clinical Brief prompt ✅
+- Allergy conflict detected and surfaced in clinical_notes output ✅
+- Medication interaction awareness changes recommended actions where relevant ✅
+- Graceful degradation: if FHIR call fails or times out, WF5 proceeds without EHR context (no blocking) ✅
+- EHR data not stored in Supabase — in-flight only, cleared after encounter response ✅
+
+**HHH impact:** Major Helpful uplift — assessments become clinically complete, not just complaint-reactive. Direct Harmless impact — allergy conflict detection prevents AI-generated harmful recommendations.
+
+---
+
+## Phase 7 — Portfolio + Resume + Public Presence
 
 | Item | Status | Notes |
 |---|---|---|
-| GitHub README + architecture diagram | ⏳ | Update after Phase 5 complete |
+| GitHub README + architecture diagram | ⏳ | Update after Phase 6 complete; diagram must reflect audio capture, prior history, and FHIR layers |
 | Live demo link | ⏳ | Requires hosting or recorded demo video |
-| Case study write-up | ⏳ | RAG-before-routing decision + token optimization = strong AI PM story |
-| EB1 content — Agentic AI in ER Triage | ⏳ | Thought leadership article post-demo |
-| Resume update — ER Triage project | ⏳ | Phase 4 Agentic cert claimable after May 30, 2026 (done) |
+| Case study write-up | ⏳ | RAG-before-routing decision + FHIR integration + token optimization = 3 strong AI PM stories |
+| EB1 content — Agentic AI in ER Triage | ⏳ | FHIR + prior history layer is the differentiator vs. generic AI triage — strongest EB1 angle |
+| Resume update — ER Triage project | ⏳ | Phase 4 Agentic cert claimable (done); FHIR integration claimable after P6-2 ships |
 
 ---
 
@@ -249,15 +357,18 @@ Items ordered by dependency and HHH criticality:
 | # | Item | Phase | Blocks | HHH Gap Closed | Effort |
 |---|---|---|---|---|---|
 | 1 | R4-1: Stroke ESI 1 calibration | 4 | Nothing | Helpful (ESI) · Harmless (disposition) | 30 min |
-| 2 | R4-4: PII scope — remove name/MRN from upsert | 4 | Shadow mode | Harmless (PII) | 15 min |
+| 2 | R4-4: PII scope — remove name/MRN from upsert | 4 | Shadow mode · P6-1 MRN hashing | Harmless (PII) | 15 min |
 | 3 | R4-2: Stroke RAG source fix (expand stroke docs) | 4 | Live eval re-run | Helpful (recall ≥ 98%) · Honest (source) | 45 min |
 | 4 | R4-3: Consistency test | 4 | Honest Q3 close | Honest (consistency) | 20 min |
 | 5 | P5-1: Observability dashboard | 5 | Honest Q4 close | Honest (auditability) | 2-3 hr |
 | 6 | P5-2: Nurse override audit | 5 | Harmless audit close | Harmless (override log) | 1 hr |
 | 7 | P5-4: Validator agent | 5 | Agentic demo artifact | — | 3-4 hr |
-| 8 | P5-3: Multi-turn interaction | 5 | Maven course deliverable | — | ~1 wk |
-| 9 | P5-5: Queue intelligence | 5 | Polish | — | 2 hr |
-| 10 | Phase 6: Portfolio wrap-up | 6 | Public demo ready | — | 1-2 days |
+| 8 | P5-6: Audio-to-text intake capture | 5 | Faster intake UX | — | 3-4 hr |
+| 9 | P5-3: Multi-turn interaction | 5 | Maven course deliverable | — | ~1 wk |
+| 10 | P5-5: Queue intelligence | 5 | Polish | — | 2 hr |
+| 11 | P6-1: Prior visit history (internal Supabase) | 6 | Context-aware triage | Helpful (longitudinal context) | 4-6 hr |
+| 12 | P6-2: External EHR integration (FHIR R4) | 6 | Full clinical picture · allergy guard | Helpful · Harmless (allergy conflict) | 2-3 wk |
+| 13 | Phase 7: Portfolio wrap-up | 7 | Public demo ready | — | 1-2 days |
 
 ---
 
