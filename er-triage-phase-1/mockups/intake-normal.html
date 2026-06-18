@@ -267,6 +267,64 @@
 </div>
 
 <script>
+// ── Guardrail: client-side injection detection ────────────────────────────────
+// Detects prompt injection and jailbreak patterns before the API call.
+// Content safety (hate, violence, sexual) is handled server-side in WF5.
+const INJECTION_PATTERNS = [
+  /ignore\s+(all\s+)?(previous|prior|above|system)\s+(instructions?|prompts?|rules?|context)/i,
+  /forget\s+(all\s+)?(previous|prior|above)\s+(instructions?|context|rules?)/i,
+  /you\s+are\s+now\s+(a\s+|an\s+)?(?:DAN|GPT|AI\s+without|new\s+AI|unrestricted)/i,
+  /act\s+as\s+(?:a\s+|an\s+)?(?:DAN|GPT|AI\s+without|unrestricted)/i,
+  /pretend\s+(?:you\s+are|to\s+be)\s+(?:a\s+|an\s+)?(?:AI|assistant|GPT|bot)/i,
+  /jailbreak|do\s+anything\s+now|DAN\s+mode/i,
+  /<\|im_end\|>|<\|im_start\|>|\[INST\]|\[\/INST\]/i,
+  /^(system|assistant)\s*:/im
+];
+
+function detectInjection(text) {
+  return INJECTION_PATTERNS.some(p => p.test(text));
+}
+
+function renderGuardrailBlock(message) {
+  ["triage-assessment-content","flag-screening-content","clinical-actions-content",
+   "clinical-context-content","structured-fields-list"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '';
+  });
+  const note = document.getElementById("ai-reasoning-note");
+  if (note) note.textContent = '';
+
+  const el = document.getElementById("triage-assessment-content");
+  if (el) {
+    el.innerHTML = `<div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:6px;padding:14px 14px 12px;margin:2px 0;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="font-size:15px;">&#9888;</span>
+        <span style="font-size:12px;font-weight:700;color:#92400e;letter-spacing:0.2px;">Input Could Not Be Processed</span>
+      </div>
+      <div style="font-size:12px;color:#78350f;line-height:1.6;">${message}</div>
+      <div style="margin-top:10px;font-size:11px;color:#92400e;opacity:0.75;border-top:1px solid #fcd34d;padding-top:8px;">Clear the complaint field and enter a clinical description to continue.</div>
+    </div>`;
+  }
+}
+
+function clearGuardrailBlock() {
+  const el = document.getElementById("triage-assessment-content");
+  if (el && el.querySelector('[style*="fef3c7"]')) {
+    el.innerHTML = '<div class="empty-state"><p>Waiting for AI analysis…</p></div>';
+  }
+}
+
+async function logGuardrailBlock(layer, reason) {
+  try {
+    const encId = document.getElementById("encounter-id").textContent;
+    await db.from("guardrail_blocks").insert({
+      encounter_id: encId,
+      block_layer:  layer,
+      reason:       reason || null
+    });
+  } catch(_) {}
+}
+
 const PARSE_URL       = "https://veekayc.app.n8n.cloud/webhook/parse-complaint";
 const ORCHESTRATE_URL = "https://veekayc.app.n8n.cloud/webhook/orchestrate-triage";
 
@@ -621,6 +679,15 @@ async function analyze() {
   const complaintText = $("complaint-text").value.trim();
   if (!complaintText) return;
 
+  // Layer 1 — client-side injection guard (fast, no API call)
+  if (detectInjection(complaintText)) {
+    renderGuardrailBlock("Please enter a clinical description of the patient's presenting symptoms. Instructions or system commands cannot be processed.");
+    setStatus("warn", "Input rejected");
+    logGuardrailBlock("client_injection", "Injection pattern detected by client-side filter");
+    return;
+  }
+
+  clearGuardrailBlock();
   setStatus("busy", "Analyzing…");
   const start = performance.now();
   const vitals = collectVitals();
@@ -640,8 +707,16 @@ async function analyze() {
     if (!orchRes.ok)  throw new Error(`Orchestrator HTTP ${orchRes.status}`);
 
     const [parseData, wf5] = await Promise.all([parseRes.json(), orchRes.json()]);
-    const latency = ((performance.now() - start) / 1000).toFixed(1);
 
+    // Layer 2 — server-side content guardrail block response from WF5
+    if (wf5.blocked === true) {
+      renderGuardrailBlock(wf5.message || "The complaint text could not be processed. Please enter a clinical description of the patient's presenting symptoms.");
+      setStatus("warn", "Input blocked");
+      logGuardrailBlock("llm_content", null);
+      return;
+    }
+
+    const latency = ((performance.now() - start) / 1000).toFixed(1);
     const structured = parseData.structured || {};
 
     renderStructuredFields(structured);
@@ -697,6 +772,11 @@ function clearManualMode() {
   document.querySelector(".ai-sidebar").style.borderRight = "";
   $("flag-banner").innerHTML = "";
 }
+
+$("complaint-text").addEventListener("input", () => {
+  // Clear guardrail warning as nurse begins editing — let them re-enter without stale state
+  clearGuardrailBlock();
+});
 
 $("complaint-text").addEventListener("blur", () => {
   if ($("complaint-text").value.trim()) analyze();
