@@ -1,0 +1,483 @@
+{
+  "name": "ER Triage: Orchestrator Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "orchestrate-triage",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "wf5-001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ],
+      "webhookId": "orchestrate-triage"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { model: 'gpt-4o', temperature: 0, response_format: { type: 'json_object' }, messages: [ { role: 'system', content: 'You are an ER triage classifier. Given a patient complaint and vitals, output JSON only.\\n\\nOutput this exact schema:\\n{\\n  \"esi_level\": <integer 1-5>,\\n  \"acuity\": <\"critical\" | \"high\" | \"medium\" | \"low\">,\\n  \"primary_flag\": <string — condition name or \"none\">,\\n  \"complaint_summary\": <string — 10-15 words max>\\n}\\n\\nApply these criteria in order — first match wins:\\n\\nESI 1 — Immediate life-saving intervention required. ANY of:\\n  unresponsive, apneic, pulseless, SBP < 80, SpO2 < 85%, GCS <= 8,\\n  uncontrolled hemorrhage, anaphylaxis with stridor or airway compromise,\\n  suspected STEMI: chest pain with ANY of: diaphoresis (sweating, cold sweat, clamminess), jaw/arm/shoulder/back radiation, nitrate-unresponsive, confirmed ST elevation — if cardiac origin is possible, ALWAYS classify ESI 1. Do not downgrade because vitals appear stable.\\n\\nESI 2 — Emergent, should not wait. ANY of:\\n  acute stroke: facial droop OR arm weakness OR slurred speech (FAST positive)\\n  sepsis: HR > 90 + Temp > 38.3C or < 36C + suspected infection source\\n  septic shock: SBP < 90 + infection source\\n  active seizure\\n  SpO2 < 90%\\n  BP >= 180/120 with headache, vision change, or chest pain\\n  HR > 150 or < 40\\n  GCS 9-13 or altered mental status\\n  suicidal ideation with plan or means\\n  anaphylaxis: hives + throat tightening or BP drop > 30%\\n  PE suspicion: sudden dyspnea + pleuritic chest pain + HR > 100\\n  glucose < 60 or > 400 with symptoms\\n\\nESI 3 — Urgent, stable, 2 or more resources needed. ANY of:\\n  SpO2 91-94%, moderate pain 4-7/10, vomiting with dehydration,\\n  laceration needing sutures, UTI with fever, moderate trauma,\\n  stable vitals requiring labs + imaging + IV\\n\\nESI 4 — Non-urgent, one resource needed:\\n  all vitals normal, mild complaint, single test or treatment needed\\n\\nESI 5 — No resources needed:\\n  stable, prescription refill, wound check, follow-up visit\\n\\nAcuity mapping: ESI 1 = critical, ESI 2 = high, ESI 3 = medium, ESI 4-5 = low.' }, { role: 'user', content: 'Complaint: ' + $json.body.complaint_text + '\\nBP: ' + ($json.body.bp || 'NR') + ' HR: ' + ($json.body.hr || 'NR') + ' SpO2: ' + ($json.body.spo2 || 'NR') + ' Temp: ' + ($json.body.temp || 'NR') + ' RR: ' + ($json.body.rr || 'NR') } ] } }}",
+        "options": {}
+      },
+      "id": "wf5-002",
+      "name": "Quick Classify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2lPRNHpRQH3SQk51",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.all()[0].json.choices[0].message.content;\nlet c;\ntry { c = JSON.parse(raw); } catch(e) { c = { esi_level: 3, acuity: 'medium', primary_flag: 'parse_error', complaint_summary: 'parse failed' }; }\nconst esi = Number(c.esi_level) || 3;\nconst tier = esi <= 2 ? 'critical' : esi === 3 ? 'urgent' : 'low';\nreturn [{ json: { tier: tier, esi_level: esi, acuity: String(c.acuity || 'medium'), primary_flag: String(c.primary_flag || 'none'), complaint_summary: String(c.complaint_summary || '') } }];"
+      },
+      "id": "wf5-003",
+      "name": "Extract and Route",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.tier }}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "critical",
+              "output": 0
+            },
+            {
+              "value2": "urgent",
+              "output": 1
+            },
+            {
+              "value2": "low",
+              "output": 2
+            }
+          ]
+        },
+        "fallbackOutput": 1
+      },
+      "id": "wf5-004",
+      "name": "Route by Tier",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 2,
+      "position": [
+        720,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { model: 'text-embedding-ada-002', input: $('Webhook').item.json.body.complaint_text + ' ' + $('Extract and Route').item.json.primary_flag + ' ' + $('Extract and Route').item.json.complaint_summary } }}",
+        "options": {}
+      },
+      "id": "wf5-005",
+      "name": "Embed Query Critical",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        100
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2lPRNHpRQH3SQk51",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://er-triage-guidelines-94j5jto.svc.aped-4627-b74a.pinecone.io/query",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "pcsk_6j6mhc_7y2psrmzmy1Cf5ERBxEtmuSuihEFBCcYQWKBT7CUaCnQSJbzLWv4r7UL2CqCBWM"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { vector: $json.data[0].embedding, topK: 4, includeMetadata: true } }}",
+        "options": {}
+      },
+      "id": "wf5-006",
+      "name": "Query Pinecone Critical",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { model: 'gpt-4o', temperature: 0, response_format: { type: 'json_object' }, messages: [ { role: 'system', content: 'You are an ER triage clinical decision support system. A critical or high-acuity patient has arrived. Using the patient presentation and retrieved clinical guidelines, produce a structured clinical brief.\\n\\nOutput JSON only — this exact schema:\\n{\\n  \"esi_level\": <integer 1-2>,\\n  \"acuity\": <\"critical\"|\"high\">,\\n  \"primary_flag\": <string>,\\n  \"immediate_actions\": [<ordered action strings, most urgent first>],\\n  \"clinical_protocol\": <string — 2-3 sentences summarising the relevant protocol>,\\n  \"time_targets\": <string — key timing requirements e.g. ECG within 10 min>,\\n  \"disposition\": <\"resuscitation_room\"|\"immediate_bed\"|\"monitored_bed\">,\\n  \"retrieved_guidelines\": [<guideline title strings used>],\\n  \"confidence\": <\"high\"|\"medium\"|\"low\">\\n}' }, { role: 'user', content: 'Patient complaint: ' + $('Webhook').item.json.body.complaint_text + '\\nVitals — BP: ' + ($('Webhook').item.json.body.bp || 'NR') + ' HR: ' + ($('Webhook').item.json.body.hr || 'NR') + ' SpO2: ' + ($('Webhook').item.json.body.spo2 || 'NR') + ' Temp: ' + ($('Webhook').item.json.body.temp || 'NR') + ' RR: ' + ($('Webhook').item.json.body.rr || 'NR') + '\\nInitial classification: ESI ' + $('Extract and Route').item.json.esi_level + ' — ' + $('Extract and Route').item.json.primary_flag + '\\n\\nRetrieved clinical guidelines:\\n' + ($json.matches || []).filter(m => m.score > 0.3).map(m => '[' + (m.metadata.title || m.id) + '] ' + (m.metadata.text || '').slice(0, 350)).join('\\n\\n') } ] } }}",
+        "options": {}
+      },
+      "id": "wf5-007",
+      "name": "Build Clinical Brief",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        100
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2lPRNHpRQH3SQk51",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.choices[0].message.content ? JSON.parse($json.choices[0].message.content) : $json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "wf5-008",
+      "name": "Respond Critical",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { model: 'text-embedding-ada-002', input: $('Webhook').item.json.body.complaint_text + ' ' + $('Extract and Route').item.json.primary_flag } }}",
+        "options": {}
+      },
+      "id": "wf5-009",
+      "name": "Embed Query Urgent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2lPRNHpRQH3SQk51",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://er-triage-guidelines-94j5jto.svc.aped-4627-b74a.pinecone.io/query",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "pcsk_6j6mhc_7y2psrmzmy1Cf5ERBxEtmuSuihEFBCcYQWKBT7CUaCnQSJbzLWv4r7UL2CqCBWM"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { vector: $json.data[0].embedding, topK: 2, includeMetadata: true } }}",
+        "options": {}
+      },
+      "id": "wf5-011",
+      "name": "Query Pinecone Urgent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { model: 'gpt-4o', temperature: 0, response_format: { type: 'json_object' }, messages: [ { role: 'system', content: 'You are an ER triage decision support system. An urgent (ESI 3) patient has arrived — stable vitals but requires prompt evaluation. Using the patient presentation and retrieved clinical guidelines, output a focused triage summary.\\n\\nOutput JSON only — this exact schema:\\n{\\n  \"esi_level\": 3,\\n  \"acuity\": \"medium\",\\n  \"primary_flag\": <string or \"none\">,\\n  \"recommended_actions\": [<ordered action strings>],\\n  \"clinical_notes\": <string — 1-2 sentences on key assessment priorities>,\\n  \"disposition\": <\"urgent_bed\"|\"waiting_room_monitored\">,\\n  \"retrieved_guidelines\": [<guideline title strings used>],\\n  \"confidence\": <\"high\"|\"medium\"|\"low\">\\n}' }, { role: 'user', content: 'Patient complaint: ' + $('Webhook').item.json.body.complaint_text + '\\nVitals — BP: ' + ($('Webhook').item.json.body.bp || 'NR') + ' HR: ' + ($('Webhook').item.json.body.hr || 'NR') + ' SpO2: ' + ($('Webhook').item.json.body.spo2 || 'NR') + ' Temp: ' + ($('Webhook').item.json.body.temp || 'NR') + ' RR: ' + ($('Webhook').item.json.body.rr || 'NR') + '\\nInitial classification: ESI ' + $('Extract and Route').item.json.esi_level + ' — ' + $('Extract and Route').item.json.primary_flag + '\\n\\nRetrieved clinical guidelines:\\n' + ($json.matches || []).filter(m => m.score > 0.3).map(m => '[' + (m.metadata.title || m.id) + '] ' + (m.metadata.text || '').slice(0, 300)).join('\\n\\n') } ] } }}",
+        "options": {}
+      },
+      "id": "wf5-012",
+      "name": "Build Urgent Summary",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2lPRNHpRQH3SQk51",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.choices[0].message.content ? JSON.parse($json.choices[0].message.content) : $json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "wf5-013",
+      "name": "Respond Urgent",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ esi_level: $json.esi_level, acuity: $json.acuity, primary_flag: $json.primary_flag, complaint_summary: $json.complaint_summary, recommended_actions: [ 'Complete triage vitals assessment', 'Register and complete patient intake forms', $json.esi_level <= 4 ? 'Assign to fast track — provider evaluation within 60 minutes' : 'Waiting room — provider evaluation when available' ], clinical_notes: 'Non-urgent presentation with stable vitals. No immediate clinical intervention required. Notify triage nurse if symptoms worsen or any new symptoms develop.', disposition: $json.esi_level <= 4 ? 'fast_track' : 'waiting_room', confidence: 'high' }) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "wf5-010",
+      "name": "Respond Low",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        960,
+        500
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Quick Classify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quick Classify": {
+      "main": [
+        [
+          {
+            "node": "Extract and Route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract and Route": {
+      "main": [
+        [
+          {
+            "node": "Route by Tier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Tier": {
+      "main": [
+        [
+          {
+            "node": "Embed Query Critical",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Embed Query Urgent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Low",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Query Critical": {
+      "main": [
+        [
+          {
+            "node": "Query Pinecone Critical",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Pinecone Critical": {
+      "main": [
+        [
+          {
+            "node": "Build Clinical Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Clinical Brief": {
+      "main": [
+        [
+          {
+            "node": "Respond Critical",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Query Urgent": {
+      "main": [
+        [
+          {
+            "node": "Query Pinecone Urgent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Pinecone Urgent": {
+      "main": [
+        [
+          {
+            "node": "Build Urgent Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Urgent Summary": {
+      "main": [
+        [
+          {
+            "node": "Respond Urgent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "er-triage"
+    },
+    {
+      "name": "phase-4"
+    }
+  ]
+}

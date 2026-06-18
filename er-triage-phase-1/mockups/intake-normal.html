@@ -557,7 +557,7 @@ function applyUrgencyTheme(wf5) {
 
 async function persistToSupabase(complaintText, vitals, structured, wf5) {
   try {
-    const { error } = await db.from("encounters").insert({
+    const { error } = await db.from("encounters").upsert({
       encounter_id:        ENCOUNTER_ID,
       patient_name:        $("patient-name")?.value || null,
       patient_mrn:         $("patient-mrn")?.value || null,
@@ -577,7 +577,7 @@ async function persistToSupabase(complaintText, vitals, structured, wf5) {
       ai_branch:           wf5.esi_level <= 2 ? "critical" : wf5.esi_level === 3 ? "urgent" : "low",
       ai_brief:            wf5,
       structured_fields:   structured
-    });
+    }, { onConflict: "encounter_id" });
     if (error) console.warn("Supabase write failed:", error.message);
   } catch (err) {
     console.warn("Supabase unreachable:", err.message);
