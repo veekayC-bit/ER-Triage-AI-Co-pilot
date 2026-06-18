@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake — Normal State | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+</head>
+<body>
+
+<div class="screen-label">Screen 1 — Intake: Normal State &nbsp;|&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.6)">← All Screens</a></div>
+
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-icon">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">New Patient Intake</span>
+    <span class="sep">|</span>
+    <span>Bay 4</span>
+    <span class="sep">|</span>
+    <span>Arrived 14:32</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Day Shift · 07:00–19:00</span>
+    <span>RN J. Osei</span>
+  </div>
+</header>
+
+<nav class="global-nav">
+  <a href="dashboard.html">⌂ Dashboard</a>
+  <span class="nav-sep">·</span>
+  <a href="intake-normal.html" class="nav-cta">⊕ New Patient</a>
+</nav>
+
+<div id="flag-banner"></div>
+
+<div class="intake-layout">
+
+  <!-- LEFT: FORM PANEL -->
+  <section class="form-panel">
+    <div class="section-title">Patient Intake</div>
+
+    <!-- Patient Demographics -->
+    <div class="patient-info-bar">
+      <div class="patient-info-field">
+        <label>Encounter ID</label>
+        <span id="encounter-id" style="font-family:monospace;font-size:11px;color:var(--accent);font-weight:700;">Generating…</span>
+      </div>
+      <div class="patient-info-field">
+        <label>Name</label>
+        <input type="text" id="patient-name" class="patient-info-input" placeholder="Last, First">
+      </div>
+      <div class="patient-info-field">
+        <label>DOB</label>
+        <input type="date" id="patient-dob" class="patient-info-input">
+      </div>
+      <div class="patient-info-field">
+        <label>Sex</label>
+        <select id="patient-sex" class="patient-info-input">
+          <option>Male</option>
+          <option>Female</option>
+          <option>Non-binary</option>
+          <option>Unknown</option>
+        </select>
+      </div>
+      <div class="patient-info-field">
+        <label>Ethnicity</label>
+        <select id="patient-ethnicity" style="font-size:12px;padding:2px 4px;border:1px solid var(--border);border-radius:4px;background:var(--white);color:var(--text);font-weight:600;">
+          <option>Not Hispanic or Latino</option>
+          <option>Hispanic or Latino</option>
+          <option>Unknown / Not reported</option>
+          <option>Prefer not to say</option>
+        </select>
+      </div>
+      <div class="patient-info-field">
+        <label>MRN</label>
+        <input type="text" id="patient-mrn" class="patient-info-input" placeholder="MRN-XXXXXX">
+      </div>
+    </div>
+
+    <!-- Chief Complaint -->
+    <div class="card" id="chief-complaint-card">
+      <div class="card-title">📝 Chief Complaint</div>
+      <div class="form-group">
+        <label>Free-text complaint (nurse transcription)</label>
+        <textarea id="complaint-text" placeholder="Type or transcribe patient's chief complaint…"></textarea>
+      </div>
+      <div class="ai-parsing-indicator" id="ai-parsing-indicator">
+        <div class="pulse-dot"></div>
+        <span id="ai-parsing-label">AI is parsing — structured suggestions updating in sidebar</span>
+        <button id="reanalyze-btn" class="btn btn-sm btn-secondary" style="margin-left:auto;">🔄 Re-analyze</button>
+      </div>
+      <div id="cc-suggestion-area" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:6px;">Coded Chief Complaint — AI Suggested (click to accept)</div>
+        <div id="cc-chips"></div>
+        <input type="text" id="structured-cc" readonly placeholder="Click a chip above to accept, or type your own…" style="margin-top:6px;font-size:12px;background:var(--muted-bg);cursor:default;">
+      </div>
+    </div>
+
+    <!-- Vitals -->
+    <div class="card" id="vitals-card">
+      <div class="card-title">🩺 Vitals</div>
+      <div class="vitals-grid">
+        <div class="form-group">
+          <label>BP (mmHg)</label>
+          <input type="text" id="vital-bp" placeholder="e.g. 120/80">
+        </div>
+        <div class="form-group">
+          <label>HR (bpm)</label>
+          <input type="text" id="vital-hr" placeholder="e.g. 72">
+        </div>
+        <div class="form-group">
+          <label>SpO₂ (%)</label>
+          <input type="text" id="vital-spo2" placeholder="e.g. 98">
+        </div>
+        <div class="form-group">
+          <label>RR (breaths/min)</label>
+          <input type="text" id="vital-rr" placeholder="e.g. 16">
+        </div>
+        <div class="form-group">
+          <label>Temp (°C)</label>
+          <input type="text" id="vital-temp" placeholder="e.g. 37.0">
+        </div>
+        <div class="form-group">
+          <label>GCS</label>
+          <input type="text" id="vital-gcs" placeholder="e.g. 15">
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Context -->
+    <div class="card">
+      <div class="card-title">📋 Additional Context</div>
+      <div class="form-group">
+        <label>Allergies</label>
+        <input type="text" placeholder="Known allergies…">
+      </div>
+      <div class="form-group">
+        <label>Current Medications</label>
+        <input type="text" placeholder="Current medications…">
+      </div>
+      <div class="form-group">
+        <label>Relevant History</label>
+        <textarea style="min-height:60px" placeholder="PMHx, relevant notes…"></textarea>
+      </div>
+    </div>
+
+    <!-- ESI Assignment -->
+    <div class="card">
+      <div class="card-title">🎯 Acuity — Nurse Assigned (ESI)</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <select style="width:auto;padding:10px 14px;font-size:15px;font-weight:700;">
+          <option value="">Select ESI Level</option>
+          <option value="1">ESI 1 — Resuscitation</option>
+          <option value="2">ESI 2 — Emergent</option>
+          <option value="3" selected>ESI 3 — Urgent</option>
+          <option value="4">ESI 4 — Less Urgent</option>
+          <option value="5">ESI 5 — Non-urgent</option>
+        </select>
+        <span style="font-size:12px;color:var(--text-muted)">AI does not assign ESI — nurse judgment only</span>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <a href="dashboard.html" class="btn btn-secondary">← Dashboard</a>
+      <a href="intake-normal.html" class="btn btn-secondary">⊕ New Patient</a>
+      <a href="queue-panel.html" class="btn btn-secondary">View Queue</a>
+      <a href="intake-summary.html" class="btn btn-primary">Review & Submit →</a>
+    </div>
+  </section>
+
+  <!-- RIGHT: AI SIDEBAR -->
+  <aside class="ai-sidebar">
+    <div class="sidebar-header">
+      AI Triage Assistant
+      <div class="ai-status">
+        <div class="status-dot" id="ai-status-dot"></div>
+        <span id="ai-status-text">Connecting…</span>
+      </div>
+    </div>
+
+    <!-- Suggested Structured Fields -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Suggested Structured Fields</div>
+      <div id="structured-fields-list">
+        <div class="empty-state" style="padding:16px;">
+          <p>Waiting for AI analysis…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Triage Assessment -->
+    <div class="sidebar-section" id="triage-assessment-section">
+      <div class="sidebar-section-title">AI Triage Assessment</div>
+      <div id="triage-assessment-content">
+        <div class="empty-state"><p>Waiting for AI analysis…</p></div>
+      </div>
+    </div>
+
+    <!-- Primary Flag -->
+    <div class="sidebar-section" id="flag-screening-section">
+      <div class="sidebar-section-title">Primary Flag</div>
+      <div id="flag-screening-content">
+        <div class="empty-state"><p>Waiting for AI analysis…</p></div>
+      </div>
+    </div>
+
+    <!-- Clinical Actions -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Clinical Actions</div>
+      <div id="clinical-actions-content">
+        <div class="empty-state"><p>Waiting for AI analysis…</p></div>
+      </div>
+    </div>
+
+    <!-- Clinical Notes -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Clinical Notes</div>
+      <div id="ai-reasoning-note" style="background:var(--white);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--text-muted);border:1px solid var(--border);">
+        Waiting for AI analysis…
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--text-muted);text-align:right;">AI reasoning is advisory only</div>
+    </div>
+
+    <!-- Retrieved Guidelines (RAG) -->
+    <div class="sidebar-section" id="clinical-context-section">
+      <div class="sidebar-section-title">Retrieved Guidelines <span style="font-size:10px;font-weight:400;opacity:0.7;margin-left:4px;">RAG</span></div>
+      <div id="clinical-context-content">
+        <div class="empty-state" style="padding:12px 0;">
+          <div class="empty-icon" style="font-size:16px;">📋</div>
+          <p>Guidelines load after analysis</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Queue Snapshot -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Queue Snapshot (read-only)</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;">
+        <div style="background:#fef2f2;border-radius:6px;padding:8px 4px;">
+          <div style="font-size:18px;font-weight:800;color:#dc2626">1</div>
+          <div style="font-size:10px;color:#ef4444;font-weight:600">ESI 1</div>
+        </div>
+        <div style="background:#fff7ed;border-radius:6px;padding:8px 4px;">
+          <div style="font-size:18px;font-weight:800;color:#ea580c">3</div>
+          <div style="font-size:10px;color:#f97316;font-weight:600">ESI 2</div>
+        </div>
+        <div style="background:#fefce8;border-radius:6px;padding:8px 4px;">
+          <div style="font-size:18px;font-weight:800;color:#ca8a04">8</div>
+          <div style="font-size:10px;color:#eab308;font-weight:600">ESI 3</div>
+        </div>
+        <div style="background:#f0fdf4;border-radius:6px;padding:8px 4px;">
+          <div style="font-size:18px;font-weight:800;color:#16a34a">5</div>
+          <div style="font-size:10px;color:#22c55e;font-weight:600">ESI 4</div>
+        </div>
+        <div style="background:#eff6ff;border-radius:6px;padding:8px 4px;">
+          <div style="font-size:18px;font-weight:800;color:#2563eb">4</div>
+          <div style="font-size:10px;color:#3b82f6;font-weight:600">ESI 5</div>
+        </div>
+      </div>
+      <a href="queue-panel.html" style="display:block;text-align:center;margin-top:10px;font-size:11px;color:var(--accent);font-weight:600;text-decoration:none;">View full queue →</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+const PARSE_URL       = "https://veekayc.app.n8n.cloud/webhook/parse-complaint";
+const ORCHESTRATE_URL = "https://veekayc.app.n8n.cloud/webhook/orchestrate-triage";
+
+const ENCOUNTER_ID = (() => {
+  const d = new Date();
+  const date = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+  const seq = String(Math.floor(Math.random() * 999999)).padStart(6, "0");
+  return `ENC-${date}-${seq}`;
+})();
+
+const $ = (id) => document.getElementById(id);
+
+const ESI_COLORS = { 1:"#dc2626", 2:"#ea580c", 3:"#ca8a04", 4:"#16a34a", 5:"#2563eb" };
+
+function dispositionLabel(d) {
+  return {
+    resuscitation_room: "Resuscitation Room",
+    immediate_bed:      "Immediate Bed",
+    monitored_bed:      "Monitored Bed",
+    urgent_bed:         "Urgent Bed",
+    waiting_room_monitored: "Waiting Room (Monitored)",
+    fast_track:         "Fast Track",
+    waiting_room:       "Waiting Room"
+  }[d] || d || "—";
+}
+
+function collectVitals() {
+  return {
+    bp: $("vital-bp").value,
+    hr: $("vital-hr").value,
+    spo2: $("vital-spo2").value,
+    rr: $("vital-rr").value,
+    temp: $("vital-temp").value,
+    gcs: $("vital-gcs").value
+  };
+}
+
+function setStatus(state, label) {
+  $("ai-status-text").textContent = label;
+  $("ai-status-dot").style.background = state === "error" ? "#94a3b8" : state === "busy" ? "#fbbf24" : "#4ade80";
+}
+
+function renderStructuredFields(structured) {
+  const rows = [
+    ["Complaint Category", structured.complaint_category],
+    ["Onset", structured.onset],
+    ["Duration", structured.duration],
+    ["Associated Symptoms", Array.isArray(structured.symptoms) ? structured.symptoms.join(", ") : structured.symptoms],
+    ["Trigger", structured.trigger],
+    ["Context", structured.context]
+  ].filter(([, value]) => value);
+
+  $("structured-fields-list").innerHTML = rows.map(([label, value]) => `
+    <div class="suggestion-row">
+      <div class="suggestion-body">
+        <div class="field-name">${label}</div>
+        <div class="field-value">${value}</div>
+      </div>
+      <div class="suggestion-actions">
+        <button class="btn btn-accept btn-sm" onclick="this.closest('.suggestion-row').classList.add('suggestion-accepted')">✓</button>
+        <button class="btn btn-dismiss btn-sm" onclick="this.closest('.suggestion-row').classList.add('suggestion-dismissed')">✕</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderTriageAssessment(wf5) {
+  const el = $("triage-assessment-content");
+  const esi = wf5.esi_level || "—";
+  const acuity = wf5.acuity || "unknown";
+  const disposition = dispositionLabel(wf5.disposition);
+  const confidence = wf5.confidence || null;
+  const color = ESI_COLORS[esi] || "#64748b";
+
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);">
+      <div style="background:${color};color:#fff;width:52px;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;flex-shrink:0;gap:1px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:0.5px;opacity:0.9;">ESI</div>
+        <div style="font-size:26px;font-weight:900;line-height:1;">${esi}</div>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:${color};text-transform:capitalize;">${acuity}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">${disposition}${confidence ? ` · ${confidence} confidence` : ""}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPrimaryFlag(wf5) {
+  const banner = $("flag-banner");
+  const content = $("flag-screening-content");
+  const esi = Number(wf5.esi_level) || 5;
+  const flag = wf5.primary_flag || "none";
+  const isCritical = esi <= 2;
+  const isUrgent = esi === 3;
+
+  if (esi >= 4 || flag === "none") {
+    banner.innerHTML = "";
+    content.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">✓</div>
+        <p>No critical flag — ${esi === 4 ? "less urgent" : "non-urgent"} presentation</p>
+      </div>
+    `;
+    return;
+  }
+
+  const cardClass = isCritical ? "alert-card-critical" : "alert-card-warning";
+  const icon = isCritical ? "🔴" : "⚠";
+  const btnBg = isCritical ? "#991b1b" : "var(--warning)";
+
+  content.innerHTML = `
+    <div class="alert-card ${cardClass}">
+      <div class="alert-flag-name">${icon} ${flag}</div>
+      <div class="alert-actions">
+        <button class="btn btn-sm" style="background:${btnBg};color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;" onclick="this.closest('.alert-card').style.opacity=0.5">✓ Acknowledge</button>
+        <button class="btn btn-sm btn-dismiss">Dismiss</button>
+      </div>
+    </div>
+  `;
+
+  banner.innerHTML = isCritical
+    ? `<div class="urgent-banner">🔴 CRITICAL — ESI ${esi} · ${flag.toUpperCase()} — Immediate intervention required</div>`
+    : `<div style="background:#d97706;color:#fff;padding:8px 24px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;">⚠ URGENT — ESI 3 · ${flag} — Review clinical actions in sidebar</div>`;
+}
+
+function renderClinicalActions(wf5) {
+  const el = $("clinical-actions-content");
+  const actions = wf5.immediate_actions || wf5.recommended_actions || [];
+  const isImmediate = !!wf5.immediate_actions;
+  const color = isImmediate ? "#dc2626" : "#ca8a04";
+  const label = isImmediate ? "Immediate Actions" : "Recommended Actions";
+
+  if (!actions.length) {
+    el.innerHTML = `<div class="empty-state"><p>No specific actions recommended</p></div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:${color};margin-bottom:8px;">${label}</div>
+    <ol style="margin:0;padding-left:16px;display:flex;flex-direction:column;gap:6px;">
+      ${actions.map(a => `<li style="font-size:12px;color:var(--text);line-height:1.4;">${a}</li>`).join("")}
+    </ol>
+  `;
+}
+
+function renderClinicalNotes(wf5) {
+  const el = $("ai-reasoning-note");
+  const protocol = wf5.clinical_protocol;
+  const notes = wf5.clinical_notes;
+  const timeTargets = wf5.time_targets;
+
+  let html = "";
+  if (protocol) {
+    html += `<div style="margin-bottom:6px;">${protocol}</div>`;
+  } else if (notes) {
+    html += `<div style="margin-bottom:6px;">${notes}</div>`;
+  } else {
+    html += `<div style="color:var(--text-muted);">No clinical notes available</div>`;
+  }
+  if (timeTargets) {
+    html += `<div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#dc2626;">Time Targets</div>`;
+    html += `<div style="font-size:12px;margin-top:2px;">${timeTargets}</div>`;
+  }
+  el.innerHTML = html;
+}
+
+function renderConfidenceWarning(wf5) {
+  const confidence = wf5.confidence;
+  const guidelines = wf5.retrieved_guidelines || [];
+  const el = $("clinical-context-content");
+
+  const noGuidelines = guidelines.length === 0;
+  const lowConfidence = confidence === "low" || noGuidelines;
+  const medConfidence = confidence === "medium" && !noGuidelines;
+
+  if (lowConfidence) {
+    const warning = document.createElement("div");
+    warning.style.cssText = "background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#991b1b;font-weight:600;display:flex;align-items:center;gap:6px;";
+    warning.innerHTML = `⚠ Low confidence — ${noGuidelines ? "no guidelines retrieved" : "insufficient context"}. Verify against clinical judgment before acting.`;
+    el.prepend(warning);
+  } else if (medConfidence) {
+    const warning = document.createElement("div");
+    warning.style.cssText = "background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#92400e;font-weight:600;display:flex;align-items:center;gap:6px;";
+    warning.innerHTML = `⚠ Moderate confidence — cross-check with clinical judgment.`;
+    el.prepend(warning);
+  }
+}
+
+function renderGuidelinesContext(wf5) {
+  const el = $("clinical-context-content");
+  const guidelines = wf5.retrieved_guidelines || [];
+  const esi = Number(wf5.esi_level) || 5;
+
+  if (!guidelines.length) {
+    el.innerHTML = `
+      <div class="empty-state" style="padding:12px 0;">
+        <div class="empty-icon" style="font-size:16px;">📋</div>
+        <p>No guidelines retrieved${esi >= 4 ? " · Low-acuity case" : ""}</p>
+      </div>
+    `;
+    return;
+  }
+
+  el.innerHTML = guidelines.map(g => `
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;margin-bottom:6px;font-size:12px;color:var(--text);line-height:1.4;">
+      📋 ${g}
+    </div>
+  `).join("");
+}
+
+function renderCCSuggestions(structured) {
+  const area = $("cc-suggestion-area");
+  const chips = $("cc-chips");
+  const input = $("structured-cc");
+  if (!structured.complaint_category) return;
+
+  const options = [structured.complaint_category, ...(structured.complaint_category_alternatives || [])].filter(Boolean);
+  chips.innerHTML = options.map((opt, i) =>
+    `<span class="cc-chip${i === 0 ? " cc-chip-selected" : ""}" onclick="selectCC(this,'${opt.replace(/'/g,"&#39;")}')">${i === 0 ? "✓ " : ""}${opt}</span>`
+  ).join("");
+  input.value = options[0] || "";
+  input.readOnly = false;
+  area.style.display = "";
+}
+
+window.selectCC = function(el, value) {
+  document.querySelectorAll(".cc-chip").forEach(c => {
+    c.classList.remove("cc-chip-selected");
+    c.textContent = c.textContent.replace(/^✓ /, "");
+  });
+  el.classList.add("cc-chip-selected");
+  el.textContent = "✓ " + value;
+  $("structured-cc").value = value;
+};
+
+function applyUrgencyTheme(wf5) {
+  const esi = Number(wf5.esi_level) || 5;
+  const urgency = esi <= 2 ? "high" : esi === 3 ? "standard" : "none";
+  const flag = wf5.primary_flag || "";
+
+  const t = {
+    high:     { headerBg:"#7f1d1d", logoBg:"#dc2626", panelBorder:"#fecaca",
+                cardBorder:"2px solid var(--danger)", cardBg:"#fff5f5",
+                indicatorColor:"var(--danger)", dotBg:"var(--danger)",
+                indicatorText:`CRITICAL — ESI ${esi}: ${flag.toUpperCase() || "Immediate intervention required"}`,
+                sidebarBg:"#7f1d1d", sectionBg:"#fef2f2", titleColor:"#991b1b" },
+    standard: { headerBg:"#92400e", logoBg:"#d97706", panelBorder:"var(--warning-border)",
+                cardBorder:"1px solid var(--warning-border)", cardBg:"var(--warning-bg)",
+                indicatorColor:"var(--warning)", dotBg:"var(--warning)",
+                indicatorText:`URGENT — ESI 3: ${flag || "Review clinical actions"}`,
+                sidebarBg:"#92400e", sectionBg:"var(--warning-bg)", titleColor:"#92400e" },
+    none:     { headerBg:"var(--primary)", logoBg:"var(--accent)", panelBorder:"var(--border)",
+                cardBorder:"1px solid var(--border)", cardBg:"var(--white)",
+                indicatorColor:"", dotBg:"#4ade80",
+                indicatorText:"AI analysis complete — structured suggestions in sidebar",
+                sidebarBg:"var(--primary)", sectionBg:"var(--accent-light)", titleColor:"" }
+  }[urgency];
+
+  document.querySelector(".app-header").style.background = t.headerBg;
+  document.querySelector(".logo-icon").style.background = t.logoBg;
+  document.querySelector(".form-panel").style.borderRightColor = t.panelBorder;
+
+  const card = $("chief-complaint-card");
+  card.style.border = t.cardBorder;
+  card.style.background = t.cardBg;
+
+  const ind = $("ai-parsing-indicator");
+  ind.style.color = t.indicatorColor;
+  const dot = ind.querySelector(".pulse-dot");
+  if (dot) dot.style.background = t.dotBg;
+  const label = ind.querySelector("span") || $("ai-parsing-label");
+  if (label) label.textContent = t.indicatorText;
+
+  document.querySelector(".sidebar-header").style.background = t.sidebarBg;
+
+  const sec = $("flag-screening-section");
+  if (sec) {
+    sec.style.background = t.sectionBg;
+    const title = sec.querySelector(".sidebar-section-title");
+    if (title) title.style.color = t.titleColor;
+  }
+}
+
+function persistAnalysis(complaintText, vitals, structured, wf5) {
+  sessionStorage.setItem("erTriageLastAnalysis", JSON.stringify({
+    encounter_id: ENCOUNTER_ID,
+    patient: {
+      name: $("patient-name")?.value || "—",
+      dob: $("patient-dob")?.value || "—",
+      sex: $("patient-sex")?.value || "—",
+      ethnicity: $("patient-ethnicity")?.value || "—",
+      mrn: $("patient-mrn")?.value || "—"
+    },
+    complaint_text: complaintText,
+    structured_cc: $("structured-cc")?.value || structured.complaint_category || "",
+    vitals,
+    structured,
+    wf5,
+    timestamp: new Date().toISOString()
+  }));
+}
+
+async function analyze() {
+  const complaintText = $("complaint-text").value.trim();
+  if (!complaintText) return;
+
+  setStatus("busy", "Analyzing…");
+  const start = performance.now();
+  const vitals = collectVitals();
+  const payload = JSON.stringify({ complaint_text: complaintText, vitals });
+
+  try {
+    const [parseRes, orchRes] = await Promise.all([
+      fetch(PARSE_URL,       { method: "POST", headers: { "Content-Type": "application/json" }, body: payload }),
+      fetch(ORCHESTRATE_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: payload })
+    ]);
+
+    if (parseRes.status === 400) {
+      setStatus("error", "Insufficient detail");
+      return;
+    }
+    if (!parseRes.ok) throw new Error(`Parse HTTP ${parseRes.status}`);
+    if (!orchRes.ok)  throw new Error(`Orchestrator HTTP ${orchRes.status}`);
+
+    const [parseData, wf5] = await Promise.all([parseRes.json(), orchRes.json()]);
+    const latency = ((performance.now() - start) / 1000).toFixed(1);
+
+    const structured = parseData.structured || {};
+
+    renderStructuredFields(structured);
+    renderCCSuggestions(structured);
+    renderTriageAssessment(wf5);
+    renderPrimaryFlag(wf5);
+    renderClinicalActions(wf5);
+    renderClinicalNotes(wf5);
+    renderGuidelinesContext(wf5);
+    renderConfidenceWarning(wf5);
+    applyUrgencyTheme(wf5);
+    persistAnalysis(complaintText, vitals, structured, wf5);
+    setStatus("ok", `Active · ${latency}s latency`);
+  } catch (err) {
+    setStatus("error", "Offline — check connection");
+    console.error("AI analysis failed:", err);
+  }
+}
+
+$("complaint-text").addEventListener("blur", () => {
+  if ($("complaint-text").value.trim()) analyze();
+});
+
+["vital-bp", "vital-hr", "vital-spo2", "vital-rr", "vital-temp", "vital-gcs"]
+  .forEach((id) => $(id).addEventListener("blur", () => {
+    if ($("complaint-text").value.trim()) analyze();
+  }));
+
+$("reanalyze-btn").addEventListener("click", (e) => { e.preventDefault(); analyze(); });
+
+$("encounter-id").textContent = ENCOUNTER_ID;
+</script>
+
+</body>
+</html>
