@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Intake — Normal State | ER Triage AI Co-pilot</title>
 <link rel="stylesheet" href="mockup-styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -176,8 +177,8 @@
     <div class="sidebar-header">
       AI Triage Assistant
       <div class="ai-status">
-        <div class="status-dot" id="ai-status-dot"></div>
-        <span id="ai-status-text">Connecting…</span>
+        <div class="status-dot" id="ai-status-dot" style="background:#4ade80;"></div>
+        <span id="ai-status-text">Ready</span>
       </div>
     </div>
 
@@ -269,6 +270,10 @@
 const PARSE_URL       = "https://veekayc.app.n8n.cloud/webhook/parse-complaint";
 const ORCHESTRATE_URL = "https://veekayc.app.n8n.cloud/webhook/orchestrate-triage";
 
+const SUPABASE_URL  = "https://lcaslbfjygzniosaobue.supabase.co";
+const SUPABASE_KEY  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYXNsYmZqeWd6bmlvc2FvYnVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODk3MjAsImV4cCI6MjA5NzM2NTcyMH0.zFSVhiisAbCpwN6wYgU29JTk2deDmTzZmNut5gcb-B0";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const ENCOUNTER_ID = (() => {
   const d = new Date();
   const date = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
@@ -325,8 +330,8 @@ function renderStructuredFields(structured) {
         <div class="field-value">${value}</div>
       </div>
       <div class="suggestion-actions">
-        <button class="btn btn-accept btn-sm" onclick="this.closest('.suggestion-row').classList.add('suggestion-accepted')">✓</button>
-        <button class="btn btn-dismiss btn-sm" onclick="this.closest('.suggestion-row').classList.add('suggestion-dismissed')">✕</button>
+        <button class="btn btn-accept btn-sm" onclick="this.closest('.suggestion-row').classList.add('suggestion-accepted'); logNurseAction('accept','${label.replace(/'/g,"\\'")}','${String(value).replace(/'/g,"\\'")}','${String(value).replace(/'/g,"\\'")}')">✓</button>
+        <button class="btn btn-dismiss btn-sm" onclick="this.closest('.suggestion-row').classList.add('suggestion-dismissed'); logNurseAction('dismiss','${label.replace(/'/g,"\\'")}','${String(value).replace(/'/g,"\\'")}','')">✕</button>
       </div>
     </div>
   `).join("");
@@ -550,6 +555,49 @@ function applyUrgencyTheme(wf5) {
   }
 }
 
+async function persistToSupabase(complaintText, vitals, structured, wf5) {
+  try {
+    const { error } = await db.from("encounters").insert({
+      encounter_id:        ENCOUNTER_ID,
+      patient_name:        $("patient-name")?.value || null,
+      patient_mrn:         $("patient-mrn")?.value || null,
+      patient_dob:         $("patient-dob")?.value || null,
+      patient_sex:         $("patient-sex")?.value || null,
+      complaint_text:      complaintText,
+      vitals:              vitals,
+      esi_level:           wf5.esi_level || null,
+      acuity:              wf5.acuity || null,
+      primary_flag:        wf5.primary_flag || null,
+      disposition:         wf5.disposition || null,
+      confidence:          wf5.confidence || null,
+      time_targets:        wf5.time_targets || null,
+      clinical_protocol:   wf5.clinical_protocol || wf5.clinical_notes || null,
+      immediate_actions:   wf5.immediate_actions || wf5.recommended_actions || null,
+      retrieved_guidelines: wf5.retrieved_guidelines || null,
+      ai_branch:           wf5.esi_level <= 2 ? "critical" : wf5.esi_level === 3 ? "urgent" : "low",
+      ai_brief:            wf5,
+      structured_fields:   structured
+    });
+    if (error) console.warn("Supabase write failed:", error.message);
+  } catch (err) {
+    console.warn("Supabase unreachable:", err.message);
+  }
+}
+
+async function logNurseAction(actionType, fieldName, aiValue, nurseValue) {
+  try {
+    await db.from("nurse_actions").insert({
+      encounter_id: ENCOUNTER_ID,
+      action_type:  actionType,
+      field_name:   fieldName,
+      ai_value:     String(aiValue || ""),
+      nurse_value:  String(nurseValue || "")
+    });
+  } catch (err) {
+    console.warn("Supabase action log failed:", err.message);
+  }
+}
+
 function persistAnalysis(complaintText, vitals, structured, wf5) {
   sessionStorage.setItem("erTriageLastAnalysis", JSON.stringify({
     encounter_id: ENCOUNTER_ID,
@@ -606,11 +654,48 @@ async function analyze() {
     renderConfidenceWarning(wf5);
     applyUrgencyTheme(wf5);
     persistAnalysis(complaintText, vitals, structured, wf5);
+    persistToSupabase(complaintText, vitals, structured, wf5);
     setStatus("ok", `Active · ${latency}s latency`);
+    clearManualMode();
   } catch (err) {
     setStatus("error", "Offline — check connection");
     console.error("AI analysis failed:", err);
+    applyManualMode();
   }
+}
+
+function applyManualMode() {
+  if (document.body.classList.contains("manual-mode")) return;
+  document.body.classList.add("manual-mode");
+
+  document.querySelector(".app-header").style.background = "#4c1d95";
+  document.querySelector(".logo-icon").style.background = "#7c3aed";
+  document.querySelector(".sidebar-header").style.background = "#4c1d95";
+  document.querySelector(".ai-sidebar").style.background = "#f5f3ff";
+  document.querySelector(".ai-sidebar").style.borderRight = "2px solid #ddd6fe";
+
+  const banner = $("flag-banner");
+  banner.innerHTML = `<div style="background:#7c3aed;color:#fff;padding:10px 24px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.3px;">⚠ AI OFFLINE — MANUAL TRIAGE MODE &nbsp;·&nbsp; <span style="font-weight:400;opacity:0.85;">Use standard triage protocols. AI assessment unavailable.</span><button onclick="analyze()" style="margin-left:auto;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;">↺ Retry</button></div>`;
+
+  ["structured-fields-list","triage-assessment-content","flag-screening-content",
+   "clinical-actions-content","ai-reasoning-note","clinical-context-content"].forEach(id => {
+    const el = $(id);
+    if (el) el.innerHTML = `<div style="text-align:center;padding:20px 12px;color:#6d28d9;"><div style="font-size:22px;margin-bottom:8px;">⚕</div><div style="font-size:12px;font-weight:600;">Manual mode — AI unavailable</div><div style="font-size:11px;opacity:0.7;margin-top:4px;">Follow standard ESI triage protocol</div></div>`;
+  });
+
+  const ind = $("ai-parsing-indicator");
+  if (ind) { ind.style.color = "#7c3aed"; const dot = ind.querySelector(".pulse-dot"); if (dot) dot.style.background = "#7c3aed"; }
+}
+
+function clearManualMode() {
+  if (!document.body.classList.contains("manual-mode")) return;
+  document.body.classList.remove("manual-mode");
+  document.querySelector(".app-header").style.background = "";
+  document.querySelector(".logo-icon").style.background = "";
+  document.querySelector(".sidebar-header").style.background = "";
+  document.querySelector(".ai-sidebar").style.background = "";
+  document.querySelector(".ai-sidebar").style.borderRight = "";
+  $("flag-banner").innerHTML = "";
 }
 
 $("complaint-text").addEventListener("blur", () => {
