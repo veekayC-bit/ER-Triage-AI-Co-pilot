@@ -1,7 +1,7 @@
 # ER Triage AI Co-pilot — Roadmap
 **Project:** ER Assisted Triage Workflow System  
 **Stack:** N8N Cloud · OpenAI GPT-4o · Pinecone · Supabase · Vanilla JS  
-**Last Updated:** June 18, 2026
+**Last Updated:** June 18, 2026 (Session 3)
 
 ---
 
@@ -26,8 +26,8 @@ Current eval state (300-case synthetic run, Seed 99):
 
 | Pillar | Question | Result | Gap |
 |---|---|---|---|
-| **Helpful** | Recall ≥ 98% | ❌ FAIL — 97.67% | 7 Stroke Indicator wrong_source failures |
-| **Helpful** | ESI calibration | ✅ PASS (post-STEMI fix) | STEMI: done. Stroke ESI 1 fix still pending. |
+| **Helpful** | Recall ≥ 98% | ❌ FAIL — 97.67% | 7 Stroke Indicator wrong_source failures (RAG source fix pending) |
+| **Helpful** | ESI calibration | ✅ PASS | STEMI ESI 1 ✅ Stroke ESI 1 ✅ (both fixed) |
 | **Honest** | Confidence calibrated | ✅ PASS | — |
 | **Honest** | Consistency (same input, same output) | ⬜ NOT RUN | No test run yet |
 | **Honest** | Source attribution | ❌ FAIL — 7/300 wrong_source | Stroke cases: ESI-2 doc outranks stroke-specific docs |
@@ -35,7 +35,9 @@ Current eval state (300-case synthetic run, Seed 99):
 | **Harmless** | Disposition accuracy | ✅ PASS | — |
 | **Harmless** | No over-triage for non-critical | ✅ PASS | Confirmed: non-cardiac chest pain → ESI 4 |
 | **Harmless** | De-identification | ❌ RISK — PII stored | patient_name + patient_mrn in Supabase exceed MVP 1 spec |
-| **Harmless** | Nurse override audit | ⚠️ PARTIAL | Accept/dismiss logged; text edits not captured |
+| **Harmless** | Nurse override audit | ⚠️ PARTIAL | Accept/dismiss logged; text edits and field modifications not captured |
+| **Harmless** | Input guardrail | ✅ PASS | 2-layer guardrail live — 16/16 tests passing |
+| **Harmless** | Clinical action safety | ✅ PASS | Drug/dosage ban enforced; actions structured with source citation |
 
 To reach **full HHH pass** before shadow mode: 4 items must close.
 
@@ -50,15 +52,19 @@ To reach **full HHH pass** before shadow mode: 4 items must close.
 - Frontend wired: intake-normal.html → WF5 single orchestrator call
 - Supabase: `encounters` table (upsert) + `nurse_actions` audit log
 - STEMI ESI 1 calibration fixed — OR logic + synonym expansion + safety override
+- Stroke ESI 1 calibration fixed — FAST-positive → always ESI 1, do-not-downgrade instruction
 - Live eval pipeline: `live_eval.py` → `eval_results` table in Supabase
 - 300-case HHH evaluation report written
+- 2-layer input guardrail: client-side regex (Layer 1) + gpt-4o LLM classifier (Layer 2) — 16/16 tests passing
+- `guardrail_blocks` audit table live in Supabase (SHA-256 hash only, no plaintext)
+- Clinical action constraints: `immediate_actions` / `recommended_actions` changed to structured `{ action, category, source }` objects — drug/dosage ban enforced, category taxonomy restricted, source citation required per action
 
 ### Remaining Phase 4 Items
 
 ---
 
 #### R4-1: Stroke ESI 1 Calibration
-**Status:** ⏳ Not started  
+**Status:** ✅ Complete (2026-06-18)  
 **Type:** Prompt fix  
 **Effort:** ~30 min
 
@@ -176,18 +182,43 @@ Hash name and MRN before writing to Supabase. Reversible for authorized queries.
 
 ---
 
-### P5-2: Nurse Override Audit Completion
+### P5-2: Nurse Field Modification Capture
 **Status:** ⚠️ Partial  
 **Effort:** ~1 hour
 
-**What:** `nurse_actions` table currently captures accept/dismiss button clicks. When a nurse edits the AI suggestion text before accepting, the edit is not captured — only the final click.
+**What:** `nurse_actions` table currently captures accept/dismiss button clicks only. It does not capture:
+- When a nurse edits a specific field (ESI level, primary flag, complaint text) before accepting
+- What the AI originally said vs. what the nurse changed it to
+- Which field was modified (field-level granularity, not just "something changed")
+
+This is the richest feedback signal in the system. Every nurse edit is a ground-truth correction — it tells you exactly where the AI was wrong, on which field, for which patient presentation.
+
+**Capture schema (additions to `nurse_actions`):**
+```
+{
+  encounter_id,
+  action_type:  "accept" | "dismiss" | "edit_accept" | "field_edit",
+  field_name:   "esi_level" | "primary_flag" | "complaint_summary" | "disposition" | "action_item",
+  ai_value:     <original AI output for that field>,
+  nurse_value:  <what the nurse changed it to>,
+  changed:      true | false
+}
+```
+
+**Implementation:**
+- On accept without edits: `action_type: "accept"`, `changed: false`
+- On accept with any field changed: `action_type: "edit_accept"`, one row per changed field with `ai_value` vs `nurse_value`
+- On dismiss: `action_type: "dismiss"`, `nurse_value: null`
+- Edit detection: snapshot AI output on render → diff against field values at submit time
 
 **Outcome required to close:**
-- On dismiss: capture `{encounter_id, action: "dismiss", ai_value, nurse_value: null}` ✅ (done)
-- On edit + accept: capture `{encounter_id, action: "edit_accept", ai_value: <original>, nurse_value: <edited>}` ✅ (not done)
-- Edit detection: compare textarea value at submit time against original AI output ✅
+- Nurse edits ESI level 2 → 3: captured as `{ field_name: "esi_level", ai_value: 2, nurse_value: 3 }` ✅
+- Nurse edits complaint summary text: captured with original vs. edited text ✅
+- Nurse accepts without changes: single `accept` row, `changed: false` ✅
+- Nurse dismisses: `dismiss` row, `nurse_value: null` ✅
+- No edit on dismiss required — dismiss itself is the signal ✅
 
-**HHH impact:** Closes Harmless nurse override audit gap. Also feeds future override analysis (which conditions get edited most often → model improvement signal).
+**HHH impact:** Closes Harmless nurse override audit gap. Field-level edit data feeds future model improvement (which fields get corrected most → targeted fine-tuning or prompt improvement signal).
 
 ---
 
@@ -354,21 +385,23 @@ Prior visits (last 3):
 
 Items ordered by dependency and HHH criticality:
 
-| # | Item | Phase | Blocks | HHH Gap Closed | Effort |
+| # | Item | Phase | Status | HHH Gap Closed | Effort |
 |---|---|---|---|---|---|
-| 1 | R4-1: Stroke ESI 1 calibration | 4 | Nothing | Helpful (ESI) · Harmless (disposition) | 30 min |
-| 2 | R4-4: PII scope — remove name/MRN from upsert | 4 | Shadow mode · P6-1 MRN hashing | Harmless (PII) | 15 min |
-| 3 | R4-2: Stroke RAG source fix (expand stroke docs) | 4 | Live eval re-run | Helpful (recall ≥ 98%) · Honest (source) | 45 min |
-| 4 | R4-3: Consistency test | 4 | Honest Q3 close | Honest (consistency) | 20 min |
-| 5 | P5-1: Observability dashboard | 5 | Honest Q4 close | Honest (auditability) | 2-3 hr |
-| 6 | P5-2: Nurse override audit | 5 | Harmless audit close | Harmless (override log) | 1 hr |
-| 7 | P5-4: Validator agent | 5 | Agentic demo artifact | — | 3-4 hr |
-| 8 | P5-6: Audio-to-text intake capture | 5 | Faster intake UX | — | 3-4 hr |
-| 9 | P5-3: Multi-turn interaction | 5 | Maven course deliverable | — | ~1 wk |
-| 10 | P5-5: Queue intelligence | 5 | Polish | — | 2 hr |
-| 11 | P6-1: Prior visit history (internal Supabase) | 6 | Context-aware triage | Helpful (longitudinal context) | 4-6 hr |
-| 12 | P6-2: External EHR integration (FHIR R4) | 6 | Full clinical picture · allergy guard | Helpful · Harmless (allergy conflict) | 2-3 wk |
-| 13 | Phase 7: Portfolio wrap-up | 7 | Public demo ready | — | 1-2 days |
+| ✅ | R4-1: Stroke ESI 1 calibration | 4 | Done | Helpful (ESI) · Harmless (disposition) | 30 min |
+| ✅ | Guardrail system (2-layer) | 4 | Done | Harmless (input safety) | — |
+| ✅ | Clinical action constraints | 4 | Done | Harmless (drug/dosage safety) | — |
+| 1 | R4-4: PII scope — remove name/MRN from Supabase upsert | 4 | ❌ Open | Harmless (PII) | 15 min |
+| 2 | R4-2: Stroke RAG source fix (expand stroke docs) | 4 | ❌ Open | Helpful (recall ≥ 98%) · Honest (source) | 45 min |
+| 3 | R4-3: Consistency test | 4 | ⬜ Not run | Honest (consistency) | 20 min |
+| 4 | P5-1: Observability dashboard | 5 | ⏳ Not started | Honest (auditability) | 2-3 hr |
+| 5 | P5-2: Nurse field modification capture | 5 | ⚠️ Partial | Harmless (override audit) | 1 hr |
+| 6 | P5-4: Validator agent | 5 | ⏳ Not started | Harmless (action verification) | 3-4 hr |
+| 7 | P5-6: Audio-to-text intake capture | 5 | ⏳ Not started | — | 3-4 hr |
+| 8 | P5-3: Multi-turn interaction | 5 | ⏳ Not started | — | ~1 wk |
+| 9 | P5-5: Queue intelligence | 5 | ⏳ Not started | — | 2 hr |
+| 10 | P6-1: Prior visit history (internal Supabase) | 6 | ⏳ Not started | Helpful (longitudinal context) | 4-6 hr |
+| 11 | P6-2: External EHR integration (FHIR R4) | 6 | ⏳ Not started | Helpful · Harmless (allergy conflict) | 2-3 wk |
+| 12 | Phase 7: Portfolio wrap-up | 7 | ⏳ Not started | — | 1-2 days |
 
 ---
 
