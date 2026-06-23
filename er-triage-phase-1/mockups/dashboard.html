@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ER Triage Dashboard | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+<style>
+.dashboard-layout { max-width: 1080px; margin: 0 auto; padding: 28px 24px; }
+
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; }
+.stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
+.stat-value { font-size: 26px; font-weight: 900; color: var(--text); line-height: 1; }
+.stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+.main-grid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+
+.cta-card { background: var(--primary); border-radius: var(--radius-lg); padding: 28px 28px 24px; color: var(--white); margin-bottom: 20px; }
+.cta-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.65; margin-bottom: 8px; }
+.cta-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.cta-sub { font-size: 13px; opacity: 0.7; margin-bottom: 20px; }
+.btn-cta { display: inline-flex; align-items: center; gap: 8px; background: #2563EB; color: #fff; font-size: 15px; font-weight: 800; padding: 12px 24px; border-radius: var(--radius); text-decoration: none; transition: background 0.2s; }
+.btn-cta:hover { background: #1d4ed8; }
+.btn-cta-secondary { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; padding: 10px 18px; border-radius: var(--radius); text-decoration: none; transition: background 0.2s; margin-left: 10px; }
+.btn-cta-secondary:hover { background: rgba(255,255,255,0.2); }
+
+.encounters-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.encounters-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.encounters-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+.encounter-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.encounter-row:last-child { border-bottom: none; }
+.encounter-row:hover { background: var(--muted-bg); }
+.esi-badge { width: 28px; height: 28px; border-radius: 6px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.esi-1 { background: #fef2f2; color: #dc2626; }
+.esi-2 { background: #fff7ed; color: #ea580c; }
+.esi-3 { background: #fefce8; color: #ca8a04; }
+.esi-4 { background: #f0fdf4; color: #16a34a; }
+.encounter-info { flex: 1; min-width: 0; }
+.encounter-name { font-size: 13px; font-weight: 600; }
+.encounter-complaint { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.encounter-meta { text-align: right; flex-shrink: 0; }
+.encounter-time { font-size: 11px; color: var(--text-muted); }
+.encounter-status { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-top: 2px; display: inline-block; }
+.status-submitted { background: var(--success-bg); color: var(--success); }
+.status-active { background: #eff6ff; color: #2563eb; }
+.status-flagged { background: var(--warning-bg); color: var(--warning); }
+
+.queue-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 16px; }
+.queue-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 14px; }
+.queue-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.queue-row:last-child { margin-bottom: 0; }
+.queue-bar-wrap { flex: 1; height: 8px; background: var(--muted-bg); border-radius: 4px; overflow: hidden; }
+.queue-bar { height: 100%; border-radius: 4px; }
+.queue-label { font-size: 11px; font-weight: 600; width: 42px; }
+.queue-count { font-size: 12px; font-weight: 800; width: 24px; text-align: right; }
+
+.ai-status-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; }
+.ai-status-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 14px; }
+.ai-status-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+.ai-status-row:last-child { margin-bottom: 0; }
+.dot-green { width: 8px; height: 8px; background: var(--success); border-radius: 50%; flex-shrink: 0; animation: pulse 2s infinite; }
+.dot-amber { width: 8px; height: 8px; background: var(--warning); border-radius: 50%; flex-shrink: 0; }
+.dot-muted { width: 8px; height: 8px; background: var(--text-muted); border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-icon">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">General Hospital — Emergency Department</span>
+    <span class="sep">|</span>
+    <span id="current-time">—</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Day Shift · 07:00–19:00</span>
+    <span>RN J. Osei</span>
+  </div>
+</header>
+
+<nav class="global-nav">
+  <a href="dashboard.html">⌂ Dashboard</a>
+  <span class="nav-sep">·</span>
+  <a href="intake-normal.html" class="nav-cta">⊕ New Patient</a>
+</nav>
+
+<div class="dashboard-layout">
+
+  <!-- Stats row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Today's Intakes</div>
+      <div class="stat-value">23</div>
+      <div class="stat-sub">+4 since 07:00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Critical Flags</div>
+      <div class="stat-value" style="color:var(--danger);">3</div>
+      <div class="stat-sub">All confirmed by nurse</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Triage Time</div>
+      <div class="stat-value">4.2<span style="font-size:14px;font-weight:600;"> min</span></div>
+      <div class="stat-sub">↓ 1.1 min vs yesterday</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">AI Suggestion Rate</div>
+      <div class="stat-value" style="color:var(--success);">94<span style="font-size:14px;font-weight:600;">%</span></div>
+      <div class="stat-sub">Accepted by nurses today</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: Main content -->
+    <div>
+
+      <!-- CTA card -->
+      <div class="cta-card">
+        <div class="cta-label">Intake</div>
+        <div class="cta-title">New Patient Arrived</div>
+        <div class="cta-sub">Start intake — AI will begin parsing the chief complaint in real-time as you type. Structured fields, flags, and vitals check update in the sidebar.</div>
+        <a href="intake-normal.html" class="btn-cta">⊕ Start New Patient Intake</a>
+        <a href="queue-panel.html" class="btn-cta-secondary">View Queue →</a>
+      </div>
+
+      <!-- Recent encounters -->
+      <div class="encounters-card">
+        <div class="encounters-header">
+          <span class="encounters-title">Recent Encounters — Today</span>
+          <a href="queue-panel.html" style="font-size:11px;color:var(--accent);text-decoration:none;font-weight:600;">View all →</a>
+        </div>
+
+        <div class="encounter-row">
+          <div class="esi-badge esi-1">1</div>
+          <div class="encounter-info">
+            <div class="encounter-name">D. Tran &nbsp;<span style="font-size:10px;color:var(--danger);font-weight:700;background:var(--danger-bg);padding:1px 6px;border-radius:10px;">🔴 Anaphylaxis</span></div>
+            <div class="encounter-complaint">Bee sting, throat tightness, prior anaphylaxis</div>
+          </div>
+          <div class="encounter-meta">
+            <div class="encounter-time">15:09</div>
+            <div class="encounter-status status-submitted">Submitted</div>
+          </div>
+        </div>
+
+        <div class="encounter-row">
+          <div class="esi-badge esi-2">2</div>
+          <div class="encounter-info">
+            <div class="encounter-name">A. Ferreira &nbsp;<span style="font-size:10px;color:var(--warning);font-weight:700;background:var(--warning-bg);padding:1px 6px;border-radius:10px;">⚠ Allergic Reaction</span></div>
+            <div class="encounter-complaint">Rash after new antibiotic, penicillin allergy on file</div>
+          </div>
+          <div class="encounter-meta">
+            <div class="encounter-time">14:51</div>
+            <div class="encounter-status status-submitted">Submitted</div>
+          </div>
+        </div>
+
+        <div class="encounter-row">
+          <div class="esi-badge esi-3">3</div>
+          <div class="encounter-info">
+            <div class="encounter-name">M. Okonkwo</div>
+            <div class="encounter-complaint">Dizziness x 2 days, nausea, reduced oral intake</div>
+          </div>
+          <div class="encounter-meta">
+            <div class="encounter-time">14:32</div>
+            <div class="encounter-status status-submitted">Submitted</div>
+          </div>
+        </div>
+
+        <div class="encounter-row">
+          <div class="esi-badge esi-3">3</div>
+          <div class="encounter-info">
+            <div class="encounter-name">P. Nkosi</div>
+            <div class="encounter-complaint">Shortness of breath, SpO₂ 88% at home</div>
+          </div>
+          <div class="encounter-meta">
+            <div class="encounter-time">13:55</div>
+            <div class="encounter-status status-active">In Progress</div>
+          </div>
+        </div>
+
+        <div class="encounter-row" style="background:var(--muted-bg);">
+          <div style="width:100%;text-align:center;padding:6px 0;font-size:11px;color:var(--text-muted);">
+            <a href="queue-panel.html" style="color:var(--accent);text-decoration:none;font-weight:600;">View all 23 encounters today →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Queue + AI status -->
+    <div>
+
+      <div class="queue-card">
+        <div class="queue-title">Current Queue — Waiting</div>
+        <div class="queue-row">
+          <div class="queue-label" style="color:#dc2626;">ESI 1</div>
+          <div class="queue-bar-wrap"><div class="queue-bar" style="width:8%;background:#dc2626;"></div></div>
+          <div class="queue-count" style="color:#dc2626;">1</div>
+        </div>
+        <div class="queue-row">
+          <div class="queue-label" style="color:#ea580c;">ESI 2</div>
+          <div class="queue-bar-wrap"><div class="queue-bar" style="width:25%;background:#ea580c;"></div></div>
+          <div class="queue-count" style="color:#ea580c;">3</div>
+        </div>
+        <div class="queue-row">
+          <div class="queue-label" style="color:#ca8a04;">ESI 3</div>
+          <div class="queue-bar-wrap"><div class="queue-bar" style="width:67%;background:#eab308;"></div></div>
+          <div class="queue-count" style="color:#ca8a04;">8</div>
+        </div>
+        <div class="queue-row">
+          <div class="queue-label" style="color:#16a34a;">ESI 4</div>
+          <div class="queue-bar-wrap"><div class="queue-bar" style="width:42%;background:#22c55e;"></div></div>
+          <div class="queue-count" style="color:#16a34a;">5</div>
+        </div>
+        <div class="queue-row">
+          <div class="queue-label" style="color:#2563eb;">ESI 5</div>
+          <div class="queue-bar-wrap"><div class="queue-bar" style="width:33%;background:#3b82f6;"></div></div>
+          <div class="queue-count" style="color:#2563eb;">4</div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);">
+          <span>21 patients waiting</span>
+          <a href="queue-panel.html" style="color:var(--accent);text-decoration:none;font-weight:600;">Full queue →</a>
+        </div>
+      </div>
+
+      <div class="ai-status-card">
+        <div class="ai-status-title">AI System Status</div>
+        <div class="ai-status-row">
+          <div class="dot-green"></div>
+          <span>Parse endpoint — online</span>
+        </div>
+        <div class="ai-status-row">
+          <div class="dot-green"></div>
+          <span>Flag detection — online</span>
+        </div>
+        <div class="ai-status-row">
+          <div class="dot-green"></div>
+          <span>Last latency: ~2.9s</span>
+        </div>
+        <div class="ai-status-row">
+          <div class="dot-muted"></div>
+          <span>EMR integration — mock (demo)</span>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);">
+          GPT-4o · N8N Cloud · veekayc.app.n8n.cloud
+        </div>
+        <div style="margin-top:10px;">
+          <a href="manual-mode.html" style="font-size:11px;color:var(--text-muted);text-decoration:none;">AI offline? Switch to manual mode →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  document.getElementById("current-time").textContent = now.toLocaleTimeString("en-CA", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>

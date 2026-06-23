@@ -1,0 +1,198 @@
+{
+  "name": "ER Triage: Parse Complaint",
+  "nodes": [
+    {
+      "id": "a1b1e5f6-1001-1001-1001-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 380],
+      "webhookId": "parse-complaint",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "parse-complaint",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "a1b1e5f6-1001-1001-1001-000000000002",
+      "name": "Extract Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [460, 380],
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "field-001",
+              "name": "complaint_text",
+              "value": "={{ $json.body.complaint_text }}",
+              "type": "string"
+            },
+            {
+              "id": "field-002",
+              "name": "vitals",
+              "value": "={{ $json.body.vitals ?? null }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a1b1e5f6-1001-1001-1001-000000000003",
+      "name": "Check Complaint Length",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 380],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-001",
+              "leftValue": "={{ $json.complaint_text.length }}",
+              "rightValue": 10,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a1b1e5f6-1001-1001-1001-000000000004",
+      "name": "Respond: Insufficient Detail",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 200],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ \"error\": \"Insufficient detail\", \"complaint_text\": $json.complaint_text }) }}",
+        "options": {
+          "responseCode": 400,
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "a1b1e5f6-1001-1001-1001-000000000005",
+      "name": "OpenAI: Extract Structured Complaint",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [900, 460],
+      "parameters": {
+        "resource": "chat",
+        "operation": "complete",
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a clinical NLP assistant for ER triage. Extract structured fields from the nurse's transcribed chief complaint. Return JSON only.\nNever infer beyond what is stated. If a field is unclear, return null.\n\nReturn this schema:\n{\n  \"complaint_category\": \"string — primary clinical category, most specific label that fits the complaint\",\n  \"complaint_category_alternatives\": [\"string\", \"string\"] or [] — up to 2 alternative category labels if the complaint is ambiguous or could reasonably be classified differently. Empty array if the primary is unambiguous.\",\n  \"onset\": \"string\",\n  \"duration\": \"string\",\n  \"symptoms\": [\"string\"],\n  \"trigger\": \"string or null\",\n  \"context\": \"string or null\"\n}"
+            },
+            {
+              "role": "user",
+              "content": "{{ $json.body.complaint_text }}"
+            }
+          ]
+        },
+        "options": {
+          "responseFormat": "json_object",
+          "temperature": 0
+        }
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "id": "a1b1e5f6-1001-1001-1001-000000000006",
+      "name": "Parse Structured Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 460],
+      "parameters": {
+        "jsCode": "const parsed = JSON.parse($input.item.json.message.content);\nreturn { structured: parsed };"
+      }
+    },
+    {
+      "id": "a1b1e5f6-1001-1001-1001-000000000007",
+      "name": "Respond: Structured JSON",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1340, 460],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [{ "node": "Extract Fields", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extract Fields": {
+      "main": [
+        [{ "node": "Check Complaint Length", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check Complaint Length": {
+      "main": [
+        [{ "node": "Respond: Insufficient Detail", "type": "main", "index": 0 }],
+        [{ "node": "OpenAI: Extract Structured Complaint", "type": "main", "index": 0 }]
+      ]
+    },
+    "OpenAI: Extract Structured Complaint": {
+      "main": [
+        [{ "node": "Parse Structured Output", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parse Structured Output": {
+      "main": [
+        [{ "node": "Respond: Structured JSON", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    { "name": "er-triage" }
+  ]
+}

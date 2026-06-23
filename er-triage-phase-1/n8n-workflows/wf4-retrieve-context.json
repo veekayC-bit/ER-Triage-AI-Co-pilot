@@ -1,0 +1,172 @@
+{
+  "name": "ER Triage: Retrieve Clinical Context",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "retrieve-context",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "wf4-001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "retrieve-context"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "pinecone_host",
+              "value": "PASTE_YOUR_PINECONE_HOST_HERE"
+            },
+            {
+              "name": "pinecone_namespace",
+              "value": "er-guidelines"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "wf4-002",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'text-embedding-ada-002', input: $('Webhook').item.json.body.complaint_text + ' ' + ($('Webhook').item.json.body.complaint_category || '') + ' ' + ($('Webhook').item.json.body.flag_type || '') }) }}",
+        "options": {}
+      },
+      "id": "wf4-003",
+      "name": "Embed Query",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "2lPRNHpRQH3SQk51",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json;\nconst embedding = body.data?.[0]?.embedding;\nif (!embedding || !Array.isArray(embedding)) {\n  throw new Error('OpenAI embedding failed: ' + JSON.stringify(body));\n}\nreturn [{ json: { embedding } }];"
+      },
+      "id": "wf4-004",
+      "name": "Extract Vector",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [860, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $('Config').item.json.pinecone_host }}/query",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "PASTE_YOUR_PINECONE_API_KEY_HERE"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ namespace: $('Config').item.json.pinecone_namespace, vector: $json.embedding, topK: 4, includeMetadata: true }) }}",
+        "options": {}
+      },
+      "id": "wf4-005",
+      "name": "Query Pinecone",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1080, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json;\nconst matches = body.matches || [];\n\nconst results = matches\n  .filter(m => m.score > 0.3)\n  .map((m, i) => {\n    const meta = m.metadata || {};\n    return {\n      guideline_id: m.id || meta.id || ('result-' + i),\n      source: meta.source || 'clinical_guideline',\n      title: meta.title || 'Clinical Guideline',\n      excerpt: (meta.text || meta._node_content || '').slice(0, 400),\n      relevance_score: Math.round((m.score || 0) * 100)\n    };\n  })\n  .filter(r => r.excerpt.length > 0);\n\nconst context_block = results\n  .map(r => '[' + r.title + '] ' + r.excerpt)\n  .join('\\n\\n');\n\nreturn [{\n  json: {\n    retrieved_context: results,\n    context_block,\n    top_guideline: results[0]?.title || null,\n    match_count: results.length\n  }\n}];"
+      },
+      "id": "wf4-006",
+      "name": "Format Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1300, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          }
+        }
+      },
+      "id": "wf4-007",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1520, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [{ "node": "Config", "type": "main", "index": 0 }]
+      ]
+    },
+    "Config": {
+      "main": [
+        [{ "node": "Embed Query", "type": "main", "index": 0 }]
+      ]
+    },
+    "Embed Query": {
+      "main": [
+        [{ "node": "Extract Vector", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extract Vector": {
+      "main": [
+        [{ "node": "Query Pinecone", "type": "main", "index": 0 }]
+      ]
+    },
+    "Query Pinecone": {
+      "main": [
+        [{ "node": "Format Results", "type": "main", "index": 0 }]
+      ]
+    },
+    "Format Results": {
+      "main": [
+        [{ "node": "Respond to Webhook", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    { "name": "er-triage" },
+    { "name": "phase-3" }
+  ]
+}

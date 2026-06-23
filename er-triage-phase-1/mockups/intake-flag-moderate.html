@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake — Moderate Alert | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+</head>
+<body>
+
+<div class="screen-label">Screen 2 — Intake: Moderate Flag Alert (70–89%) &nbsp;|&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.6)">← All Screens</a></div>
+
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-icon">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">New Patient Intake</span>
+    <span class="sep">|</span>
+    <span>Bay 7</span>
+    <span class="sep">|</span>
+    <span>Arrived 14:51</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Day Shift · 07:00–19:00</span>
+    <span>RN J. Osei</span>
+  </div>
+</header>
+
+<nav class="global-nav">
+  <a href="dashboard.html">⌂ Dashboard</a>
+  <span class="nav-sep">·</span>
+  <a href="intake-normal.html" class="nav-cta">⊕ New Patient</a>
+</nav>
+
+<div id="flag-banner"></div>
+
+<div class="intake-layout">
+
+  <!-- LEFT: FORM PANEL -->
+  <section class="form-panel">
+    <div class="section-title">Patient Intake</div>
+
+    <div class="patient-info-bar">
+      <div class="patient-info-field">
+        <label>Encounter ID</label>
+        <span id="encounter-id" style="font-family:monospace;font-size:11px;color:var(--accent);font-weight:700;">Generating…</span>
+      </div>
+      <div class="patient-info-field">
+        <label>Name</label>
+        <input type="text" id="patient-name" class="patient-info-input" value="A. Ferreira" placeholder="Last, First">
+      </div>
+      <div class="patient-info-field">
+        <label>DOB</label>
+        <input type="date" id="patient-dob" class="patient-info-input" value="1951-09-04">
+      </div>
+      <div class="patient-info-field">
+        <label>Sex</label>
+        <select id="patient-sex" class="patient-info-input">
+          <option>Male</option>
+          <option selected>Female</option>
+          <option>Non-binary</option>
+          <option>Unknown</option>
+        </select>
+      </div>
+      <div class="patient-info-field">
+        <label>Ethnicity</label>
+        <select id="patient-ethnicity" style="font-size:12px;padding:2px 4px;border:1px solid var(--border);border-radius:4px;background:var(--white);color:var(--text);font-weight:600;">
+          <option>Not Hispanic or Latino</option>
+          <option>Hispanic or Latino</option>
+          <option>Unknown / Not reported</option>
+          <option>Prefer not to say</option>
+        </select>
+      </div>
+      <div class="patient-info-field">
+        <label>MRN</label>
+        <input type="text" id="patient-mrn" class="patient-info-input" value="MRN-332185" placeholder="MRN-XXXXXX">
+      </div>
+    </div>
+
+    <!-- Chief Complaint — highlighted because alert triggered from here -->
+    <div class="card" id="chief-complaint-card" style="border-color:var(--warning-border);background:var(--warning-bg);">
+      <div class="card-title" style="color:#92400e;">⚠ Chief Complaint <span style="font-size:10px;font-weight:500;text-transform:none;letter-spacing:0;color:#b45309;">&nbsp;— AI flag detected from this input</span></div>
+      <div class="form-group">
+        <label>Free-text complaint (nurse transcription)</label>
+        <textarea id="complaint-text" style="border-color:var(--warning);background:#fff;">Rash spreading across her torso and arms, started about 3 hours ago after taking a new antibiotic her doctor prescribed yesterday.</textarea>
+      </div>
+      <div class="ai-parsing-indicator" id="ai-parsing-indicator" style="color:var(--warning)">
+        <div class="pulse-dot" style="background:var(--warning)"></div>
+        <span>AI parsed — possible allergic reaction detected in sidebar</span>
+        <button id="reanalyze-btn" class="btn btn-sm btn-secondary" style="margin-left:auto;">🔄 Re-analyze</button>
+      </div>
+      <div id="cc-suggestion-area" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--warning-border);">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:#92400e;margin-bottom:6px;">Coded Chief Complaint — AI Suggested (click to accept)</div>
+        <div id="cc-chips"></div>
+        <input type="text" id="structured-cc" readonly placeholder="Click a chip above to accept…" style="margin-top:6px;font-size:12px;background:var(--warning-bg);border-color:var(--warning-border);cursor:default;">
+      </div>
+    </div>
+
+    <div class="card" id="vitals-card">
+      <div class="card-title">🩺 Vitals</div>
+      <div class="vitals-grid">
+        <div class="form-group">
+          <label>BP (mmHg)</label>
+          <input type="text" id="vital-bp" value="122 / 78">
+        </div>
+        <div class="form-group">
+          <label>HR (bpm)</label>
+          <input type="text" id="vital-hr" value="96">
+        </div>
+        <div class="form-group">
+          <label>SpO₂ (%)</label>
+          <input type="text" id="vital-spo2" value="98">
+        </div>
+        <div class="form-group">
+          <label>RR (breaths/min)</label>
+          <input type="text" id="vital-rr" value="18">
+        </div>
+        <div class="form-group">
+          <label>Temp (°C)</label>
+          <input type="text" id="vital-temp" value="37.4">
+        </div>
+        <div class="form-group">
+          <label>GCS</label>
+          <input type="text" id="vital-gcs" value="15">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Additional Context</div>
+      <div class="form-group">
+        <label>Allergies</label>
+        <input type="text" value="Penicillin (rash — documented)">
+      </div>
+      <div class="form-group">
+        <label>Current Medications</label>
+        <input type="text" value="Amoxicillin-Clavulanate 875mg (new, yesterday) — note penicillin allergy">
+      </div>
+      <div class="form-group">
+        <label>Relevant History</label>
+        <textarea style="min-height:60px">COPD (moderate), HTN. Penicillin allergy on file — prescribing MD may not have reviewed allergy list.</textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 Acuity — Nurse Assigned (ESI)</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <select style="width:auto;padding:10px 14px;font-size:15px;font-weight:700;border-color:var(--warning);">
+          <option value="">Select ESI Level</option>
+          <option value="1">ESI 1 — Resuscitation</option>
+          <option value="2" selected>ESI 2 — Emergent</option>
+          <option value="3">ESI 3 — Urgent</option>
+          <option value="4">ESI 4 — Less Urgent</option>
+          <option value="5">ESI 5 — Non-urgent</option>
+        </select>
+        <span style="font-size:12px;color:var(--text-muted)">AI does not assign ESI — nurse judgment only</span>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <a href="dashboard.html" class="btn btn-secondary">← Dashboard</a>
+      <a href="intake-normal.html" class="btn btn-secondary">⊕ New Patient</a>
+      <a href="intake-summary.html" class="btn btn-primary">Review & Submit →</a>
+    </div>
+  </section>
+
+  <!-- RIGHT: AI SIDEBAR with Moderate Alert -->
+  <aside class="ai-sidebar">
+    <div class="sidebar-header" style="background:#92400e;">
+      AI Triage Assistant — Flag Active
+      <div class="ai-status">
+        <div class="status-dot" id="ai-status-dot" style="background:#fbbf24;"></div>
+        <span id="ai-status-text">Alert · Awaiting acknowledgment</span>
+      </div>
+    </div>
+
+    <!-- ALERT CARD — Moderate -->
+    <div class="sidebar-section" id="flag-screening-section" style="background:var(--warning-bg);">
+      <div class="sidebar-section-title" style="color:#92400e;">Critical Flag Screening</div>
+      <div id="flag-screening-content">
+        <div class="empty-state">
+          <p>Waiting for AI analysis…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggested Fields -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Suggested Structured Fields</div>
+      <div id="structured-fields-list">
+        <div class="empty-state" style="padding:16px;">
+          <p>Waiting for AI analysis…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vitals Consistency Check -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Vitals Consistency Check</div>
+      <div id="vitals-mismatch-content">
+        <div class="empty-state">
+          <p>Waiting for AI analysis…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Reasoning Note -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">AI Reasoning Note</div>
+      <div id="ai-reasoning-note" style="background:var(--white);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--text-muted);border:1px solid var(--border);">
+        Waiting for AI analysis…
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--text-muted);text-align:right;">AI reasoning is advisory only</div>
+    </div>
+
+    <!-- Clinical Context (RAG) -->
+    <div class="sidebar-section" id="clinical-context-section">
+      <div class="sidebar-section-title">Clinical Context <span style="font-size:10px;font-weight:400;opacity:0.7;margin-left:4px;">RAG</span></div>
+      <div id="clinical-context-content">
+        <div class="empty-state" style="padding:12px 0;">
+          <div class="empty-icon" style="font-size:16px;">📋</div>
+          <p>Guidelines load after analysis</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Watchlist -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Symptom Watchlist</div>
+      <div style="font-size:11px;color:var(--text-muted);background:var(--white);border-radius:var(--radius);padding:10px 12px;border:1px solid var(--border);">
+        AI will auto-escalate alert to CRITICAL if nurse enters or transcribes any of:<br>
+        <ul style="margin-top:6px;padding-left:16px;line-height:2;">
+          <li>Throat tightness / stridor</li>
+          <li>SpO₂ drop (&lt; 95%)</li>
+          <li>Hypotension (systolic &lt; 90)</li>
+          <li>Facial / tongue swelling</li>
+          <li>Wheezing / bronchospasm</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Queue Snapshot -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Queue Snapshot</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;">
+        <div style="background:#fef2f2;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#dc2626">1</div><div style="font-size:10px;color:#ef4444;font-weight:600">ESI 1</div></div>
+        <div style="background:#fff7ed;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#ea580c">4</div><div style="font-size:10px;color:#f97316;font-weight:600">ESI 2</div></div>
+        <div style="background:#fefce8;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#ca8a04">8</div><div style="font-size:10px;color:#eab308;font-weight:600">ESI 3</div></div>
+        <div style="background:#f0fdf4;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#16a34a">5</div><div style="font-size:10px;color:#22c55e;font-weight:600">ESI 4</div></div>
+        <div style="background:#eff6ff;border-radius:6px;padding:8px 4px;"><div style="font-size:18px;font-weight:800;color:#2563eb">4</div><div style="font-size:10px;color:#3b82f6;font-weight:600">ESI 5</div></div>
+      </div>
+      <a href="queue-panel.html" style="display:block;text-align:center;margin-top:10px;font-size:11px;color:var(--accent);font-weight:600;text-decoration:none;">View full queue →</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+const PARSE_URL = "https://veekayc.app.n8n.cloud/webhook/parse-complaint";
+const FLAGS_URL = "https://veekayc.app.n8n.cloud/webhook/detect-flags";
+const CONTEXT_URL = "https://veekayc.app.n8n.cloud/webhook/retrieve-context";
+
+const ENCOUNTER_ID = (() => {
+  const d = new Date();
+  const date = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+  const seq = String(Math.floor(Math.random() * 999999)).padStart(6, "0");
+  return `ENC-${date}-${seq}`;
+})();
+
+const $ = (id) => document.getElementById(id);
+
+function collectVitals() {
+  return {
+    bp: $("vital-bp").value,
+    hr: $("vital-hr").value,
+    spo2: $("vital-spo2").value,
+    rr: $("vital-rr").value,
+    temp: $("vital-temp").value,
+    gcs: $("vital-gcs").value
+  };
+}
+
+function setStatus(state, label) {
+  const dot = $("ai-status-dot");
+  const text = $("ai-status-text");
+  text.textContent = label;
+  dot.style.background = state === "error" ? "#94a3b8" : state === "busy" ? "#fde68a" : "#fbbf24";
+}
+
+function renderStructuredFields(structured) {
+  const rows = [
+    ["Complaint Category", structured.complaint_category],
+    ["Onset", structured.onset],
+    ["Duration", structured.duration],
+    ["Associated Symptoms", Array.isArray(structured.symptoms) ? structured.symptoms.join(", ") : structured.symptoms],
+    ["Trigger", structured.trigger],
+    ["Context", structured.context]
+  ].filter(([, value]) => value);
+
+  $("structured-fields-list").innerHTML = rows.map(([label, value]) => `
+    <div class="suggestion-row">
+      <div class="suggestion-body">
+        <div class="field-name">${label}</div>
+        <div class="field-value">${value}</div>
+      </div>
+      <div class="suggestion-actions">
+        <button class="btn btn-accept btn-sm" onclick="this.closest('.suggestion-row').classList.add('suggestion-accepted')">✓</button>
+        <button class="btn btn-dismiss btn-sm" onclick="this.closest('.suggestion-row').classList.add('suggestion-dismissed')">✕</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderFlagScreening(flags) {
+  const banner = $("flag-banner");
+  const content = $("flag-screening-content");
+
+  if (!flags.flag_detected) {
+    banner.innerHTML = "";
+    content.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">✓</div>
+        <p>No critical flags detected<br>Confidence threshold not met for any of 10 monitored conditions</p>
+      </div>
+    `;
+    return;
+  }
+
+  const isCritical = flags.urgency === "high";
+  const cardClass = isCritical ? "alert-card-critical" : "alert-card-warning";
+  const icon = isCritical ? "🔴" : "⚠";
+  const confidencePct = Math.round((flags.confidence || 0) * 100);
+
+  content.innerHTML = `
+    <div class="alert-card ${cardClass}">
+      <div class="alert-flag-name">
+        ${icon} ${flags.flag_type}
+        <span class="confidence-badge">${confidencePct}% confidence</span>
+      </div>
+      <div class="alert-source">Source text: <em>"${flags.source_citation || ""}"</em></div>
+      ${flags.reasoning ? `<div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">${flags.reasoning}</div>` : ""}
+      <div class="alert-actions">
+        <button class="btn btn-sm" style="background:${isCritical ? "#991b1b" : "var(--warning)"};color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;" onclick="this.closest('.alert-card').style.opacity=0.5">✓ Acknowledge</button>
+        <button class="btn btn-sm btn-dismiss">Dismiss</button>
+      </div>
+    </div>
+  `;
+
+  banner.innerHTML = isCritical
+    ? `<div class="urgent-banner">🔴 CRITICAL FLAG — ${flags.flag_type.toUpperCase()} · ${confidencePct}% Confidence — Nurse confirmation required</div>`
+    : `<div style="background:#d97706;color:#fff;padding:8px 24px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;">⚠ AI flag detected — please review the alert in the sidebar before submitting.<span style="margin-left:auto;font-size:11px;font-weight:400;opacity:0.85;">Nurse must acknowledge before record is updated</span></div>`;
+}
+
+function renderVitalsMismatch(flags) {
+  const content = $("vitals-mismatch-content");
+  const mismatch = flags.vitals_mismatch;
+
+  if (!mismatch || !mismatch.triggered) {
+    content.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">✓</div>
+        <p>Vitals consistent with reported symptoms</p>
+      </div>
+    `;
+    return;
+  }
+
+  content.innerHTML = `
+    <div class="alert-card alert-card-warning">
+      <div class="alert-flag-name">⚠ Vitals mismatch — ${mismatch.vital}</div>
+      <div class="alert-source">${mismatch.reason || ""}</div>
+      <div class="alert-actions">
+        <button class="btn btn-sm btn-secondary" id="review-vitals-btn">🔍 Review Vitals</button>
+        <button class="btn btn-sm btn-dismiss" id="dismiss-vitals-btn">✓ Expected — Dismiss</button>
+      </div>
+    </div>
+  `;
+
+  $("review-vitals-btn").addEventListener("click", () => {
+    const card = $("vitals-card");
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+    card.classList.add("card-highlight");
+    setTimeout(() => card.classList.remove("card-highlight"), 1500);
+  });
+
+  $("dismiss-vitals-btn").addEventListener("click", (e) => {
+    console.log("Vitals mismatch dismissed as expected:", {
+      vital: mismatch.vital,
+      reason: mismatch.reason,
+      timestamp: new Date().toISOString()
+    });
+    const card = e.target.closest(".alert-card");
+    card.style.opacity = 0.6;
+    card.querySelector(".alert-actions").innerHTML = `<span style="font-size:11px;color:var(--text-muted);font-style:italic;">Dismissed as expected — logged for system learning</span>`;
+  });
+}
+
+function renderClinicalContext(contextData) {
+  const el = document.getElementById("clinical-context-content");
+  if (!el) return;
+  const results = contextData?.retrieved_context || [];
+  if (!results.length) {
+    el.innerHTML = `<div class="empty-state" style="padding:12px 0;"><div class="empty-icon" style="font-size:16px;">📋</div><p>No matching guidelines found</p></div>`;
+    return;
+  }
+  el.innerHTML = results.map(r => `
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text);line-height:1.3;">${r.title}</div>
+        <span style="background:#eff6ff;color:#1d4ed8;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;white-space:nowrap;flex-shrink:0;">${r.relevance_score}%</span>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">${r.excerpt}</div>
+      <div style="margin-top:6px;font-size:10px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">${r.source}</div>
+    </div>
+  `).join("");
+}
+
+function renderReasoning(flags, structured) {
+  $("ai-reasoning-note").textContent = flags.reasoning
+    ? `"${flags.reasoning}"`
+    : `"${structured.complaint_category || "Complaint"} reviewed against 10 monitored conditions — no high-acuity pattern detected. Pattern consistent with non-critical presentation."`;
+}
+
+function renderCCSuggestions(structured) {
+  const area = $("cc-suggestion-area");
+  const chips = $("cc-chips");
+  const input = $("structured-cc");
+  if (!structured.complaint_category) return;
+  const options = [structured.complaint_category, ...(structured.complaint_category_alternatives || [])].filter(Boolean);
+  chips.innerHTML = options.map((opt, i) =>
+    `<span class="cc-chip${i === 0 ? " cc-chip-selected" : ""}" onclick="selectCC(this,'${opt.replace(/'/g,"&#39;")}')">${i === 0 ? "✓ " : ""}${opt}</span>`
+  ).join("");
+  input.value = options[0] || "";
+  area.style.display = "";
+}
+
+window.selectCC = function(el, value) {
+  document.querySelectorAll(".cc-chip").forEach(c => {
+    c.classList.remove("cc-chip-selected");
+    c.textContent = c.textContent.replace(/^✓ /, "");
+  });
+  el.classList.add("cc-chip-selected");
+  el.textContent = "✓ " + value;
+  $("structured-cc").value = value;
+};
+
+function applyUrgencyTheme(flags) {
+  const urgency = flags.urgency === "high" ? "high" : flags.flag_detected ? "standard" : "none";
+  const t = {
+    high:     { headerBg:"#7f1d1d", logoBg:"#dc2626", panelBorder:"#fecaca",
+                cardBorder:"2px solid var(--danger)", cardBg:"#fff5f5",
+                indicatorColor:"var(--danger)", dotBg:"var(--danger)",
+                indicatorText:`CRITICAL FLAG: ${flags.flag_type} detected — immediate nurse review required`,
+                sidebarBg:"#7f1d1d", sectionBg:"#fef2f2", titleColor:"#991b1b" },
+    standard: { headerBg:"#92400e", logoBg:"#d97706", panelBorder:"var(--warning-border)",
+                cardBorder:"1px solid var(--warning-border)", cardBg:"var(--warning-bg)",
+                indicatorColor:"var(--warning)", dotBg:"var(--warning)",
+                indicatorText:`AI flag detected — possible ${flags.flag_type || "condition"} in sidebar`,
+                sidebarBg:"#92400e", sectionBg:"var(--warning-bg)", titleColor:"#92400e" },
+    none:     { headerBg:"var(--primary)", logoBg:"var(--accent)", panelBorder:"var(--border)",
+                cardBorder:"1px solid var(--border)", cardBg:"var(--white)",
+                indicatorColor:"", dotBg:"#4ade80",
+                indicatorText:"AI is parsing — structured suggestions updating in sidebar",
+                sidebarBg:"var(--primary)", sectionBg:"var(--accent-light)", titleColor:"" }
+  }[urgency];
+
+  document.querySelector(".app-header").style.background = t.headerBg;
+  document.querySelector(".logo-icon").style.background = t.logoBg;
+  document.querySelector(".form-panel").style.borderRightColor = t.panelBorder;
+
+  const card = $("chief-complaint-card");
+  card.style.border = t.cardBorder;
+  card.style.background = t.cardBg;
+
+  const ind = $("ai-parsing-indicator");
+  ind.style.color = t.indicatorColor;
+  const dot = ind.querySelector(".pulse-dot");
+  if (dot) dot.style.background = t.dotBg;
+  const label = ind.querySelector("span");
+  if (label) label.textContent = t.indicatorText;
+
+  document.querySelector(".sidebar-header").style.background = t.sidebarBg;
+
+  const sec = $("flag-screening-section");
+  if (sec) {
+    sec.style.background = t.sectionBg;
+    const title = sec.querySelector(".sidebar-section-title");
+    if (title) title.style.color = t.titleColor;
+  }
+}
+
+function persistAnalysis(complaintText, vitals, structured, flags, contextData) {
+  sessionStorage.setItem("erTriageLastAnalysis", JSON.stringify({
+    encounter_id: ENCOUNTER_ID,
+    patient: {
+      name: $("patient-name")?.value || "—",
+      dob: $("patient-dob")?.value || "—",
+      sex: $("patient-sex")?.value || "—",
+      ethnicity: $("patient-ethnicity")?.value || "—",
+      mrn: $("patient-mrn")?.value || "—"
+    },
+    complaint_text: complaintText,
+    structured_cc: $("structured-cc")?.value || structured.complaint_category || "",
+    vitals,
+    structured,
+    flags,
+    retrieved_context: contextData?.retrieved_context || [],
+    top_guideline: contextData?.top_guideline || null,
+    timestamp: new Date().toISOString()
+  }));
+}
+
+async function analyze() {
+  const complaintText = $("complaint-text").value.trim();
+  if (!complaintText) return;
+
+  setStatus("busy", "Analyzing…");
+  const start = performance.now();
+  const vitals = collectVitals();
+  const payload = JSON.stringify({ complaint_text: complaintText, vitals });
+
+  try {
+    const [parseRes, flagsRes, contextRes] = await Promise.all([
+      fetch(PARSE_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: payload }),
+      fetch(FLAGS_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: payload }),
+      fetch(CONTEXT_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: payload })
+    ]);
+
+    if (parseRes.status === 400 || flagsRes.status === 400) {
+      setStatus("error", "Insufficient detail");
+      return;
+    }
+    if (!parseRes.ok || !flagsRes.ok) throw new Error(`HTTP ${parseRes.status}/${flagsRes.status}`);
+
+    const [parseData, flagsData, contextData] = await Promise.all([parseRes.json(), flagsRes.json(), contextRes.ok ? contextRes.json() : Promise.resolve({})]);
+    const latency = ((performance.now() - start) / 1000).toFixed(1);
+
+    const structured = parseData.structured || {};
+    const flags = flagsData.flags || {};
+
+    renderStructuredFields(structured);
+    renderCCSuggestions(structured);
+    renderFlagScreening(flags);
+    renderVitalsMismatch(flags);
+    renderReasoning(flags, structured);
+    renderClinicalContext(contextData);
+    applyUrgencyTheme(flags);
+    persistAnalysis(complaintText, vitals, structured, flags, contextData);
+    setStatus("ok", flags.flag_detected ? "Alert · Awaiting acknowledgment" : `Active · ${latency}s latency`);
+  } catch (err) {
+    setStatus("error", "Offline — check connection");
+    console.error("AI analysis failed:", err);
+  }
+}
+
+function debounce(fn, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+const debouncedAnalyze = debounce(analyze, 1000);
+
+$("complaint-text").addEventListener("input", debouncedAnalyze);
+["vital-bp", "vital-hr", "vital-spo2", "vital-rr", "vital-temp", "vital-gcs"]
+  .forEach((id) => $(id).addEventListener("input", debouncedAnalyze));
+$("reanalyze-btn").addEventListener("click", (e) => { e.preventDefault(); analyze(); });
+
+$("encounter-id").textContent = ENCOUNTER_ID;
+
+analyze();
+</script>
+
+</body>
+</html>

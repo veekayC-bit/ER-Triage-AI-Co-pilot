@@ -1,0 +1,2257 @@
+{
+  "run_metadata": {
+    "date": "2026-06-17",
+    "timestamp": "2026-06-17T13:21:16.573320",
+    "sample_size": 100,
+    "seed": 42,
+    "filter_flag": null,
+    "filter_acuity": null,
+    "wf4_url": "https://veekayc.app.n8n.cloud/webhook/retrieve-context"
+  },
+  "summary": {
+    "total": 100,
+    "passed": 97,
+    "pass_rate": 0.97,
+    "keyword_hit_rate": 1.0,
+    "source_match_rate": 0.97,
+    "relevance_ok_rate": 1.0,
+    "avg_top_relevance": 84.6,
+    "by_category": [
+      {
+        "category": "Acute confusion and dysarthria",
+        "pass": 5,
+        "total": 8,
+        "pass_rate": 0.625
+      },
+      {
+        "category": "Bee sting with throat tightness",
+        "pass": 5,
+        "total": 5,
+        "pass_rate": 1.0
+      },
+      {
+        "category": "Chest pain with left arm radiation",
+        "pass": 11,
+        "total": 11,
+        "pass_rate": 1.0
+      },
+      {
+        "category": "Dizziness",
+        "pass": 32,
+        "total": 32,
+        "pass_rate": 1.0
+      },
+      {
+        "category": "Dyspnea",
+        "pass": 12,
+        "total": 12,
+        "pass_rate": 1.0
+      },
+      {
+        "category": "Generalized rash",
+        "pass": 8,
+        "total": 8,
+        "pass_rate": 1.0
+      },
+      {
+        "category": "Hand laceration",
+        "pass": 13,
+        "total": 13,
+        "pass_rate": 1.0
+      },
+      {
+        "category": "Suicidal ideation",
+        "pass": 11,
+        "total": 11,
+        "pass_rate": 1.0
+      }
+    ],
+    "by_acuity": [
+      {
+        "acuity": "Critical",
+        "pass": 21,
+        "total": 24,
+        "pass_rate": 0.875
+      },
+      {
+        "acuity": "High",
+        "pass": 23,
+        "total": 23,
+        "pass_rate": 1.0
+      },
+      {
+        "acuity": "Medium",
+        "pass": 8,
+        "total": 8,
+        "pass_rate": 1.0
+      },
+      {
+        "acuity": "Low",
+        "pass": 45,
+        "total": 45,
+        "pass_rate": 1.0
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "eval-0007",
+      "category": "Generalized rash",
+      "acuity": "Medium",
+      "expected_esi": "3",
+      "flag": "Possible Allergic Reaction",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 86,
+      "match_count": 4,
+      "top_guideline": "Drug Reaction and Allergic Rash Protocol",
+      "matched_keywords": [
+        "allergic",
+        "anaphylaxis",
+        "Anaphylaxis",
+        "rash",
+        "drug reaction"
+      ]
+    },
+    {
+      "id": "eval-0026",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0028",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0031",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 89,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0033",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0045",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "Psychiatric Emergency and Suicidal Ideation Protocol",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0047",
+      "category": "Bee sting with throat tightness",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Anaphylaxis",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "Anaphylaxis",
+      "matched_keywords": [
+        "Anaphylaxis",
+        "anaphylaxis",
+        "Epinephrine",
+        "epinephrine",
+        "airway",
+        "throat"
+      ]
+    },
+    {
+      "id": "eval-0072",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0081",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0082",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0090",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 84,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0095",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "Psychiatric Emergency and Suicidal Ideation Protocol",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0096",
+      "category": "Generalized rash",
+      "acuity": "Medium",
+      "expected_esi": "3",
+      "flag": "Possible Allergic Reaction",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "Drug Reaction and Allergic Rash Protocol",
+      "matched_keywords": [
+        "allergic",
+        "anaphylaxis",
+        "Anaphylaxis",
+        "rash",
+        "drug reaction"
+      ]
+    },
+    {
+      "id": "eval-0100",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0104",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0105",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0115",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0128",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 3 \u2014 Urgent",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0143",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0160",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0164",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0167",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "Psychiatric Emergency and Suicidal Ideation Protocol",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0197",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0204",
+      "category": "Generalized rash",
+      "acuity": "Medium",
+      "expected_esi": "3",
+      "flag": "Possible Allergic Reaction",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Drug Reaction and Allergic Rash Protocol",
+      "matched_keywords": [
+        "allergic",
+        "anaphylaxis",
+        "Anaphylaxis",
+        "rash",
+        "drug reaction"
+      ]
+    },
+    {
+      "id": "eval-0215",
+      "category": "Generalized rash",
+      "acuity": "Medium",
+      "expected_esi": "3",
+      "flag": "Possible Allergic Reaction",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Drug Reaction and Allergic Rash Protocol",
+      "matched_keywords": [
+        "allergic",
+        "anaphylaxis",
+        "Anaphylaxis",
+        "rash",
+        "drug reaction"
+      ]
+    },
+    {
+      "id": "eval-0221",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "Psychiatric Emergency and Suicidal Ideation Protocol",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0224",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Stroke Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 86,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "stroke",
+        "FAST",
+        "tPA",
+        "CT head",
+        "neurology",
+        "facial",
+        "arm weakness"
+      ]
+    },
+    {
+      "id": "eval-0226",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 3 \u2014 Urgent",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0229",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0234",
+      "category": "Bee sting with throat tightness",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Anaphylaxis",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "Anaphylaxis",
+      "matched_keywords": [
+        "Anaphylaxis",
+        "anaphylaxis",
+        "Epinephrine",
+        "epinephrine",
+        "airway",
+        "throat"
+      ]
+    },
+    {
+      "id": "eval-0239",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0251",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 86,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0271",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0282",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Stroke Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "stroke",
+        "FAST",
+        "tPA",
+        "CT head",
+        "neurology",
+        "facial",
+        "arm weakness"
+      ]
+    },
+    {
+      "id": "eval-0285",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0297",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 84,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0301",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Stroke Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 86,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "stroke",
+        "FAST",
+        "tPA",
+        "CT head",
+        "neurology",
+        "facial",
+        "arm weakness"
+      ]
+    },
+    {
+      "id": "eval-0345",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0349",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0353",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Stroke Indicator",
+      "overall_pass": false,
+      "keyword_hit": true,
+      "source_match": false,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "stroke",
+        "FAST"
+      ]
+    },
+    {
+      "id": "eval-0364",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0368",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 3 \u2014 Urgent",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0371",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Stroke Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 86,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "stroke",
+        "FAST",
+        "tPA",
+        "CT head",
+        "neurology",
+        "facial",
+        "arm weakness"
+      ]
+    },
+    {
+      "id": "eval-0374",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0380",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0388",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0390",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0430",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0433",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0460",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Stroke Indicator",
+      "overall_pass": false,
+      "keyword_hit": true,
+      "source_match": false,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "stroke",
+        "FAST"
+      ]
+    },
+    {
+      "id": "eval-0465",
+      "category": "Generalized rash",
+      "acuity": "Medium",
+      "expected_esi": "3",
+      "flag": "Possible Allergic Reaction",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Drug Reaction and Allergic Rash Protocol",
+      "matched_keywords": [
+        "allergic",
+        "anaphylaxis",
+        "Anaphylaxis",
+        "rash",
+        "drug reaction"
+      ]
+    },
+    {
+      "id": "eval-0471",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0518",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0550",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0559",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0566",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0575",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0592",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0604",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0605",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 86,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0617",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0619",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 89,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0634",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0644",
+      "category": "Bee sting with throat tightness",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Anaphylaxis",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "Anaphylaxis",
+      "matched_keywords": [
+        "Anaphylaxis",
+        "anaphylaxis",
+        "Epinephrine",
+        "epinephrine",
+        "airway",
+        "throat"
+      ]
+    },
+    {
+      "id": "eval-0651",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0655",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0666",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 3 \u2014 Urgent",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0678",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 84,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0687",
+      "category": "Generalized rash",
+      "acuity": "Medium",
+      "expected_esi": "3",
+      "flag": "Possible Allergic Reaction",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Drug Reaction and Allergic Rash Protocol",
+      "matched_keywords": [
+        "allergic",
+        "anaphylaxis",
+        "Anaphylaxis",
+        "rash",
+        "drug reaction"
+      ]
+    },
+    {
+      "id": "eval-0693",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0715",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0719",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0722",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0734",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0748",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0755",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0759",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0760",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0778",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0782",
+      "category": "Chest pain with left arm radiation",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Acute MI Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "STEMI \u2014 ST-Elevation Myocardial Infarction",
+      "matched_keywords": [
+        "STEMI",
+        "chest pain",
+        "ECG",
+        "troponin",
+        "aspirin",
+        "cardiology",
+        "door-to-balloon"
+      ]
+    },
+    {
+      "id": "eval-0792",
+      "category": "Generalized rash",
+      "acuity": "Medium",
+      "expected_esi": "3",
+      "flag": "Possible Allergic Reaction",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "Drug Reaction and Allergic Rash Protocol",
+      "matched_keywords": [
+        "allergic",
+        "anaphylaxis",
+        "Anaphylaxis",
+        "rash",
+        "drug reaction"
+      ]
+    },
+    {
+      "id": "eval-0826",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0827",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0829",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0850",
+      "category": "Bee sting with throat tightness",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Anaphylaxis",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 90,
+      "match_count": 4,
+      "top_guideline": "Anaphylaxis",
+      "matched_keywords": [
+        "Anaphylaxis",
+        "anaphylaxis",
+        "Epinephrine",
+        "epinephrine",
+        "airway",
+        "throat"
+      ]
+    },
+    {
+      "id": "eval-0855",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Stroke Indicator",
+      "overall_pass": false,
+      "keyword_hit": true,
+      "source_match": false,
+      "relevance_ok": true,
+      "top_score": 82,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "stroke",
+        "FAST"
+      ]
+    },
+    {
+      "id": "eval-0868",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0876",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0883",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 3",
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0888",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0891",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0907",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Stroke Indicator",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 86,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "stroke",
+        "FAST",
+        "tPA",
+        "CT head",
+        "neurology",
+        "facial",
+        "arm weakness"
+      ]
+    },
+    {
+      "id": "eval-0914",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 84,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0948",
+      "category": "Generalized rash",
+      "acuity": "Medium",
+      "expected_esi": "3",
+      "flag": "Possible Allergic Reaction",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Drug Reaction and Allergic Rash Protocol",
+      "matched_keywords": [
+        "allergic",
+        "anaphylaxis",
+        "Anaphylaxis",
+        "rash",
+        "drug reaction"
+      ]
+    },
+    {
+      "id": "eval-0955",
+      "category": "Dizziness",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "ESI Level 4 and 5 \u2014 Non-Urgent and Minor",
+      "matched_keywords": [
+        "ESI Level 4",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0965",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 86,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    },
+    {
+      "id": "eval-0979",
+      "category": "Dyspnea",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Respiratory Distress",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 83,
+      "match_count": 4,
+      "top_guideline": "SpO2 and Respiratory Rate Thresholds",
+      "matched_keywords": [
+        "SpO2",
+        "dyspnea",
+        "oxygen",
+        "respiratory",
+        "breath",
+        "airway"
+      ]
+    },
+    {
+      "id": "eval-0984",
+      "category": "Bee sting with throat tightness",
+      "acuity": "Critical",
+      "expected_esi": "1",
+      "flag": "Anaphylaxis",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 87,
+      "match_count": 4,
+      "top_guideline": "Anaphylaxis",
+      "matched_keywords": [
+        "Anaphylaxis",
+        "anaphylaxis",
+        "Epinephrine",
+        "epinephrine",
+        "airway",
+        "throat"
+      ]
+    },
+    {
+      "id": "eval-0987",
+      "category": "Suicidal ideation",
+      "acuity": "High",
+      "expected_esi": "2",
+      "flag": "Suicidal Ideation",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "ESI Level 2 \u2014 Emergent",
+      "matched_keywords": [
+        "ESI Level 2",
+        "ESI 2",
+        "psychiatric",
+        "suicidal",
+        "mental",
+        "high-risk"
+      ]
+    },
+    {
+      "id": "eval-0991",
+      "category": "Hand laceration",
+      "acuity": "Low",
+      "expected_esi": "4",
+      "flag": "No Critical Flag",
+      "overall_pass": true,
+      "keyword_hit": true,
+      "source_match": true,
+      "relevance_ok": true,
+      "top_score": 85,
+      "match_count": 4,
+      "top_guideline": "Laceration and Wound Care Triage Protocol",
+      "matched_keywords": [
+        "ESI Level 3",
+        "urgent",
+        "stable",
+        "resources"
+      ]
+    }
+  ],
+  "failures": [
+    {
+      "id": "eval-0353",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "flag": "Stroke Indicator",
+      "reasons": [
+        "wrong_source"
+      ],
+      "top_score": 83,
+      "top_guideline": "ESI Level 2 \u2014 Emergent"
+    },
+    {
+      "id": "eval-0460",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "flag": "Stroke Indicator",
+      "reasons": [
+        "wrong_source"
+      ],
+      "top_score": 83,
+      "top_guideline": "ESI Level 2 \u2014 Emergent"
+    },
+    {
+      "id": "eval-0855",
+      "category": "Acute confusion and dysarthria",
+      "acuity": "Critical",
+      "flag": "Stroke Indicator",
+      "reasons": [
+        "wrong_source"
+      ],
+      "top_score": 82,
+      "top_guideline": "ESI Level 2 \u2014 Emergent"
+    }
+  ]
+}

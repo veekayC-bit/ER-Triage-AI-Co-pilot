@@ -16,9 +16,9 @@
     ER Triage AI Co-pilot
   </div>
   <div class="patient-context">
-    <span class="patient-name">Intake Review — ENC-2026-04817</span>
+    <span class="patient-name" id="header-encounter-id">Intake Review — ENC-2026-04817</span>
     <span class="sep">|</span>
-    <span>M. Okonkwo · Bay 4</span>
+    <span id="header-patient-name">M. Okonkwo · Bay 4</span>
     <span class="sep">|</span>
     <span>14:32 — 14:48</span>
   </div>
@@ -28,9 +28,14 @@
   </div>
 </header>
 
+<nav class="global-nav">
+  <a href="dashboard.html">⌂ Dashboard</a>
+  <span class="nav-sep">·</span>
+  <a href="intake-normal.html" class="nav-cta">⊕ New Patient</a>
+</nav>
+
 <div style="background:#eff6ff;border-bottom:1px solid #bfdbfe;padding:8px 24px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#1e40af;">
-  <span>ℹ</span>
-  Pre-submission review — nothing has been sent to the EMR yet. Review all fields and sign off to submit.
+  <span>ℹ Pre-submission review — nothing has been sent to the EMR yet. Review all fields and sign off to submit.</span>
   <span style="margin-left:auto;font-size:11px;font-weight:400;color:#3b82f6;">All AI suggestions shown as "AI Suggested" · Nurse-entered shown as "Nurse"</span>
 </div>
 
@@ -40,8 +45,9 @@
   <div class="card" style="margin-bottom:20px;">
     <div style="display:flex;align-items:center;justify-content:space-between;">
       <div>
-        <div style="font-size:20px;font-weight:800;color:var(--text);">M. Okonkwo</div>
-        <div style="font-size:13px;color:var(--text-muted);margin-top:2px;">DOB: 1968-03-11 · 58M · MRN-774920 · ENC-2026-04817 · Bay 4</div>
+        <div style="font-size:20px;font-weight:800;color:var(--text);" id="summary-patient-name">M. Okonkwo</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:2px;" id="summary-patient-meta">DOB: 1968-03-11 · 58M · MRN-774920 · Bay 4</div>
+        <div style="font-size:12px;color:var(--accent);font-weight:700;font-family:monospace;margin-top:4px;" id="summary-encounter-id">ENC-2026-04817</div>
       </div>
       <div style="text-align:right;">
         <div style="font-size:24px;font-weight:900;color:var(--accent);">ESI 3</div>
@@ -61,27 +67,42 @@
 
         <div class="summary-field-row">
           <div class="summary-field-label">Free-text Complaint</div>
-          <div class="summary-field-value">Feeling dizzy for 2 days, not eating well, some nausea.</div>
+          <div class="summary-field-value" id="summary-complaint-text">Feeling dizzy for 2 days, not eating well, some nausea.</div>
           <span class="source-tag source-nurse">Nurse</span>
         </div>
         <div class="summary-field-row">
           <div class="summary-field-label">Complaint Category</div>
-          <div class="summary-field-value">Dizziness / Vertigo</div>
+          <div class="summary-field-value" id="summary-category">Dizziness / Vertigo</div>
           <span class="source-tag source-ai">AI Suggested</span>
+        </div>
+        <div class="summary-field-row" id="summary-structured-cc-row" style="display:none;">
+          <div class="summary-field-label">Coded Chief Complaint</div>
+          <div class="summary-field-value" id="summary-structured-cc">—</div>
+          <span class="source-tag source-ai" style="background:#d1fae5;color:#065f46;border-color:#a7f3d0;">AI + Nurse Accepted</span>
         </div>
         <div class="summary-field-row">
           <div class="summary-field-label">Duration</div>
-          <div class="summary-field-value">2 days</div>
+          <div class="summary-field-value" id="summary-duration">2 days</div>
           <span class="source-tag source-ai">AI Suggested</span>
         </div>
         <div class="summary-field-row">
           <div class="summary-field-label">Onset Type</div>
-          <div class="summary-field-value">Gradual</div>
+          <div class="summary-field-value" id="summary-onset">Gradual</div>
           <span class="source-tag source-ai">AI Suggested</span>
         </div>
         <div class="summary-field-row">
           <div class="summary-field-label">Associated Symptoms</div>
-          <div class="summary-field-value">Nausea, reduced oral intake</div>
+          <div class="summary-field-value" id="summary-symptoms">Nausea, reduced oral intake</div>
+          <span class="source-tag source-ai">AI Suggested</span>
+        </div>
+        <div class="summary-field-row" id="summary-trigger-row" style="display:none;">
+          <div class="summary-field-label">Trigger</div>
+          <div class="summary-field-value" id="summary-trigger"></div>
+          <span class="source-tag source-ai">AI Suggested</span>
+        </div>
+        <div class="summary-field-row" id="summary-context-row" style="display:none;">
+          <div class="summary-field-label">Context</div>
+          <div class="summary-field-value" id="summary-context"></div>
           <span class="source-tag source-ai">AI Suggested</span>
         </div>
         <div class="summary-field-row">
@@ -97,32 +118,32 @@
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
           <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">Blood Pressure</div>
-            <div style="font-size:18px;font-weight:700;">138 / 86</div>
+            <div style="font-size:18px;font-weight:700;" id="summary-vital-bp">138 / 86</div>
             <div style="font-size:10px;color:var(--text-muted);">mmHg</div>
           </div>
           <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">Heart Rate</div>
-            <div style="font-size:18px;font-weight:700;">88</div>
+            <div style="font-size:18px;font-weight:700;" id="summary-vital-hr">88</div>
             <div style="font-size:10px;color:var(--text-muted);">bpm</div>
           </div>
           <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">SpO₂</div>
-            <div style="font-size:18px;font-weight:700;">97%</div>
+            <div style="font-size:18px;font-weight:700;" id="summary-vital-spo2">97%</div>
             <div style="font-size:10px;color:var(--text-muted);">pulse oximetry</div>
           </div>
           <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">Resp Rate</div>
-            <div style="font-size:18px;font-weight:700;">16</div>
+            <div style="font-size:18px;font-weight:700;" id="summary-vital-rr">16</div>
             <div style="font-size:10px;color:var(--text-muted);">breaths/min</div>
           </div>
           <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">Temperature</div>
-            <div style="font-size:18px;font-weight:700;">37.1°C</div>
+            <div style="font-size:18px;font-weight:700;" id="summary-vital-temp">37.1°C</div>
             <div style="font-size:10px;color:var(--text-muted);">oral</div>
           </div>
           <div style="background:var(--muted-bg);border-radius:var(--radius);padding:10px 12px;">
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted);margin-bottom:4px;">GCS</div>
-            <div style="font-size:18px;font-weight:700;">15 / 15</div>
+            <div style="font-size:18px;font-weight:700;" id="summary-vital-gcs">15 / 15</div>
             <div style="font-size:10px;color:var(--text-muted);">alert and oriented</div>
           </div>
         </div>
@@ -148,14 +169,14 @@
     <!-- RIGHT: AI SUMMARY PANEL -->
     <div>
 
-      <!-- Critical Flag Summary -->
-      <div class="card" style="background:var(--success-bg);border-color:var(--success-border);">
-        <div class="card-title" style="color:var(--success);">✓ AI Flag Screening</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--success);">
-          <span>✓</span> No critical flags detected
+      <!-- AI Triage Summary -->
+      <div class="card" id="flag-summary-card" style="background:var(--success-bg);border-color:var(--success-border);">
+        <div class="card-title" id="flag-summary-title" style="color:var(--success);">✓ AI Triage Assessment</div>
+        <div id="flag-summary-text" style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--success);">
+          <span>✓</span> Low-acuity — no critical flag
         </div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">
-          10 conditions screened · 0 alerts surfaced · Confidence below threshold (70%) for all monitored conditions
+        <div id="flag-summary-detail" style="font-size:11px;color:var(--text-muted);margin-top:6px;">
+          ESI assessed by orchestrator · disposition assigned · RAG guidelines retrieved
         </div>
       </div>
 
@@ -200,13 +221,113 @@
         </div>
         <div style="display:flex;gap:10px;margin-top:12px;">
           <a href="intake-normal.html" class="btn btn-secondary" style="flex:1;text-align:center;">← Edit Intake</a>
-          <button class="btn btn-success" style="flex:1;font-size:14px;font-weight:800;">Submit to EMR ✓</button>
+          <a href="intake-emr-submitted.html" class="btn btn-success" style="flex:1;text-align:center;font-size:14px;font-weight:800;">Submit to EMR ✓</a>
         </div>
         <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--text-muted);">This action is logged and irreversible. Submission time: 14:48:23</div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  const raw = sessionStorage.getItem("erTriageLastAnalysis");
+  if (!raw) return;
+
+  let data;
+  try { data = JSON.parse(raw); } catch (err) { return; }
+
+  const $ = (id) => document.getElementById(id);
+  const structured = data.structured || {};
+  const wf5 = data.wf5 || {};
+  const vitals = data.vitals || {};
+  const patient = data.patient || {};
+
+  // Encounter ID
+  if (data.encounter_id) {
+    $("summary-encounter-id").textContent = data.encounter_id;
+    $("header-encounter-id").textContent = `Intake Review — ${data.encounter_id}`;
+  }
+
+  // Patient demographics
+  if (patient.name) {
+    $("summary-patient-name").textContent = patient.name;
+    $("header-patient-name").textContent = `${patient.name} · Bay 4`;
+  }
+  const metaParts = [];
+  if (patient.dob) metaParts.push(`DOB: ${patient.dob}`);
+  if (patient.sex) metaParts.push(patient.sex);
+  if (patient.ethnicity && patient.ethnicity !== "—") metaParts.push(patient.ethnicity);
+  if (patient.mrn) metaParts.push(patient.mrn);
+  metaParts.push("Bay 4");
+  if (metaParts.length > 1) $("summary-patient-meta").textContent = metaParts.join(" · ");
+
+  // Coded chief complaint (nurse-accepted)
+  if (data.structured_cc) {
+    $("summary-structured-cc").textContent = data.structured_cc;
+    $("summary-structured-cc-row").style.display = "";
+  }
+
+  if (data.complaint_text) $("summary-complaint-text").textContent = data.complaint_text;
+  if (structured.complaint_category) $("summary-category").textContent = structured.complaint_category;
+  if (structured.duration) $("summary-duration").textContent = structured.duration;
+  if (structured.onset) $("summary-onset").textContent = structured.onset;
+
+  const symptoms = Array.isArray(structured.symptoms) ? structured.symptoms.join(", ") : structured.symptoms;
+  if (symptoms) $("summary-symptoms").textContent = symptoms;
+
+  if (structured.trigger) {
+    $("summary-trigger").textContent = structured.trigger;
+    $("summary-trigger-row").style.display = "";
+  }
+  if (structured.context) {
+    $("summary-context").textContent = structured.context;
+    $("summary-context-row").style.display = "";
+  }
+
+  if (vitals.bp) $("summary-vital-bp").textContent = vitals.bp;
+  if (vitals.hr) $("summary-vital-hr").textContent = vitals.hr;
+  if (vitals.spo2) $("summary-vital-spo2").textContent = `${vitals.spo2}%`;
+  if (vitals.rr) $("summary-vital-rr").textContent = vitals.rr;
+  if (vitals.temp) $("summary-vital-temp").textContent = `${vitals.temp}°C`;
+  if (vitals.gcs) $("summary-vital-gcs").textContent = `${vitals.gcs} / 15`;
+
+  // AI Triage Assessment — read from wf5
+  const card = $("flag-summary-card");
+  const title = $("flag-summary-title");
+  const text = $("flag-summary-text");
+  const detail = $("flag-summary-detail");
+
+  const esi = Number(wf5.esi_level) || 5;
+  const flag = wf5.primary_flag || "none";
+  const acuity = wf5.acuity || "unknown";
+  const confidence = wf5.confidence || null;
+  const disposition = { resuscitation_room:"Resuscitation Room", monitored_bed:"Monitored Bed",
+                        fast_track:"Fast Track", waiting_room:"Waiting Room" }[wf5.disposition] || wf5.disposition || "—";
+
+  if (esi <= 2) {
+    card.style.background = "var(--danger-bg)";
+    card.style.borderColor = "var(--danger-border)";
+    title.style.color = "var(--danger)";
+    title.textContent = "🔴 AI Triage Assessment";
+    text.style.color = "var(--danger)";
+    text.innerHTML = `<span>🔴</span> ESI ${esi} — ${flag.toUpperCase()}${confidence ? ` · ${confidence} confidence` : ""}`;
+    detail.textContent = `Disposition: ${disposition} · Immediate intervention required · ${(wf5.immediate_actions || []).length} action(s) listed`;
+  } else if (esi === 3) {
+    card.style.background = "var(--warning-bg)";
+    card.style.borderColor = "var(--warning-border)";
+    title.style.color = "#92400e";
+    title.textContent = "⚠ AI Triage Assessment";
+    text.style.color = "#92400e";
+    text.innerHTML = `<span>⚠</span> ESI 3 — ${flag || "Urgent"}${confidence ? ` · ${confidence} confidence` : ""}`;
+    detail.textContent = `Disposition: ${disposition} · ${(wf5.recommended_actions || []).length} action(s) listed`;
+  } else {
+    title.textContent = "✓ AI Triage Assessment";
+    text.innerHTML = `<span>✓</span> ESI ${esi} — ${acuity}${confidence ? ` · ${confidence} confidence` : ""}`;
+    detail.textContent = `Disposition: ${disposition} · No critical flags · Orchestrator assessment complete`;
+  }
+})();
+</script>
 
 </body>
 </html>

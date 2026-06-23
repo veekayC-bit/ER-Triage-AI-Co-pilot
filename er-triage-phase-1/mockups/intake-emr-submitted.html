@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submitted to EMR | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+<style>
+@keyframes check-in { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.submitted-layout { max-width: 860px; margin: 0 auto; padding: 32px 24px; }
+.success-banner { background: var(--success-bg); border: 1px solid var(--success-border); border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 24px; display: flex; align-items: center; gap: 18px; }
+.check-circle { width: 52px; height: 52px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; animation: check-in 0.4s ease both; flex-shrink: 0; }
+.success-headline { font-size: 20px; font-weight: 800; color: var(--success); }
+.success-sub { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+.two-col { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+.fhir-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.fhir-row:last-child { border-bottom: none; }
+.fhir-resource { font-size: 10px; font-weight: 700; font-family: monospace; background: var(--muted-bg); border-radius: 4px; padding: 2px 7px; color: var(--text-muted); flex-shrink: 0; width: 110px; text-align: center; }
+.fhir-detail { color: var(--text-muted); line-height: 1.5; }
+.fhir-value { font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<header class="app-header" style="background:var(--success);">
+  <div class="logo">
+    <div class="logo-icon" style="background:rgba(255,255,255,0.2);">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">Intake Complete — Submitted to EMR</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Day Shift · 07:00–19:00</span>
+    <span>RN J. Osei</span>
+  </div>
+</header>
+
+<nav class="global-nav">
+  <a href="dashboard.html">⌂ Dashboard</a>
+  <span class="nav-sep">·</span>
+  <a href="intake-normal.html" class="nav-cta">⊕ New Patient</a>
+</nav>
+
+<div class="submitted-layout">
+
+  <div class="success-banner">
+    <div class="check-circle">✓</div>
+    <div>
+      <div class="success-headline">Encounter submitted to EMR</div>
+      <div class="success-sub" id="submit-summary">Encounter ID: — · Submitted at: — · Nurse: RN J. Osei</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:10px;">
+      <a href="intake-normal.html" class="btn btn-success" style="font-size:13px;font-weight:700;padding:10px 18px;">⊕ New Intake</a>
+      <a href="dashboard.html" class="btn btn-secondary" style="font-size:13px;padding:10px 18px;">← Dashboard</a>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <!-- LEFT: Encounter summary + FHIR -->
+    <div>
+
+      <!-- Encounter summary -->
+      <div class="card">
+        <div class="card-title">📋 Encounter Summary</div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Encounter ID</div>
+          <div class="summary-field-value" id="enc-id">ENC-2026-04817</div>
+          <span class="source-tag source-nurse">System</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Free-text Complaint</div>
+          <div class="summary-field-value" id="enc-complaint">—</div>
+          <span class="source-tag source-nurse">Nurse</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Patient</div>
+          <div class="summary-field-value" id="enc-patient">—</div>
+          <span class="source-tag source-nurse">Nurse</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Complaint Category</div>
+          <div class="summary-field-value" id="enc-category">—</div>
+          <span class="source-tag source-ai">AI Suggested</span>
+        </div>
+        <div class="summary-field-row" id="enc-structured-cc-row" style="display:none;">
+          <div class="summary-field-label">Coded Chief Complaint</div>
+          <div class="summary-field-value" id="enc-structured-cc">—</div>
+          <span class="source-tag source-ai" style="background:#d1fae5;color:#065f46;border-color:#a7f3d0;">AI + Nurse Accepted</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">ESI Level</div>
+          <div class="summary-field-value">ESI 3 — Urgent</div>
+          <span class="source-tag source-nurse">Nurse</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">AI Flag</div>
+          <div class="summary-field-value" id="enc-flag">No critical flags detected</div>
+          <span class="source-tag source-ai">AI Screening</span>
+        </div>
+        <div class="summary-field-row">
+          <div class="summary-field-label">Submitted At</div>
+          <div class="summary-field-value" id="enc-time">—</div>
+          <span class="source-tag source-nurse">System</span>
+        </div>
+      </div>
+
+      <!-- FHIR Bundle breakdown -->
+      <div class="card">
+        <div class="card-title">📦 FHIR Bundle — Sent to EMR</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">
+          HL7 FHIR R4 transaction bundle · 9 resources · POST /fhir/r4/Bundle
+        </div>
+
+        <div class="fhir-row">
+          <div class="fhir-resource">Encounter</div>
+          <div class="fhir-detail">
+            <span class="fhir-value" id="fhir-enc-id">ENC-2026-04817</span> · Class: emergency · Status: in-progress<br>
+            Priority: ESI 3 · Reason: <span id="fhir-category">—</span>
+          </div>
+        </div>
+
+        <div class="fhir-row">
+          <div class="fhir-resource">Observation × 6</div>
+          <div class="fhir-detail">
+            <span id="fhir-vitals">BP: — · HR: — · SpO₂: — · RR: — · Temp: — · GCS: —</span><br>
+            Status: final · Category: vital-signs
+          </div>
+        </div>
+
+        <div class="fhir-row" id="fhir-condition-row">
+          <div class="fhir-resource">Condition</div>
+          <div class="fhir-detail">
+            <span class="fhir-value" id="fhir-condition">—</span><br>
+            ClinicalStatus: active · VerificationStatus: unconfirmed · Category: encounter-diagnosis
+          </div>
+        </div>
+
+        <div class="fhir-row">
+          <div class="fhir-resource">Provenance</div>
+          <div class="fhir-detail">
+            Recorded by: <span class="fhir-value">RN J. Osei</span><br>
+            AI-assisted fields tagged · Accept/dismiss audit included
+          </div>
+        </div>
+
+        <div style="margin-top:14px;padding:10px 12px;background:var(--muted-bg);border-radius:var(--radius);font-size:11px;color:var(--text-muted);">
+          ⚠ Demo mode — FHIR bundle is simulated. In production this POST would hit the hospital's Epic/Cerner FHIR R4 endpoint via the N8N integration layer (WF3).
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: AI audit + next actions -->
+    <div>
+
+      <!-- AI audit -->
+      <div class="card">
+        <div class="card-title">AI Audit Trail</div>
+        <div style="display:flex;gap:10px;margin-bottom:12px;">
+          <div style="flex:1;text-align:center;background:var(--success-bg);border-radius:var(--radius);padding:10px;">
+            <div style="font-size:22px;font-weight:800;color:var(--success);">4</div>
+            <div style="font-size:10px;font-weight:700;color:var(--success);text-transform:uppercase;">AI fields accepted</div>
+          </div>
+          <div style="flex:1;text-align:center;background:var(--muted-bg);border-radius:var(--radius);padding:10px;">
+            <div style="font-size:22px;font-weight:800;color:var(--text-muted);">0</div>
+            <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Dismissed</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">
+          All AI-suggested fields accepted by nurse. Fields tagged "AI Assisted" in the EMR record per audit policy.
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--text-muted);background:var(--muted-bg);border-radius:var(--radius);padding:8px 10px;">
+          AI model: GPT-4o · Endpoints: parse-complaint + detect-flags · Latency: ~2.9s
+        </div>
+      </div>
+
+      <!-- Next actions -->
+      <div class="card">
+        <div class="card-title">Next Actions</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="intake-normal.html" class="btn btn-success" style="text-align:center;font-weight:700;">⊕ Start Next Intake</a>
+          <a href="dashboard.html" class="btn btn-secondary" style="text-align:center;">← Back to Dashboard</a>
+          <a href="queue-panel.html" class="btn btn-secondary" style="text-align:center;">📋 View Queue</a>
+        </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);text-align:center;">
+          This record is now locked. Contact charge nurse to amend.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const submittedAt = new Date().toLocaleTimeString("en-CA", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
+  const raw = sessionStorage.getItem("erTriageLastAnalysis");
+  let data = {};
+  if (raw) {
+    try { data = JSON.parse(raw); } catch (e) {}
+  }
+
+  const structured = data.structured || {};
+  const flags = data.flags || {};
+  const vitals = data.vitals || {};
+  const patient = data.patient || {};
+
+  // Encounter ID — prefer the one from intake screen, fall back to generating
+  const encId = data.encounter_id || ("ENC-" + new Date().toISOString().slice(0,10).replace(/-/g,"") + "-" + String(Math.floor(Math.random()*999999)).padStart(6,"0"));
+
+  $("submit-summary").textContent = `Encounter ID: ${encId} · Submitted at: ${submittedAt} · Nurse: RN J. Osei`;
+  $("enc-id").textContent = encId;
+  $("enc-time").textContent = submittedAt;
+  $("fhir-enc-id").textContent = encId;
+
+  // Patient demographics
+  if (patient.name) {
+    const parts = [patient.name];
+    if (patient.dob) parts.push(`DOB: ${patient.dob}`);
+    if (patient.sex) parts.push(patient.sex);
+    if (patient.mrn) parts.push(patient.mrn);
+    $("enc-patient").textContent = parts.join(" · ");
+  }
+
+  if (data.complaint_text) $("enc-complaint").textContent = data.complaint_text;
+
+  // Coded chief complaint (nurse-accepted)
+  const ccReason = data.structured_cc || structured.complaint_category;
+  if (data.structured_cc) {
+    $("enc-structured-cc").textContent = data.structured_cc;
+    $("enc-structured-cc-row").style.display = "";
+  }
+  if (structured.complaint_category) {
+    $("enc-category").textContent = structured.complaint_category;
+  }
+  $("fhir-category").textContent = ccReason || "—";
+
+  if (vitals.bp || vitals.hr) {
+    $("fhir-vitals").textContent =
+      `BP: ${vitals.bp || "—"} · HR: ${vitals.hr || "—"} · SpO₂: ${vitals.spo2 || "—"}% · RR: ${vitals.rr || "—"} · Temp: ${vitals.temp || "—"}°C · GCS: ${vitals.gcs || "—"}`;
+  }
+
+  const condRow = $("fhir-condition-row");
+  if (flags.flag_detected) {
+    const confidencePct = Math.round((flags.confidence || 0) * 100);
+    $("enc-flag").textContent = `${flags.flag_type} — ${confidencePct}% confidence · Nurse confirmed`;
+    $("enc-flag").style.color = flags.urgency === "high" ? "var(--danger)" : "var(--warning)";
+    $("fhir-condition").textContent = `${flags.flag_type} (${confidencePct}% confidence)`;
+  } else {
+    condRow.style.display = "none";
+    $("enc-flag").textContent = "No critical flags detected (10 conditions screened)";
+    $("enc-flag").style.color = "var(--success)";
+  }
+
+  sessionStorage.removeItem("erTriageLastAnalysis");
+})();
+</script>
+
+</body>
+</html>

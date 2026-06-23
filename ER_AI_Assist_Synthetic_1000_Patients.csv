@@ -1,0 +1,1001 @@
+Patient_ID,Age,Gender,Ethnicity,Chief_Complaint_Text,Structured_Chief_Complaint,BP_Systolic,BP_Diastolic,HR,SPO2,RR,Temp_C,GCS,Allergies,Current_Medications,Relevant_History,Expected_AI_Flag,Expected_Confidence,Expected_Acuity
+ER0001,3,Non-Binary,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,114,64,66,100,13,36.9,15,None,None,None,No Critical Flag,8,Low
+ER0002,64,Non-Binary,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,195,100,102,98,22,36.3,14,Peanuts,None,Hypertension,Stroke Indicator,88,Critical
+ER0003,43,Female,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,121,63,65,99,13,36.7,15,Peanuts,Albuterol,Diabetes,No Critical Flag,8,Low
+ER0004,58,Non-Binary,Black,"Rash spreading on torso, started 53 hours ago after new medication",Generalized rash,105,77,78,100,17,36.9,15,None,None,Depression,Possible Allergic Reaction,72,Medium
+ER0005,37,Male,Hispanic,"Bee sting about 17 minutes ago, throat feels tight",Bee sting with throat tightness,92,58,139,92,29,37.0,15,Penicillin,Lisinopril,Diabetes,Anaphylaxis,96,Critical
+ER0006,34,Non-Binary,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,184,103,87,95,23,36.6,14,Penicillin,Sertraline,Diabetes,Stroke Indicator,88,Critical
+ER0007,7,Male,White,"Rash spreading on torso, started 45 hours ago after new medication",Generalized rash,125,68,64,97,17,36.5,15,Latex,Metformin,Depression,Possible Allergic Reaction,72,Medium
+ER0008,33,Male,Hispanic,"Feeling dizzy for 38 days, not eating well",Dizziness,137,73,97,99,17,36.5,15,Penicillin,Albuterol,COPD,No Critical Flag,15,Low
+ER0009,6,Male,Asian,"Patient says chest tightness and left arm pain for 25 min, started at rest",Chest pain with left arm radiation,188,98,138,91,26,37.0,15,Latex,Albuterol,Diabetes,Acute MI Indicator,91,Critical
+ER0010,1,Non-Binary,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,179,95,110,84,26,37.2,15,Latex,Aspirin,COPD,Respiratory Distress,85,High
+ER0011,33,Non-Binary,Asian,"Patient says chest tightness and left arm pain for 69 min, started at rest",Chest pain with left arm radiation,151,105,119,93,22,37.0,15,Penicillin,Albuterol,CAD,Acute MI Indicator,91,Critical
+ER0012,76,Female,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,137,86,128,90,34,37.2,15,Peanuts,Aspirin,None,Respiratory Distress,85,High
+ER0013,72,Male,Black,"Bee sting about 67 minutes ago, throat feels tight",Bee sting with throat tightness,82,54,118,92,31,37.0,15,Sulfa Drugs,Aspirin,Diabetes,Anaphylaxis,96,Critical
+ER0014,77,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,119,72,83,99,20,36.8,15,Penicillin,Aspirin,None,No Critical Flag,8,Low
+ER0015,75,Non-Binary,Hispanic,"Feeling dizzy for 33 days, not eating well",Dizziness,100,62,100,96,15,36.4,15,None,Lisinopril,None,No Critical Flag,15,Low
+ER0016,35,Non-Binary,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,134,64,96,100,19,36.6,15,Latex,Metformin,Hypertension,No Critical Flag,8,Low
+ER0017,55,Female,Middle Eastern,"Patient says chest tightness and left arm pain for 57 min, started at rest",Chest pain with left arm radiation,174,108,103,91,20,37.0,15,Peanuts,None,Hypertension,Acute MI Indicator,91,Critical
+ER0018,68,Female,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,161,88,94,95,17,36.7,14,None,None,Depression,Stroke Indicator,88,Critical
+ER0019,1,Male,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,156,90,115,85,28,37.2,15,None,Aspirin,COPD,Respiratory Distress,85,High
+ER0020,49,Female,Mixed,"Patient says chest tightness and left arm pain for 41 min, started at rest",Chest pain with left arm radiation,172,107,135,97,22,36.7,15,Penicillin,None,CAD,Acute MI Indicator,91,Critical
+ER0021,7,Non-Binary,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,103,78,90,100,20,36.5,15,Sulfa Drugs,None,Hypertension,Suicidal Ideation,97,High
+ER0022,8,Non-Binary,Hispanic,"Patient says chest tightness and left arm pain for 56 min, started at rest",Chest pain with left arm radiation,152,103,115,90,29,36.6,15,Sulfa Drugs,Albuterol,CAD,Acute MI Indicator,91,Critical
+ER0023,33,Male,Pacific Islander,"Feeling dizzy for 35 days, not eating well",Dizziness,116,72,68,98,19,36.6,15,None,None,COPD,No Critical Flag,15,Low
+ER0024,72,Male,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,132,68,68,98,13,37.3,15,Peanuts,Lisinopril,Hypertension,No Critical Flag,8,Low
+ER0025,69,Non-Binary,Native American,"Feeling dizzy for 72 days, not eating well",Dizziness,100,81,95,98,13,37.3,15,Penicillin,Lisinopril,None,No Critical Flag,15,Low
+ER0026,70,Male,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,168,81,122,86,25,37.2,15,Peanuts,Albuterol,COPD,Respiratory Distress,85,High
+ER0027,6,Male,Middle Eastern,"Bee sting about 40 minutes ago, throat feels tight",Bee sting with throat tightness,81,50,131,84,34,37.0,15,Peanuts,Aspirin,Depression,Anaphylaxis,96,Critical
+ER0028,54,Non-Binary,White,"Feeling dizzy for 19 days, not eating well",Dizziness,104,90,69,100,12,37.2,15,Sulfa Drugs,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0029,5,Female,Pacific Islander,"Feeling dizzy for 10 days, not eating well",Dizziness,122,66,75,96,17,37.2,15,Latex,Albuterol,Depression,No Critical Flag,15,Low
+ER0030,30,Male,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,151,85,103,96,22,37.2,11,Peanuts,Aspirin,Depression,Stroke Indicator,88,Critical
+ER0031,4,Female,Hispanic,"Patient says chest tightness and left arm pain for 30 min, started at rest",Chest pain with left arm radiation,174,96,119,93,23,36.5,15,Penicillin,Metformin,Diabetes,Acute MI Indicator,91,Critical
+ER0032,8,Female,Pacific Islander,"Bee sting about 70 minutes ago, throat feels tight",Bee sting with throat tightness,92,60,111,83,28,37.0,15,Penicillin,Albuterol,Diabetes,Anaphylaxis,96,Critical
+ER0033,76,Female,Pacific Islander,"Patient says chest tightness and left arm pain for 45 min, started at rest",Chest pain with left arm radiation,172,104,132,91,26,37.7,15,Penicillin,Lisinopril,None,Acute MI Indicator,91,Critical
+ER0034,0,Non-Binary,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,127,62,81,100,17,37.0,15,None,Sertraline,Diabetes,Suicidal Ideation,97,High
+ER0035,52,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,135,64,72,99,18,37.0,15,Penicillin,Albuterol,CAD,No Critical Flag,8,Low
+ER0036,70,Male,Native American,"Feeling dizzy for 41 days, not eating well",Dizziness,113,73,97,100,17,36.8,15,Latex,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0037,21,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,132,81,100,100,17,36.4,15,Penicillin,Sertraline,Diabetes,No Critical Flag,8,Low
+ER0038,25,Male,White,"Bee sting about 10 minutes ago, throat feels tight",Bee sting with throat tightness,87,65,149,83,31,37.0,15,Latex,Sertraline,CAD,Anaphylaxis,96,Critical
+ER0039,49,Female,Middle Eastern,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,159,100,102,94,17,37.2,11,Penicillin,Sertraline,CAD,Stroke Indicator,88,Critical
+ER0040,71,Male,Black,"Feeling dizzy for 63 days, not eating well",Dizziness,108,85,89,100,20,37.0,15,Latex,Albuterol,Depression,No Critical Flag,15,Low
+ER0041,54,Non-Binary,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,177,90,114,86,34,37.2,15,Penicillin,Sertraline,Diabetes,Respiratory Distress,85,High
+ER0042,66,Female,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,128,62,78,97,16,36.7,15,Sulfa Drugs,None,Hypertension,Suicidal Ideation,97,High
+ER0043,49,Non-Binary,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,154,93,93,96,24,36.7,10,Penicillin,Metformin,COPD,Stroke Indicator,88,Critical
+ER0044,74,Non-Binary,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,160,75,130,86,26,37.2,15,Latex,Metformin,CAD,Respiratory Distress,85,High
+ER0045,69,Non-Binary,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,114,68,87,99,12,36.7,15,Latex,Sertraline,Hypertension,Suicidal Ideation,97,High
+ER0046,16,Non-Binary,White,"Rash spreading on torso, started 55 hours ago after new medication",Generalized rash,137,78,61,96,18,36.4,15,Latex,Aspirin,None,Possible Allergic Reaction,72,Medium
+ER0047,41,Male,Mixed,"Bee sting about 46 minutes ago, throat feels tight",Bee sting with throat tightness,90,62,127,88,28,37.0,15,None,Metformin,None,Anaphylaxis,96,Critical
+ER0048,6,Female,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,102,84,61,97,15,37.2,15,Sulfa Drugs,Aspirin,Hypertension,Suicidal Ideation,97,High
+ER0049,14,Non-Binary,Hispanic,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,194,88,104,96,18,36.9,10,Penicillin,Lisinopril,None,Stroke Indicator,88,Critical
+ER0050,39,Non-Binary,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,112,62,97,97,13,37.1,15,Peanuts,Sertraline,CAD,No Critical Flag,8,Low
+ER0051,72,Male,Pacific Islander,"Rash spreading on torso, started 59 hours ago after new medication",Generalized rash,123,62,92,98,12,37.2,15,Latex,None,COPD,Possible Allergic Reaction,72,Medium
+ER0052,58,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,141,91,130,89,26,37.2,15,Sulfa Drugs,Albuterol,COPD,Respiratory Distress,85,High
+ER0053,75,Female,Pacific Islander,"Feeling dizzy for 36 days, not eating well",Dizziness,105,68,88,97,19,36.9,15,Latex,Lisinopril,None,No Critical Flag,15,Low
+ER0054,41,Male,Mixed,"Feeling dizzy for 32 days, not eating well",Dizziness,122,85,76,98,16,37.3,15,Peanuts,Albuterol,None,No Critical Flag,15,Low
+ER0055,24,Male,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,131,77,75,99,19,36.8,15,None,None,Diabetes,No Critical Flag,8,Low
+ER0056,31,Female,Pacific Islander,"Bee sting about 65 minutes ago, throat feels tight",Bee sting with throat tightness,97,61,137,90,29,37.0,15,Peanuts,Sertraline,COPD,Anaphylaxis,96,Critical
+ER0057,32,Male,Black,"Bee sting about 29 minutes ago, throat feels tight",Bee sting with throat tightness,90,53,144,84,27,37.0,15,Penicillin,Sertraline,COPD,Anaphylaxis,96,Critical
+ER0058,75,Non-Binary,Native American,"Bee sting about 17 minutes ago, throat feels tight",Bee sting with throat tightness,86,59,124,87,26,37.0,15,Peanuts,None,Depression,Anaphylaxis,96,Critical
+ER0059,35,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,108,80,91,96,12,36.9,15,Latex,Metformin,COPD,No Critical Flag,8,Low
+ER0060,6,Female,Mixed,"Feeling dizzy for 19 days, not eating well",Dizziness,104,72,91,96,12,36.5,15,Sulfa Drugs,Lisinopril,None,No Critical Flag,15,Low
+ER0061,15,Non-Binary,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,179,91,112,87,29,37.2,15,Peanuts,Albuterol,COPD,Respiratory Distress,85,High
+ER0062,79,Male,Black,"Feeling dizzy for 31 days, not eating well",Dizziness,140,66,76,96,14,36.6,15,Sulfa Drugs,None,Hypertension,No Critical Flag,15,Low
+ER0063,57,Non-Binary,Mixed,"Patient says chest tightness and left arm pain for 42 min, started at rest",Chest pain with left arm radiation,147,92,118,94,27,36.6,15,Penicillin,Lisinopril,Depression,Acute MI Indicator,91,Critical
+ER0064,25,Female,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,109,89,77,97,13,36.4,15,Peanuts,Albuterol,Depression,No Critical Flag,8,Low
+ER0065,36,Female,Black,"Rash spreading on torso, started 64 hours ago after new medication",Generalized rash,119,82,85,98,20,36.9,15,Latex,None,CAD,Possible Allergic Reaction,72,Medium
+ER0066,55,Non-Binary,Pacific Islander,"Patient says chest tightness and left arm pain for 37 min, started at rest",Chest pain with left arm radiation,146,87,114,90,30,37.6,15,Sulfa Drugs,None,Hypertension,Acute MI Indicator,91,Critical
+ER0067,56,Female,Asian,"Feeling dizzy for 60 days, not eating well",Dizziness,140,86,91,96,19,36.7,15,Peanuts,Lisinopril,Depression,No Critical Flag,15,Low
+ER0068,20,Female,Middle Eastern,"Patient says chest tightness and left arm pain for 68 min, started at rest",Chest pain with left arm radiation,163,106,125,90,27,36.6,15,Peanuts,Lisinopril,None,Acute MI Indicator,91,Critical
+ER0069,51,Non-Binary,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,156,76,106,88,27,37.2,15,Sulfa Drugs,Metformin,Depression,Respiratory Distress,85,High
+ER0070,6,Male,Native American,"Feeling dizzy for 21 days, not eating well",Dizziness,118,74,91,96,12,37.4,15,Sulfa Drugs,Aspirin,Depression,No Critical Flag,15,Low
+ER0071,70,Male,Middle Eastern,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,164,83,94,94,18,36.7,12,Sulfa Drugs,Sertraline,Diabetes,Stroke Indicator,88,Critical
+ER0072,61,Female,Hispanic,"Feeling dizzy for 63 days, not eating well",Dizziness,135,64,84,97,20,37.1,15,Penicillin,None,Diabetes,No Critical Flag,15,Low
+ER0073,53,Female,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,118,83,79,100,19,37.3,15,Latex,Albuterol,COPD,Suicidal Ideation,97,High
+ER0074,70,Non-Binary,Middle Eastern,"Feeling dizzy for 63 days, not eating well",Dizziness,120,87,72,97,18,36.6,15,Latex,None,Diabetes,No Critical Flag,15,Low
+ER0075,48,Female,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,102,64,92,100,17,37.3,15,Latex,None,CAD,Suicidal Ideation,97,High
+ER0076,1,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,171,79,102,87,34,37.2,15,Peanuts,Lisinopril,CAD,Respiratory Distress,85,High
+ER0077,10,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,140,82,91,100,12,37.0,15,Penicillin,Sertraline,Depression,No Critical Flag,8,Low
+ER0078,29,Non-Binary,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,136,95,122,90,23,37.2,15,Latex,Aspirin,Depression,Respiratory Distress,85,High
+ER0079,3,Male,Pacific Islander,"Bee sting about 12 minutes ago, throat feels tight",Bee sting with throat tightness,89,61,133,88,26,37.0,15,Penicillin,Albuterol,COPD,Anaphylaxis,96,Critical
+ER0080,23,Male,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,139,87,84,100,15,36.8,15,Sulfa Drugs,Aspirin,Hypertension,No Critical Flag,8,Low
+ER0081,32,Female,Native American,"Feeling dizzy for 6 days, not eating well",Dizziness,129,88,78,100,14,36.4,15,Peanuts,Albuterol,Diabetes,No Critical Flag,15,Low
+ER0082,54,Non-Binary,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,119,66,84,99,13,36.6,15,Sulfa Drugs,Lisinopril,CAD,No Critical Flag,8,Low
+ER0083,37,Male,Middle Eastern,"Bee sting about 40 minutes ago, throat feels tight",Bee sting with throat tightness,80,51,148,89,28,37.0,15,Penicillin,Albuterol,Diabetes,Anaphylaxis,96,Critical
+ER0084,24,Non-Binary,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,190,83,108,99,16,36.5,13,None,Albuterol,Diabetes,Stroke Indicator,88,Critical
+ER0085,11,Female,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,111,66,68,100,17,36.9,15,Peanuts,Aspirin,Diabetes,Suicidal Ideation,97,High
+ER0086,61,Female,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,159,77,104,90,25,37.2,15,Latex,Albuterol,Diabetes,Respiratory Distress,85,High
+ER0087,50,Male,Native American,"Patient says chest tightness and left arm pain for 20 min, started at rest",Chest pain with left arm radiation,174,96,116,96,30,37.7,15,None,Sertraline,Hypertension,Acute MI Indicator,91,Critical
+ER0088,79,Non-Binary,Pacific Islander,"Feeling dizzy for 33 days, not eating well",Dizziness,104,80,89,98,18,36.4,15,None,None,Diabetes,No Critical Flag,15,Low
+ER0089,14,Male,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,154,89,111,89,33,37.2,15,Sulfa Drugs,Metformin,CAD,Respiratory Distress,85,High
+ER0090,19,Female,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,139,73,77,96,17,36.5,15,Latex,Aspirin,Diabetes,Suicidal Ideation,97,High
+ER0091,47,Non-Binary,Pacific Islander,"Patient says chest tightness and left arm pain for 12 min, started at rest",Chest pain with left arm radiation,170,93,112,91,27,36.6,15,Penicillin,Sertraline,Depression,Acute MI Indicator,91,Critical
+ER0092,2,Male,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,108,85,96,97,13,37.2,15,Sulfa Drugs,Aspirin,CAD,No Critical Flag,8,Low
+ER0093,29,Female,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,167,84,84,98,20,37.2,10,None,Aspirin,None,Stroke Indicator,88,Critical
+ER0094,30,Non-Binary,Pacific Islander,"Feeling dizzy for 7 days, not eating well",Dizziness,111,68,63,97,18,36.9,15,None,Metformin,COPD,No Critical Flag,15,Low
+ER0095,65,Non-Binary,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,132,67,99,96,20,36.6,15,None,None,COPD,Suicidal Ideation,97,High
+ER0096,54,Non-Binary,Black,"Rash spreading on torso, started 67 hours ago after new medication",Generalized rash,128,62,65,98,14,36.4,15,Peanuts,Albuterol,Depression,Possible Allergic Reaction,72,Medium
+ER0097,41,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,132,79,87,96,13,37.2,15,Sulfa Drugs,Sertraline,Hypertension,No Critical Flag,8,Low
+ER0098,29,Female,Pacific Islander,"Feeling dizzy for 63 days, not eating well",Dizziness,125,73,66,98,18,36.6,15,Peanuts,Lisinopril,Hypertension,No Critical Flag,15,Low
+ER0099,60,Male,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,105,73,66,98,14,36.9,15,Sulfa Drugs,Albuterol,CAD,No Critical Flag,8,Low
+ER0100,15,Female,Pacific Islander,"Feeling dizzy for 59 days, not eating well",Dizziness,103,90,78,100,16,36.7,15,Sulfa Drugs,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0101,61,Male,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,185,91,83,96,19,37.2,14,Sulfa Drugs,Albuterol,Depression,Stroke Indicator,88,Critical
+ER0102,3,Non-Binary,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,111,68,79,98,17,36.3,15,Penicillin,Albuterol,Depression,No Critical Flag,8,Low
+ER0103,18,Non-Binary,White,"Feeling dizzy for 16 days, not eating well",Dizziness,133,66,84,99,19,36.7,15,Peanuts,Lisinopril,Depression,No Critical Flag,15,Low
+ER0104,72,Non-Binary,Black,"Feeling dizzy for 11 days, not eating well",Dizziness,109,65,99,96,13,36.6,15,Latex,Metformin,CAD,No Critical Flag,15,Low
+ER0105,34,Male,Black,"Feeling dizzy for 49 days, not eating well",Dizziness,127,63,78,100,19,36.9,15,Peanuts,None,Hypertension,No Critical Flag,15,Low
+ER0106,76,Male,White,"Feeling dizzy for 31 days, not eating well",Dizziness,119,90,73,97,16,36.6,15,None,None,COPD,No Critical Flag,15,Low
+ER0107,22,Male,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,132,77,82,96,18,37.2,15,None,Metformin,None,Suicidal Ideation,97,High
+ER0108,9,Female,Middle Eastern,"Feeling dizzy for 56 days, not eating well",Dizziness,140,73,78,96,18,36.3,15,Peanuts,Aspirin,CAD,No Critical Flag,15,Low
+ER0109,46,Male,Middle Eastern,"Feeling dizzy for 18 days, not eating well",Dizziness,115,73,97,99,20,36.4,15,Peanuts,Sertraline,Diabetes,No Critical Flag,15,Low
+ER0110,21,Male,Black,"Bee sting about 72 minutes ago, throat feels tight",Bee sting with throat tightness,96,56,132,87,35,37.0,15,Penicillin,Aspirin,None,Anaphylaxis,96,Critical
+ER0111,25,Male,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,161,104,100,97,23,37.1,14,Latex,Sertraline,CAD,Stroke Indicator,88,Critical
+ER0112,79,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,128,62,90,99,16,37.2,15,Sulfa Drugs,None,Diabetes,No Critical Flag,8,Low
+ER0113,39,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,103,71,78,96,13,37.0,15,Sulfa Drugs,Metformin,COPD,No Critical Flag,8,Low
+ER0114,5,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,138,75,92,97,12,36.8,15,Peanuts,Sertraline,None,No Critical Flag,8,Low
+ER0115,22,Male,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,128,76,93,100,14,36.7,15,Peanuts,Metformin,COPD,No Critical Flag,8,Low
+ER0116,76,Male,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,121,63,95,99,16,36.6,15,Sulfa Drugs,Aspirin,Diabetes,Suicidal Ideation,97,High
+ER0117,18,Female,Native American,"Patient says chest tightness and left arm pain for 55 min, started at rest",Chest pain with left arm radiation,153,104,105,94,28,37.0,15,Peanuts,Aspirin,Depression,Acute MI Indicator,91,Critical
+ER0118,67,Male,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,123,60,83,98,14,37.3,15,Peanuts,Metformin,Hypertension,Suicidal Ideation,97,High
+ER0119,17,Male,Black,"Bee sting about 42 minutes ago, throat feels tight",Bee sting with throat tightness,83,51,131,91,26,37.0,15,Sulfa Drugs,Metformin,Hypertension,Anaphylaxis,96,Critical
+ER0120,79,Male,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,176,91,101,99,19,37.5,14,Peanuts,Sertraline,COPD,Stroke Indicator,88,Critical
+ER0121,30,Female,Mixed,"Bee sting about 29 minutes ago, throat feels tight",Bee sting with throat tightness,91,64,139,86,36,37.0,15,Latex,Albuterol,CAD,Anaphylaxis,96,Critical
+ER0122,20,Male,Asian,"Feeling dizzy for 37 days, not eating well",Dizziness,103,80,90,98,20,37.3,15,Sulfa Drugs,None,Diabetes,No Critical Flag,15,Low
+ER0123,20,Female,Mixed,"Patient says chest tightness and left arm pain for 70 min, started at rest",Chest pain with left arm radiation,154,98,105,93,27,37.7,15,None,Metformin,None,Acute MI Indicator,91,Critical
+ER0124,47,Male,Middle Eastern,"Feeling dizzy for 15 days, not eating well",Dizziness,123,67,61,98,13,37.2,15,Peanuts,Aspirin,Hypertension,No Critical Flag,15,Low
+ER0125,60,Non-Binary,Asian,"Patient says chest tightness and left arm pain for 65 min, started at rest",Chest pain with left arm radiation,173,104,100,91,20,36.8,15,Penicillin,Albuterol,Depression,Acute MI Indicator,91,Critical
+ER0126,54,Male,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,119,63,63,97,18,37.0,15,Sulfa Drugs,Metformin,None,No Critical Flag,8,Low
+ER0127,63,Non-Binary,White,"Patient says chest tightness and left arm pain for 70 min, started at rest",Chest pain with left arm radiation,181,92,109,94,26,36.5,15,Peanuts,Aspirin,CAD,Acute MI Indicator,91,Critical
+ER0128,10,Non-Binary,Pacific Islander,"Feeling dizzy for 13 days, not eating well",Dizziness,133,77,92,100,20,36.3,15,Latex,None,Depression,No Critical Flag,15,Low
+ER0129,47,Female,White,"Feeling dizzy for 50 days, not eating well",Dizziness,104,71,75,96,17,36.4,15,Peanuts,Albuterol,Diabetes,No Critical Flag,15,Low
+ER0130,22,Non-Binary,Mixed,"Rash spreading on torso, started 66 hours ago after new medication",Generalized rash,140,65,68,96,19,36.3,15,Penicillin,None,Hypertension,Possible Allergic Reaction,72,Medium
+ER0131,40,Female,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,146,76,124,89,25,37.2,15,Peanuts,Lisinopril,None,Respiratory Distress,85,High
+ER0132,42,Female,Black,"Rash spreading on torso, started 52 hours ago after new medication",Generalized rash,127,88,85,99,18,36.7,15,Penicillin,Metformin,Depression,Possible Allergic Reaction,72,Medium
+ER0133,66,Female,Black,"Feeling dizzy for 59 days, not eating well",Dizziness,105,73,98,97,20,36.6,15,None,None,Diabetes,No Critical Flag,15,Low
+ER0134,39,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,128,71,88,96,17,37.0,15,Latex,Lisinopril,Depression,No Critical Flag,8,Low
+ER0135,7,Male,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,162,80,130,84,24,37.2,15,Sulfa Drugs,Sertraline,COPD,Respiratory Distress,85,High
+ER0136,8,Male,Pacific Islander,"Patient says chest tightness and left arm pain for 51 min, started at rest",Chest pain with left arm radiation,169,103,102,92,30,37.1,15,Peanuts,Lisinopril,COPD,Acute MI Indicator,91,Critical
+ER0137,73,Male,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,120,80,77,97,13,36.3,15,Penicillin,Metformin,CAD,Suicidal Ideation,97,High
+ER0138,71,Male,Native American,"Feeling dizzy for 38 days, not eating well",Dizziness,128,66,99,98,19,36.5,15,Penicillin,None,COPD,No Critical Flag,15,Low
+ER0139,56,Male,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,195,82,97,98,20,37.3,11,Penicillin,Lisinopril,CAD,Stroke Indicator,88,Critical
+ER0140,25,Male,Hispanic,"Bee sting about 68 minutes ago, throat feels tight",Bee sting with throat tightness,80,61,145,91,29,37.0,15,Latex,Albuterol,Hypertension,Anaphylaxis,96,Critical
+ER0141,11,Male,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,130,76,86,99,13,36.4,15,Peanuts,Sertraline,None,No Critical Flag,8,Low
+ER0142,66,Female,Asian,"Feeling dizzy for 28 days, not eating well",Dizziness,108,73,92,96,13,36.9,15,Peanuts,Aspirin,Hypertension,No Critical Flag,15,Low
+ER0143,28,Female,Native American,"Feeling dizzy for 15 days, not eating well",Dizziness,116,66,100,100,16,36.4,15,Peanuts,Albuterol,CAD,No Critical Flag,15,Low
+ER0144,21,Non-Binary,Asian,"Patient says chest tightness and left arm pain for 26 min, started at rest",Chest pain with left arm radiation,187,104,138,95,29,36.6,15,None,None,None,Acute MI Indicator,91,Critical
+ER0145,73,Female,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,169,95,100,87,32,37.2,15,Sulfa Drugs,Lisinopril,Depression,Respiratory Distress,85,High
+ER0146,61,Male,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,159,77,122,84,24,37.2,15,Latex,Metformin,COPD,Respiratory Distress,85,High
+ER0147,43,Non-Binary,Asian,"Feeling dizzy for 45 days, not eating well",Dizziness,120,83,82,99,14,37.1,15,Sulfa Drugs,Albuterol,None,No Critical Flag,15,Low
+ER0148,59,Male,Native American,"Feeling dizzy for 62 days, not eating well",Dizziness,115,64,66,96,16,37.3,15,Sulfa Drugs,Metformin,Hypertension,No Critical Flag,15,Low
+ER0149,20,Female,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,178,80,115,88,29,37.2,15,Latex,Lisinopril,COPD,Respiratory Distress,85,High
+ER0150,50,Non-Binary,Mixed,"Patient says chest tightness and left arm pain for 35 min, started at rest",Chest pain with left arm radiation,158,103,122,90,20,36.9,15,Sulfa Drugs,Sertraline,Depression,Acute MI Indicator,91,Critical
+ER0151,68,Male,Black,"Feeling dizzy for 60 days, not eating well",Dizziness,108,88,76,98,18,36.7,15,Latex,None,CAD,No Critical Flag,15,Low
+ER0152,46,Non-Binary,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,124,76,88,100,16,37.2,15,Sulfa Drugs,Sertraline,CAD,No Critical Flag,8,Low
+ER0153,12,Female,Pacific Islander,"Patient says chest tightness and left arm pain for 48 min, started at rest",Chest pain with left arm radiation,180,96,109,93,29,37.2,15,Sulfa Drugs,None,None,Acute MI Indicator,91,Critical
+ER0154,42,Female,Mixed,"Patient says chest tightness and left arm pain for 24 min, started at rest",Chest pain with left arm radiation,183,101,108,95,29,36.9,15,Latex,Albuterol,Depression,Acute MI Indicator,91,Critical
+ER0155,75,Female,Mixed,"Rash spreading on torso, started 43 hours ago after new medication",Generalized rash,130,86,61,98,17,37.0,15,Latex,Albuterol,Diabetes,Possible Allergic Reaction,72,Medium
+ER0156,80,Male,Mixed,"Rash spreading on torso, started 38 hours ago after new medication",Generalized rash,137,78,74,96,19,36.5,15,Sulfa Drugs,Metformin,Hypertension,Possible Allergic Reaction,72,Medium
+ER0157,31,Male,Black,"Rash spreading on torso, started 29 hours ago after new medication",Generalized rash,101,74,80,99,14,36.8,15,Penicillin,Metformin,CAD,Possible Allergic Reaction,72,Medium
+ER0158,60,Non-Binary,White,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,133,66,95,98,19,36.9,15,Peanuts,Aspirin,COPD,Suicidal Ideation,97,High
+ER0159,43,Non-Binary,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,169,90,106,85,26,37.2,15,Sulfa Drugs,Lisinopril,Hypertension,Respiratory Distress,85,High
+ER0160,38,Female,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,150,90,111,88,34,37.2,15,Peanuts,Lisinopril,None,Respiratory Distress,85,High
+ER0161,69,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,109,69,62,98,13,36.7,15,Latex,Sertraline,Diabetes,No Critical Flag,8,Low
+ER0162,27,Male,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,108,63,99,100,15,36.6,15,Sulfa Drugs,Aspirin,Depression,Suicidal Ideation,97,High
+ER0163,12,Female,Pacific Islander,"Bee sting about 65 minutes ago, throat feels tight",Bee sting with throat tightness,83,54,110,90,26,37.0,15,Latex,Sertraline,COPD,Anaphylaxis,96,Critical
+ER0164,25,Female,Pacific Islander,"Feeling dizzy for 41 days, not eating well",Dizziness,103,89,65,100,15,36.9,15,None,Aspirin,COPD,No Critical Flag,15,Low
+ER0165,22,Male,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,141,84,128,84,22,37.2,15,Peanuts,Albuterol,CAD,Respiratory Distress,85,High
+ER0166,42,Female,Mixed,"Patient says chest tightness and left arm pain for 72 min, started at rest",Chest pain with left arm radiation,176,89,132,97,24,36.8,15,None,Lisinopril,Hypertension,Acute MI Indicator,91,Critical
+ER0167,32,Non-Binary,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,121,85,78,100,15,36.5,15,Latex,Metformin,CAD,Suicidal Ideation,97,High
+ER0168,51,Non-Binary,Black,"Feeling dizzy for 28 days, not eating well",Dizziness,108,75,80,97,12,36.6,15,Penicillin,Metformin,Diabetes,No Critical Flag,15,Low
+ER0169,38,Non-Binary,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,171,86,122,85,22,37.2,15,None,Metformin,Diabetes,Respiratory Distress,85,High
+ER0170,64,Non-Binary,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,190,89,91,98,19,36.3,11,Latex,Aspirin,COPD,Stroke Indicator,88,Critical
+ER0171,77,Female,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,134,85,73,97,13,36.9,15,Sulfa Drugs,Sertraline,Diabetes,Suicidal Ideation,97,High
+ER0172,72,Male,White,"Patient says chest tightness and left arm pain for 69 min, started at rest",Chest pain with left arm radiation,157,103,134,92,22,36.9,15,Sulfa Drugs,Metformin,None,Acute MI Indicator,91,Critical
+ER0173,74,Female,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,128,85,63,99,14,36.9,15,Latex,Albuterol,None,No Critical Flag,8,Low
+ER0174,39,Non-Binary,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,86,60,97,13,36.3,15,Peanuts,Sertraline,None,No Critical Flag,8,Low
+ER0175,7,Male,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,118,73,71,97,18,36.7,15,Latex,Metformin,COPD,No Critical Flag,8,Low
+ER0176,69,Male,Pacific Islander,"Feeling dizzy for 20 days, not eating well",Dizziness,111,77,85,100,14,37.1,15,Penicillin,None,None,No Critical Flag,15,Low
+ER0177,59,Non-Binary,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,144,82,114,86,24,37.2,15,Peanuts,Aspirin,Depression,Respiratory Distress,85,High
+ER0178,4,Non-Binary,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,115,66,64,96,12,36.8,15,None,Aspirin,Depression,Suicidal Ideation,97,High
+ER0179,56,Male,Hispanic,"Patient says chest tightness and left arm pain for 12 min, started at rest",Chest pain with left arm radiation,153,101,118,93,29,36.9,15,Sulfa Drugs,Sertraline,Diabetes,Acute MI Indicator,91,Critical
+ER0180,18,Non-Binary,Hispanic,"Bee sting about 57 minutes ago, throat feels tight",Bee sting with throat tightness,89,58,113,90,33,37.0,15,Penicillin,Sertraline,Depression,Anaphylaxis,96,Critical
+ER0181,63,Male,Pacific Islander,"Feeling dizzy for 53 days, not eating well",Dizziness,133,70,86,99,14,36.6,15,Penicillin,Albuterol,COPD,No Critical Flag,15,Low
+ER0182,28,Female,Asian,"Bee sting about 64 minutes ago, throat feels tight",Bee sting with throat tightness,81,63,136,90,32,37.0,15,Penicillin,Metformin,Hypertension,Anaphylaxis,96,Critical
+ER0183,42,Non-Binary,Black,"Bee sting about 62 minutes ago, throat feels tight",Bee sting with throat tightness,91,52,144,85,24,37.0,15,Peanuts,Metformin,Depression,Anaphylaxis,96,Critical
+ER0184,5,Male,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,130,66,81,98,12,36.5,15,Penicillin,Sertraline,None,No Critical Flag,8,Low
+ER0185,61,Male,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,115,77,80,98,18,36.8,15,Peanuts,Lisinopril,Diabetes,Suicidal Ideation,97,High
+ER0186,63,Female,Black,"Feeling dizzy for 65 days, not eating well",Dizziness,120,89,73,98,17,36.8,15,Sulfa Drugs,Aspirin,Depression,No Critical Flag,15,Low
+ER0187,33,Non-Binary,Middle Eastern,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,159,86,90,95,22,36.9,11,Latex,Albuterol,Depression,Stroke Indicator,88,Critical
+ER0188,43,Female,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,159,80,123,90,27,37.2,15,Penicillin,Aspirin,Depression,Respiratory Distress,85,High
+ER0189,23,Non-Binary,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,102,86,64,96,12,36.8,15,Penicillin,None,Depression,No Critical Flag,8,Low
+ER0190,27,Non-Binary,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,153,99,100,99,23,37.0,10,None,Albuterol,CAD,Stroke Indicator,88,Critical
+ER0191,2,Non-Binary,Native American,"Feeling dizzy for 41 days, not eating well",Dizziness,101,76,87,97,13,37.3,15,Sulfa Drugs,Aspirin,Hypertension,No Critical Flag,15,Low
+ER0192,67,Female,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,200,92,82,96,22,36.7,11,Penicillin,Lisinopril,Depression,Stroke Indicator,88,Critical
+ER0193,10,Non-Binary,White,"Rash spreading on torso, started 16 hours ago after new medication",Generalized rash,125,72,84,100,19,36.4,15,None,Sertraline,Hypertension,Possible Allergic Reaction,72,Medium
+ER0194,55,Non-Binary,Pacific Islander,"Patient says chest tightness and left arm pain for 17 min, started at rest",Chest pain with left arm radiation,178,86,114,93,29,37.1,15,None,None,Depression,Acute MI Indicator,91,Critical
+ER0195,69,Non-Binary,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,150,75,130,85,31,37.2,15,Penicillin,Sertraline,COPD,Respiratory Distress,85,High
+ER0196,38,Male,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,173,92,110,87,34,37.2,15,Penicillin,Sertraline,Depression,Respiratory Distress,85,High
+ER0197,44,Male,Black,"Patient says chest tightness and left arm pain for 60 min, started at rest",Chest pain with left arm radiation,159,87,121,96,25,36.5,15,Peanuts,Metformin,COPD,Acute MI Indicator,91,Critical
+ER0198,70,Female,Middle Eastern,"Bee sting about 28 minutes ago, throat feels tight",Bee sting with throat tightness,98,62,115,91,28,37.0,15,Penicillin,Sertraline,None,Anaphylaxis,96,Critical
+ER0199,19,Female,Asian,"Patient says chest tightness and left arm pain for 54 min, started at rest",Chest pain with left arm radiation,165,96,106,91,20,37.7,15,Latex,Lisinopril,Diabetes,Acute MI Indicator,91,Critical
+ER0200,11,Male,Middle Eastern,"Patient says chest tightness and left arm pain for 62 min, started at rest",Chest pain with left arm radiation,180,102,132,96,21,36.5,15,Peanuts,Albuterol,None,Acute MI Indicator,91,Critical
+ER0201,41,Female,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,126,72,65,100,15,36.9,15,Penicillin,Sertraline,COPD,No Critical Flag,8,Low
+ER0202,34,Female,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,159,82,85,97,20,36.6,13,None,Lisinopril,Diabetes,Stroke Indicator,88,Critical
+ER0203,80,Female,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,136,79,109,84,28,37.2,15,Peanuts,Albuterol,COPD,Respiratory Distress,85,High
+ER0204,42,Female,Pacific Islander,"Rash spreading on torso, started 60 hours ago after new medication",Generalized rash,138,64,79,98,15,36.8,15,Penicillin,Metformin,Diabetes,Possible Allergic Reaction,72,Medium
+ER0205,62,Non-Binary,Hispanic,"Bee sting about 46 minutes ago, throat feels tight",Bee sting with throat tightness,92,58,135,87,25,37.0,15,Sulfa Drugs,Aspirin,CAD,Anaphylaxis,96,Critical
+ER0206,23,Non-Binary,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,175,81,114,90,26,37.2,15,None,Metformin,Depression,Respiratory Distress,85,High
+ER0207,38,Male,Native American,"Feeling dizzy for 24 days, not eating well",Dizziness,127,85,84,96,19,37.4,15,Latex,Albuterol,COPD,No Critical Flag,15,Low
+ER0208,53,Non-Binary,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,134,79,100,96,13,37.1,15,Peanuts,Aspirin,Depression,No Critical Flag,8,Low
+ER0209,72,Non-Binary,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,127,63,60,96,16,36.5,15,Sulfa Drugs,Albuterol,CAD,No Critical Flag,8,Low
+ER0210,28,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,129,84,97,100,14,36.7,15,None,Metformin,None,No Critical Flag,8,Low
+ER0211,10,Male,Asian,"Bee sting about 49 minutes ago, throat feels tight",Bee sting with throat tightness,89,60,139,85,32,37.0,15,Latex,Lisinopril,COPD,Anaphylaxis,96,Critical
+ER0212,57,Female,Black,"Patient says chest tightness and left arm pain for 43 min, started at rest",Chest pain with left arm radiation,147,110,107,90,25,37.3,15,Penicillin,Sertraline,Hypertension,Acute MI Indicator,91,Critical
+ER0213,70,Male,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,129,67,85,97,14,37.0,15,Latex,Metformin,None,No Critical Flag,8,Low
+ER0214,25,Female,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,100,82,73,97,16,37.1,15,None,Albuterol,None,Suicidal Ideation,97,High
+ER0215,68,Male,Pacific Islander,"Rash spreading on torso, started 46 hours ago after new medication",Generalized rash,112,74,67,98,19,36.9,15,Peanuts,Albuterol,COPD,Possible Allergic Reaction,72,Medium
+ER0216,75,Male,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,129,79,71,98,13,37.0,15,Peanuts,None,Hypertension,No Critical Flag,8,Low
+ER0217,23,Female,Asian,"Feeling dizzy for 70 days, not eating well",Dizziness,124,73,98,97,18,36.8,15,Latex,Sertraline,CAD,No Critical Flag,15,Low
+ER0218,22,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,118,64,71,98,19,37.0,15,Peanuts,None,COPD,No Critical Flag,8,Low
+ER0219,49,Non-Binary,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,193,95,93,99,23,36.7,10,Sulfa Drugs,None,Hypertension,Stroke Indicator,88,Critical
+ER0220,35,Male,Native American,"Bee sting about 26 minutes ago, throat feels tight",Bee sting with throat tightness,94,65,145,90,25,37.0,15,Sulfa Drugs,None,Diabetes,Anaphylaxis,96,Critical
+ER0221,46,Non-Binary,White,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,134,66,87,96,15,36.6,15,None,Metformin,Diabetes,Suicidal Ideation,97,High
+ER0222,11,Female,Black,"Feeling dizzy for 35 days, not eating well",Dizziness,113,85,97,98,18,36.5,15,Penicillin,Aspirin,Hypertension,No Critical Flag,15,Low
+ER0223,72,Female,Native American,"Rash spreading on torso, started 26 hours ago after new medication",Generalized rash,120,82,78,98,16,37.3,15,Sulfa Drugs,Sertraline,None,Possible Allergic Reaction,72,Medium
+ER0224,52,Male,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,194,84,87,95,21,37.2,13,Latex,Aspirin,CAD,Stroke Indicator,88,Critical
+ER0225,80,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,104,80,65,99,20,37.1,15,Peanuts,Metformin,COPD,No Critical Flag,8,Low
+ER0226,0,Non-Binary,Black,"Feeling dizzy for 63 days, not eating well",Dizziness,140,81,82,96,20,36.7,15,Latex,Aspirin,COPD,No Critical Flag,15,Low
+ER0227,36,Female,Asian,"Bee sting about 67 minutes ago, throat feels tight",Bee sting with throat tightness,90,51,112,83,34,37.0,15,Latex,None,None,Anaphylaxis,96,Critical
+ER0228,20,Female,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,157,81,122,85,32,37.2,15,Peanuts,Aspirin,Diabetes,Respiratory Distress,85,High
+ER0229,46,Female,Black,"Patient says chest tightness and left arm pain for 52 min, started at rest",Chest pain with left arm radiation,187,105,110,90,26,37.3,15,Penicillin,Metformin,Depression,Acute MI Indicator,91,Critical
+ER0230,12,Male,Hispanic,"Patient says chest tightness and left arm pain for 66 min, started at rest",Chest pain with left arm radiation,149,89,137,93,28,37.4,15,None,None,Depression,Acute MI Indicator,91,Critical
+ER0231,15,Female,Asian,"Feeling dizzy for 66 days, not eating well",Dizziness,104,67,84,96,13,36.4,15,Peanuts,Lisinopril,Hypertension,No Critical Flag,15,Low
+ER0232,17,Non-Binary,Asian,"Feeling dizzy for 13 days, not eating well",Dizziness,133,78,60,100,14,36.8,15,Penicillin,Sertraline,Depression,No Critical Flag,15,Low
+ER0233,52,Non-Binary,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,155,83,84,94,22,36.5,13,Peanuts,Aspirin,Hypertension,Stroke Indicator,88,Critical
+ER0234,10,Male,Native American,"Bee sting about 8 minutes ago, throat feels tight",Bee sting with throat tightness,89,56,143,91,32,37.0,15,Penicillin,Sertraline,COPD,Anaphylaxis,96,Critical
+ER0235,6,Male,Mixed,"Bee sting about 54 minutes ago, throat feels tight",Bee sting with throat tightness,83,57,141,92,33,37.0,15,None,Albuterol,None,Anaphylaxis,96,Critical
+ER0236,40,Male,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,153,92,121,85,34,37.2,15,Latex,None,None,Respiratory Distress,85,High
+ER0237,1,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,103,90,85,100,16,37.0,15,Sulfa Drugs,Metformin,COPD,No Critical Flag,8,Low
+ER0238,10,Non-Binary,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,105,69,65,100,15,37.4,15,Penicillin,Albuterol,Diabetes,Suicidal Ideation,97,High
+ER0239,8,Female,Middle Eastern,"Feeling dizzy for 35 days, not eating well",Dizziness,103,67,65,99,13,36.8,15,Sulfa Drugs,None,Diabetes,No Critical Flag,15,Low
+ER0240,22,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,100,65,91,98,20,36.9,15,Peanuts,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0241,34,Non-Binary,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,171,105,93,96,24,36.1,14,None,Metformin,COPD,Stroke Indicator,88,Critical
+ER0242,7,Female,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,110,68,66,100,13,36.6,15,Sulfa Drugs,None,None,No Critical Flag,8,Low
+ER0243,1,Male,White,"Rash spreading on torso, started 65 hours ago after new medication",Generalized rash,123,72,69,97,12,36.9,15,Latex,Aspirin,Diabetes,Possible Allergic Reaction,72,Medium
+ER0244,40,Female,Black,"Bee sting about 52 minutes ago, throat feels tight",Bee sting with throat tightness,83,51,121,85,36,37.0,15,Sulfa Drugs,None,COPD,Anaphylaxis,96,Critical
+ER0245,59,Female,Native American,"Patient says chest tightness and left arm pain for 46 min, started at rest",Chest pain with left arm radiation,150,102,129,90,25,36.8,15,Sulfa Drugs,Lisinopril,Depression,Acute MI Indicator,91,Critical
+ER0246,59,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,134,84,75,97,12,37.3,15,None,Aspirin,CAD,No Critical Flag,8,Low
+ER0247,1,Female,White,"Feeling dizzy for 53 days, not eating well",Dizziness,119,63,73,100,15,36.8,15,None,Aspirin,Depression,No Critical Flag,15,Low
+ER0248,5,Male,Middle Eastern,"Bee sting about 52 minutes ago, throat feels tight",Bee sting with throat tightness,94,52,147,83,32,37.0,15,Penicillin,Sertraline,COPD,Anaphylaxis,96,Critical
+ER0249,72,Male,Middle Eastern,"Patient says chest tightness and left arm pain for 21 min, started at rest",Chest pain with left arm radiation,160,94,116,95,26,37.4,15,Peanuts,Lisinopril,COPD,Acute MI Indicator,91,Critical
+ER0250,9,Male,Asian,"Bee sting about 18 minutes ago, throat feels tight",Bee sting with throat tightness,84,53,120,89,31,37.0,15,Peanuts,Metformin,None,Anaphylaxis,96,Critical
+ER0251,26,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,87,67,96,14,37.2,15,Peanuts,Sertraline,Depression,No Critical Flag,8,Low
+ER0252,27,Female,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,115,90,82,99,20,36.4,15,Peanuts,Lisinopril,Hypertension,No Critical Flag,8,Low
+ER0253,51,Female,Hispanic,"Patient says chest tightness and left arm pain for 17 min, started at rest",Chest pain with left arm radiation,174,88,108,91,20,36.6,15,Penicillin,Aspirin,Hypertension,Acute MI Indicator,91,Critical
+ER0254,47,Non-Binary,Black,"Rash spreading on torso, started 38 hours ago after new medication",Generalized rash,104,60,64,97,19,37.2,15,None,Lisinopril,None,Possible Allergic Reaction,72,Medium
+ER0255,59,Male,Asian,"Patient says chest tightness and left arm pain for 60 min, started at rest",Chest pain with left arm radiation,170,100,101,96,30,37.1,15,Peanuts,Aspirin,Hypertension,Acute MI Indicator,91,Critical
+ER0256,57,Male,White,"Bee sting about 36 minutes ago, throat feels tight",Bee sting with throat tightness,100,59,141,88,32,37.0,15,Latex,None,None,Anaphylaxis,96,Critical
+ER0257,17,Female,Hispanic,"Bee sting about 72 minutes ago, throat feels tight",Bee sting with throat tightness,87,50,134,87,31,37.0,15,Sulfa Drugs,Metformin,Diabetes,Anaphylaxis,96,Critical
+ER0258,64,Female,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,141,75,110,88,25,37.2,15,None,Lisinopril,None,Respiratory Distress,85,High
+ER0259,60,Non-Binary,Pacific Islander,"Rash spreading on torso, started 34 hours ago after new medication",Generalized rash,110,63,75,97,16,36.9,15,None,Aspirin,CAD,Possible Allergic Reaction,72,Medium
+ER0260,49,Female,Asian,"Rash spreading on torso, started 27 hours ago after new medication",Generalized rash,115,78,80,98,12,37.1,15,Peanuts,Albuterol,CAD,Possible Allergic Reaction,72,Medium
+ER0261,24,Female,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,181,81,82,94,19,36.9,10,Sulfa Drugs,Metformin,None,Stroke Indicator,88,Critical
+ER0262,78,Male,Asian,"Feeling dizzy for 48 days, not eating well",Dizziness,111,89,80,96,12,36.5,15,Penicillin,None,CAD,No Critical Flag,15,Low
+ER0263,9,Female,Middle Eastern,"Rash spreading on torso, started 17 hours ago after new medication",Generalized rash,121,69,80,97,14,37.1,15,Latex,Sertraline,COPD,Possible Allergic Reaction,72,Medium
+ER0264,22,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,137,86,71,99,16,37.1,15,Peanuts,Aspirin,Hypertension,No Critical Flag,8,Low
+ER0265,73,Female,White,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,138,70,99,97,13,37.3,15,Penicillin,Lisinopril,Depression,Suicidal Ideation,97,High
+ER0266,44,Female,Asian,"Patient says chest tightness and left arm pain for 16 min, started at rest",Chest pain with left arm radiation,190,106,140,95,27,36.5,15,Penicillin,Aspirin,Depression,Acute MI Indicator,91,Critical
+ER0267,32,Male,White,"Patient says chest tightness and left arm pain for 11 min, started at rest",Chest pain with left arm radiation,169,99,126,92,26,37.1,15,Latex,Lisinopril,CAD,Acute MI Indicator,91,Critical
+ER0268,61,Non-Binary,Hispanic,"Feeling dizzy for 25 days, not eating well",Dizziness,128,62,62,98,12,36.7,15,None,None,Diabetes,No Critical Flag,15,Low
+ER0269,48,Male,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,171,99,99,97,16,36.6,11,Sulfa Drugs,Metformin,Hypertension,Stroke Indicator,88,Critical
+ER0270,42,Male,Hispanic,"Patient says chest tightness and left arm pain for 57 min, started at rest",Chest pain with left arm radiation,189,102,134,94,30,36.9,15,Penicillin,None,None,Acute MI Indicator,91,Critical
+ER0271,70,Female,Asian,"Feeling dizzy for 11 days, not eating well",Dizziness,123,60,87,96,16,37.2,15,Sulfa Drugs,Metformin,Hypertension,No Critical Flag,15,Low
+ER0272,26,Male,Native American,"Patient says chest tightness and left arm pain for 15 min, started at rest",Chest pain with left arm radiation,175,88,119,96,27,37.1,15,Peanuts,None,Depression,Acute MI Indicator,91,Critical
+ER0273,23,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,111,74,62,98,19,36.8,15,Penicillin,Lisinopril,CAD,No Critical Flag,8,Low
+ER0274,12,Male,Pacific Islander,"Patient says chest tightness and left arm pain for 57 min, started at rest",Chest pain with left arm radiation,182,92,135,90,26,37.6,15,Latex,Albuterol,Depression,Acute MI Indicator,91,Critical
+ER0275,60,Non-Binary,Hispanic,"Rash spreading on torso, started 65 hours ago after new medication",Generalized rash,119,62,85,96,20,36.9,15,Sulfa Drugs,Albuterol,Depression,Possible Allergic Reaction,72,Medium
+ER0276,18,Male,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,140,81,125,85,24,37.2,15,None,Metformin,None,Respiratory Distress,85,High
+ER0277,55,Male,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,150,77,102,87,30,37.2,15,Latex,Albuterol,Diabetes,Respiratory Distress,85,High
+ER0278,66,Female,White,"Rash spreading on torso, started 71 hours ago after new medication",Generalized rash,126,63,86,97,14,36.9,15,Sulfa Drugs,None,None,Possible Allergic Reaction,72,Medium
+ER0279,12,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,72,91,100,19,36.3,15,Peanuts,Metformin,Hypertension,No Critical Flag,8,Low
+ER0280,51,Male,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,115,61,90,98,17,36.3,15,Peanuts,Lisinopril,Diabetes,No Critical Flag,8,Low
+ER0281,12,Male,Asian,"Rash spreading on torso, started 43 hours ago after new medication",Generalized rash,128,84,80,98,18,37.0,15,None,Aspirin,COPD,Possible Allergic Reaction,72,Medium
+ER0282,52,Non-Binary,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,173,81,96,95,17,36.5,14,Latex,Aspirin,CAD,Stroke Indicator,88,Critical
+ER0283,3,Male,Hispanic,"Rash spreading on torso, started 30 hours ago after new medication",Generalized rash,103,67,62,99,12,37.3,15,Penicillin,Lisinopril,Diabetes,Possible Allergic Reaction,72,Medium
+ER0284,64,Female,Black,"Rash spreading on torso, started 8 hours ago after new medication",Generalized rash,115,71,91,100,19,36.5,15,Latex,Albuterol,CAD,Possible Allergic Reaction,72,Medium
+ER0285,20,Female,Black,"Feeling dizzy for 41 days, not eating well",Dizziness,101,72,63,97,15,37.2,15,Penicillin,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0286,52,Non-Binary,White,"Bee sting about 6 minutes ago, throat feels tight",Bee sting with throat tightness,95,54,121,91,36,37.0,15,None,Aspirin,Diabetes,Anaphylaxis,96,Critical
+ER0287,39,Non-Binary,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,124,87,82,99,16,36.5,15,Peanuts,Sertraline,CAD,No Critical Flag,8,Low
+ER0288,50,Non-Binary,Black,"Rash spreading on torso, started 5 hours ago after new medication",Generalized rash,132,81,83,100,16,36.6,15,None,Metformin,None,Possible Allergic Reaction,72,Medium
+ER0289,35,Non-Binary,Pacific Islander,"Feeling dizzy for 40 days, not eating well",Dizziness,116,80,79,97,14,36.9,15,Penicillin,None,CAD,No Critical Flag,15,Low
+ER0290,40,Non-Binary,Asian,"Feeling dizzy for 8 days, not eating well",Dizziness,131,69,76,99,18,36.7,15,None,Albuterol,Depression,No Critical Flag,15,Low
+ER0291,24,Female,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,172,86,116,86,24,37.2,15,Sulfa Drugs,Aspirin,Diabetes,Respiratory Distress,85,High
+ER0292,16,Non-Binary,Native American,"Patient says chest tightness and left arm pain for 28 min, started at rest",Chest pain with left arm radiation,188,95,105,93,25,36.8,15,Peanuts,Metformin,Diabetes,Acute MI Indicator,91,Critical
+ER0293,74,Female,Mixed,"Feeling dizzy for 20 days, not eating well",Dizziness,130,61,100,100,13,36.8,15,Penicillin,Albuterol,None,No Critical Flag,15,Low
+ER0294,48,Non-Binary,Native American,"Rash spreading on torso, started 57 hours ago after new medication",Generalized rash,103,87,69,97,15,36.7,15,Sulfa Drugs,Metformin,Hypertension,Possible Allergic Reaction,72,Medium
+ER0295,23,Male,Mixed,"Feeling dizzy for 47 days, not eating well",Dizziness,140,65,80,96,12,36.8,15,Penicillin,Aspirin,CAD,No Critical Flag,15,Low
+ER0296,62,Male,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,140,73,85,99,19,36.7,15,None,Albuterol,Hypertension,Suicidal Ideation,97,High
+ER0297,1,Female,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,100,80,75,97,17,36.6,15,None,Metformin,CAD,Suicidal Ideation,97,High
+ER0298,21,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,118,74,93,100,20,36.7,15,Penicillin,Lisinopril,COPD,No Critical Flag,8,Low
+ER0299,24,Male,Middle Eastern,"Feeling dizzy for 7 days, not eating well",Dizziness,114,67,68,97,12,36.9,15,Penicillin,None,Diabetes,No Critical Flag,15,Low
+ER0300,4,Female,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,138,61,66,96,12,37.1,15,Latex,Metformin,COPD,Suicidal Ideation,97,High
+ER0301,32,Female,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,194,101,100,94,20,36.6,10,Sulfa Drugs,Lisinopril,CAD,Stroke Indicator,88,Critical
+ER0302,17,Female,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,139,63,78,96,13,36.8,15,Sulfa Drugs,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0303,25,Female,Middle Eastern,"Rash spreading on torso, started 42 hours ago after new medication",Generalized rash,110,61,95,99,15,37.1,15,Latex,Lisinopril,Hypertension,Possible Allergic Reaction,72,Medium
+ER0304,11,Male,Mixed,"Patient says chest tightness and left arm pain for 24 min, started at rest",Chest pain with left arm radiation,150,109,132,91,21,37.7,15,Penicillin,Metformin,Diabetes,Acute MI Indicator,91,Critical
+ER0305,6,Male,Asian,"Bee sting about 10 minutes ago, throat feels tight",Bee sting with throat tightness,89,61,130,88,35,37.0,15,None,None,None,Anaphylaxis,96,Critical
+ER0306,17,Non-Binary,Asian,"Patient says chest tightness and left arm pain for 47 min, started at rest",Chest pain with left arm radiation,167,99,139,94,21,37.0,15,Peanuts,Aspirin,None,Acute MI Indicator,91,Critical
+ER0307,58,Female,Middle Eastern,"Feeling dizzy for 66 days, not eating well",Dizziness,126,80,70,96,14,37.1,15,None,Aspirin,None,No Critical Flag,15,Low
+ER0308,75,Female,Mixed,"Feeling dizzy for 28 days, not eating well",Dizziness,139,72,82,100,12,37.2,15,Penicillin,Metformin,COPD,No Critical Flag,15,Low
+ER0309,52,Female,White,"Patient says chest tightness and left arm pain for 13 min, started at rest",Chest pain with left arm radiation,161,105,120,90,30,37.2,15,Sulfa Drugs,Sertraline,CAD,Acute MI Indicator,91,Critical
+ER0310,43,Non-Binary,Black,"Bee sting about 60 minutes ago, throat feels tight",Bee sting with throat tightness,87,65,132,92,34,37.0,15,Latex,Aspirin,CAD,Anaphylaxis,96,Critical
+ER0311,78,Male,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,162,90,127,87,24,37.2,15,None,Metformin,Diabetes,Respiratory Distress,85,High
+ER0312,35,Male,Hispanic,"Bee sting about 53 minutes ago, throat feels tight",Bee sting with throat tightness,92,57,115,89,31,37.0,15,Sulfa Drugs,Metformin,None,Anaphylaxis,96,Critical
+ER0313,57,Female,Black,"Rash spreading on torso, started 68 hours ago after new medication",Generalized rash,101,63,85,99,12,36.9,15,None,None,CAD,Possible Allergic Reaction,72,Medium
+ER0314,38,Non-Binary,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,151,86,126,84,25,37.2,15,Latex,Lisinopril,CAD,Respiratory Distress,85,High
+ER0315,76,Female,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,107,63,74,96,17,36.7,15,Peanuts,Albuterol,CAD,Suicidal Ideation,97,High
+ER0316,13,Male,Asian,"Feeling dizzy for 68 days, not eating well",Dizziness,108,86,86,96,16,37.0,15,Penicillin,None,COPD,No Critical Flag,15,Low
+ER0317,24,Non-Binary,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,198,93,81,99,17,37.2,13,Latex,Sertraline,CAD,Stroke Indicator,88,Critical
+ER0318,17,Female,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,177,76,117,87,31,37.2,15,Latex,Albuterol,Hypertension,Respiratory Distress,85,High
+ER0319,22,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,124,81,98,100,17,36.9,15,Latex,Metformin,CAD,No Critical Flag,8,Low
+ER0320,31,Female,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,148,89,125,85,24,37.2,15,Latex,Albuterol,Depression,Respiratory Distress,85,High
+ER0321,65,Female,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,142,81,119,89,26,37.2,15,Peanuts,Sertraline,Hypertension,Respiratory Distress,85,High
+ER0322,22,Non-Binary,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,178,86,117,87,31,37.2,15,Sulfa Drugs,Sertraline,Depression,Respiratory Distress,85,High
+ER0323,68,Female,Middle Eastern,"Feeling dizzy for 6 days, not eating well",Dizziness,133,63,61,99,14,36.4,15,None,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0324,20,Female,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,103,82,78,97,20,36.3,15,Latex,None,CAD,Suicidal Ideation,97,High
+ER0325,71,Male,Middle Eastern,"Rash spreading on torso, started 35 hours ago after new medication",Generalized rash,132,85,78,96,18,36.7,15,Peanuts,Albuterol,None,Possible Allergic Reaction,72,Medium
+ER0326,32,Male,Mixed,"Patient says chest tightness and left arm pain for 33 min, started at rest",Chest pain with left arm radiation,185,107,123,93,23,36.9,15,Penicillin,Sertraline,None,Acute MI Indicator,91,Critical
+ER0327,22,Non-Binary,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,152,93,88,98,20,36.2,14,Peanuts,None,Diabetes,Stroke Indicator,88,Critical
+ER0328,19,Male,Asian,"Feeling dizzy for 46 days, not eating well",Dizziness,138,61,100,100,16,36.8,15,Sulfa Drugs,Albuterol,Diabetes,No Critical Flag,15,Low
+ER0329,40,Non-Binary,Hispanic,"Patient says chest tightness and left arm pain for 28 min, started at rest",Chest pain with left arm radiation,178,87,132,92,26,37.2,15,Latex,None,Diabetes,Acute MI Indicator,91,Critical
+ER0330,27,Non-Binary,Pacific Islander,"Bee sting about 47 minutes ago, throat feels tight",Bee sting with throat tightness,91,59,123,91,32,37.0,15,Latex,Albuterol,Depression,Anaphylaxis,96,Critical
+ER0331,44,Female,Hispanic,"Patient says chest tightness and left arm pain for 36 min, started at rest",Chest pain with left arm radiation,147,106,120,96,21,37.0,15,Sulfa Drugs,Sertraline,Diabetes,Acute MI Indicator,91,Critical
+ER0332,66,Female,Mixed,"Patient says chest tightness and left arm pain for 67 min, started at rest",Chest pain with left arm radiation,147,94,112,95,28,36.6,15,None,Aspirin,CAD,Acute MI Indicator,91,Critical
+ER0333,80,Male,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,127,86,66,97,20,37.2,15,Latex,Sertraline,None,No Critical Flag,8,Low
+ER0334,19,Male,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,102,62,64,96,14,37.2,15,Sulfa Drugs,None,CAD,Suicidal Ideation,97,High
+ER0335,33,Female,Middle Eastern,"Rash spreading on torso, started 62 hours ago after new medication",Generalized rash,140,72,87,98,12,36.7,15,None,Albuterol,None,Possible Allergic Reaction,72,Medium
+ER0336,79,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,122,89,92,96,16,37.2,15,Peanuts,Albuterol,None,No Critical Flag,8,Low
+ER0337,56,Female,Middle Eastern,"Bee sting about 8 minutes ago, throat feels tight",Bee sting with throat tightness,95,55,144,85,26,37.0,15,Latex,Albuterol,Diabetes,Anaphylaxis,96,Critical
+ER0338,18,Female,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,165,92,104,84,22,37.2,15,None,Albuterol,CAD,Respiratory Distress,85,High
+ER0339,70,Male,Native American,"Feeling dizzy for 31 days, not eating well",Dizziness,122,66,86,100,14,36.5,15,Penicillin,Albuterol,Diabetes,No Critical Flag,15,Low
+ER0340,23,Non-Binary,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,191,97,82,96,17,36.4,11,Sulfa Drugs,Metformin,Diabetes,Stroke Indicator,88,Critical
+ER0341,30,Male,Native American,"Feeling dizzy for 13 days, not eating well",Dizziness,112,70,91,99,17,37.0,15,Peanuts,Sertraline,CAD,No Critical Flag,15,Low
+ER0342,72,Female,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,160,80,90,95,19,37.1,13,Peanuts,Lisinopril,Hypertension,Stroke Indicator,88,Critical
+ER0343,42,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,122,84,79,99,20,36.4,15,Sulfa Drugs,None,Diabetes,No Critical Flag,8,Low
+ER0344,17,Non-Binary,Hispanic,"Rash spreading on torso, started 38 hours ago after new medication",Generalized rash,140,62,64,96,20,37.0,15,Sulfa Drugs,Albuterol,COPD,Possible Allergic Reaction,72,Medium
+ER0345,27,Male,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,109,71,85,97,16,36.4,15,Sulfa Drugs,Albuterol,None,Suicidal Ideation,97,High
+ER0346,64,Male,Hispanic,"Feeling dizzy for 26 days, not eating well",Dizziness,132,64,88,97,14,36.9,15,Sulfa Drugs,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0347,61,Female,White,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,131,67,64,98,17,36.6,15,Penicillin,Albuterol,Diabetes,Suicidal Ideation,97,High
+ER0348,58,Male,White,"Feeling dizzy for 46 days, not eating well",Dizziness,106,82,93,98,16,36.9,15,Sulfa Drugs,Aspirin,COPD,No Critical Flag,15,Low
+ER0349,46,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,72,74,100,18,36.7,15,Peanuts,Metformin,COPD,No Critical Flag,8,Low
+ER0350,0,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,140,82,102,88,32,37.2,15,Peanuts,Aspirin,Hypertension,Respiratory Distress,85,High
+ER0351,46,Non-Binary,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,176,105,90,99,17,36.7,13,Latex,Aspirin,CAD,Stroke Indicator,88,Critical
+ER0352,52,Male,Hispanic,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,158,98,98,95,18,36.9,10,Sulfa Drugs,Aspirin,None,Stroke Indicator,88,Critical
+ER0353,23,Non-Binary,Middle Eastern,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,196,103,101,96,17,36.3,14,Latex,Metformin,Hypertension,Stroke Indicator,88,Critical
+ER0354,52,Non-Binary,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,189,101,96,96,18,37.1,12,Latex,Albuterol,CAD,Stroke Indicator,88,Critical
+ER0355,48,Female,Asian,"Patient says chest tightness and left arm pain for 18 min, started at rest",Chest pain with left arm radiation,146,91,133,96,22,37.3,15,Penicillin,Metformin,CAD,Acute MI Indicator,91,Critical
+ER0356,68,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,130,81,68,100,20,37.2,15,Latex,Albuterol,COPD,No Critical Flag,8,Low
+ER0357,5,Non-Binary,Middle Eastern,"Feeling dizzy for 34 days, not eating well",Dizziness,130,85,84,98,13,36.8,15,Peanuts,Metformin,Hypertension,No Critical Flag,15,Low
+ER0358,10,Female,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,142,75,122,89,34,37.2,15,None,Albuterol,CAD,Respiratory Distress,85,High
+ER0359,0,Female,Hispanic,"Patient says chest tightness and left arm pain for 45 min, started at rest",Chest pain with left arm radiation,171,96,106,92,26,37.3,15,Peanuts,Lisinopril,CAD,Acute MI Indicator,91,Critical
+ER0360,46,Non-Binary,Native American,"Feeling dizzy for 55 days, not eating well",Dizziness,113,73,95,100,19,36.5,15,Sulfa Drugs,Albuterol,COPD,No Critical Flag,15,Low
+ER0361,39,Non-Binary,Pacific Islander,"Bee sting about 55 minutes ago, throat feels tight",Bee sting with throat tightness,84,53,124,89,36,37.0,15,Penicillin,None,Hypertension,Anaphylaxis,96,Critical
+ER0362,43,Non-Binary,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,124,90,100,96,13,37.2,15,Latex,Albuterol,COPD,No Critical Flag,8,Low
+ER0363,33,Male,Pacific Islander,"Patient says chest tightness and left arm pain for 15 min, started at rest",Chest pain with left arm radiation,183,86,124,96,29,37.4,15,Peanuts,Sertraline,CAD,Acute MI Indicator,91,Critical
+ER0364,22,Non-Binary,Mixed,"Patient says chest tightness and left arm pain for 61 min, started at rest",Chest pain with left arm radiation,145,91,133,94,23,36.5,15,Sulfa Drugs,Albuterol,CAD,Acute MI Indicator,91,Critical
+ER0365,78,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,115,80,60,97,13,37.4,15,Latex,Lisinopril,Depression,No Critical Flag,8,Low
+ER0366,75,Male,White,"Feeling dizzy for 13 days, not eating well",Dizziness,105,77,78,100,17,36.7,15,Peanuts,Aspirin,CAD,No Critical Flag,15,Low
+ER0367,58,Female,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,141,88,116,84,30,37.2,15,None,Albuterol,Diabetes,Respiratory Distress,85,High
+ER0368,14,Non-Binary,Native American,"Feeling dizzy for 37 days, not eating well",Dizziness,128,90,84,100,19,37.1,15,Peanuts,Metformin,Depression,No Critical Flag,15,Low
+ER0369,75,Male,Mixed,"Feeling dizzy for 19 days, not eating well",Dizziness,116,62,84,97,15,37.2,15,Latex,Lisinopril,CAD,No Critical Flag,15,Low
+ER0370,33,Male,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,125,81,81,96,20,37.3,15,Latex,Lisinopril,Diabetes,No Critical Flag,8,Low
+ER0371,73,Female,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,181,103,86,95,19,37.3,11,Penicillin,Aspirin,Hypertension,Stroke Indicator,88,Critical
+ER0372,45,Male,Black,"Rash spreading on torso, started 20 hours ago after new medication",Generalized rash,105,81,91,100,12,37.1,15,Sulfa Drugs,None,COPD,Possible Allergic Reaction,72,Medium
+ER0373,40,Female,Native American,"Feeling dizzy for 67 days, not eating well",Dizziness,111,84,92,98,18,36.5,15,Sulfa Drugs,Aspirin,None,No Critical Flag,15,Low
+ER0374,54,Female,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,122,72,71,99,13,37.1,15,Latex,Lisinopril,Depression,No Critical Flag,8,Low
+ER0375,26,Female,Black,"Patient says chest tightness and left arm pain for 46 min, started at rest",Chest pain with left arm radiation,168,104,116,92,28,36.8,15,Peanuts,Metformin,CAD,Acute MI Indicator,91,Critical
+ER0376,23,Female,Middle Eastern,"Feeling dizzy for 31 days, not eating well",Dizziness,126,82,83,98,18,36.6,15,Penicillin,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0377,29,Male,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,165,88,127,87,25,37.2,15,Penicillin,Sertraline,Hypertension,Respiratory Distress,85,High
+ER0378,1,Male,Middle Eastern,"Feeling dizzy for 68 days, not eating well",Dizziness,108,88,100,100,20,37.1,15,Latex,Lisinopril,Diabetes,No Critical Flag,15,Low
+ER0379,72,Male,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,110,61,73,98,19,37.2,15,None,Metformin,Depression,No Critical Flag,8,Low
+ER0380,46,Female,Native American,"Feeling dizzy for 49 days, not eating well",Dizziness,101,73,67,98,15,36.9,15,Sulfa Drugs,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0381,65,Female,Mixed,"Feeling dizzy for 15 days, not eating well",Dizziness,124,79,78,99,14,37.3,15,Peanuts,Metformin,Depression,No Critical Flag,15,Low
+ER0382,51,Male,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,121,67,80,98,16,37.1,15,Sulfa Drugs,Sertraline,COPD,No Critical Flag,8,Low
+ER0383,56,Female,Mixed,"Bee sting about 57 minutes ago, throat feels tight",Bee sting with throat tightness,85,55,111,84,35,37.0,15,Penicillin,Sertraline,Diabetes,Anaphylaxis,96,Critical
+ER0384,10,Male,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,136,78,102,87,30,37.2,15,None,None,COPD,Respiratory Distress,85,High
+ER0385,10,Male,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,105,80,84,98,15,36.6,15,Peanuts,Metformin,Depression,No Critical Flag,8,Low
+ER0386,67,Male,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,192,91,107,96,23,36.7,14,Peanuts,Albuterol,COPD,Stroke Indicator,88,Critical
+ER0387,69,Male,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,183,100,100,98,20,37.4,13,Sulfa Drugs,Aspirin,None,Stroke Indicator,88,Critical
+ER0388,46,Female,Native American,"Feeling dizzy for 24 days, not eating well",Dizziness,119,60,60,100,14,36.7,15,Latex,Albuterol,None,No Critical Flag,15,Low
+ER0389,62,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,127,85,78,100,15,37.2,15,Sulfa Drugs,Lisinopril,Hypertension,No Critical Flag,8,Low
+ER0390,71,Female,Middle Eastern,"Feeling dizzy for 36 days, not eating well",Dizziness,110,82,84,99,15,36.6,15,Latex,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0391,78,Non-Binary,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,134,85,77,99,15,37.2,15,Penicillin,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0392,58,Non-Binary,Mixed,"Patient says chest tightness and left arm pain for 39 min, started at rest",Chest pain with left arm radiation,189,104,131,93,25,36.5,15,None,Albuterol,None,Acute MI Indicator,91,Critical
+ER0393,13,Female,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,195,94,103,94,19,36.1,10,Latex,Aspirin,Diabetes,Stroke Indicator,88,Critical
+ER0394,63,Female,Mixed,"Feeling dizzy for 9 days, not eating well",Dizziness,121,62,69,96,16,37.2,15,None,Albuterol,COPD,No Critical Flag,15,Low
+ER0395,32,Female,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,199,102,87,97,23,36.4,10,Penicillin,Metformin,Depression,Stroke Indicator,88,Critical
+ER0396,66,Non-Binary,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,124,81,79,98,14,37.0,15,None,Sertraline,CAD,Suicidal Ideation,97,High
+ER0397,32,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,123,88,63,97,13,36.6,15,Latex,Lisinopril,None,No Critical Flag,8,Low
+ER0398,35,Non-Binary,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,200,87,80,94,23,37.0,11,Peanuts,None,Hypertension,Stroke Indicator,88,Critical
+ER0399,11,Non-Binary,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,153,91,100,95,24,37.2,11,Latex,Aspirin,Diabetes,Stroke Indicator,88,Critical
+ER0400,44,Female,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,174,87,111,89,24,37.2,15,Peanuts,None,COPD,Respiratory Distress,85,High
+ER0401,71,Female,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,136,65,94,98,17,37.1,15,Peanuts,Albuterol,CAD,Suicidal Ideation,97,High
+ER0402,67,Male,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,166,97,91,97,16,37.2,14,Latex,Sertraline,Hypertension,Stroke Indicator,88,Critical
+ER0403,79,Female,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,176,77,121,88,28,37.2,15,Penicillin,Albuterol,Depression,Respiratory Distress,85,High
+ER0404,70,Male,Native American,"Feeling dizzy for 46 days, not eating well",Dizziness,126,80,80,96,13,36.9,15,None,None,Hypertension,No Critical Flag,15,Low
+ER0405,4,Male,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,162,83,81,98,22,37.0,14,Sulfa Drugs,Sertraline,CAD,Stroke Indicator,88,Critical
+ER0406,46,Male,Black,"Bee sting about 6 minutes ago, throat feels tight",Bee sting with throat tightness,86,65,115,89,36,37.0,15,None,Lisinopril,CAD,Anaphylaxis,96,Critical
+ER0407,53,Female,White,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,133,61,64,98,13,37.3,15,Sulfa Drugs,None,None,Suicidal Ideation,97,High
+ER0408,68,Female,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,133,81,75,100,14,36.9,15,Sulfa Drugs,Metformin,Depression,Suicidal Ideation,97,High
+ER0409,73,Female,Mixed,"Patient says chest tightness and left arm pain for 59 min, started at rest",Chest pain with left arm radiation,151,90,111,96,28,36.9,15,Penicillin,Albuterol,CAD,Acute MI Indicator,91,Critical
+ER0410,45,Female,Pacific Islander,"Feeling dizzy for 52 days, not eating well",Dizziness,126,84,100,99,17,37.0,15,Sulfa Drugs,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0411,70,Non-Binary,Native American,"Feeling dizzy for 51 days, not eating well",Dizziness,128,74,85,96,12,37.4,15,Sulfa Drugs,None,CAD,No Critical Flag,15,Low
+ER0412,38,Male,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,163,90,80,99,20,37.4,14,Sulfa Drugs,Albuterol,CAD,Stroke Indicator,88,Critical
+ER0413,4,Female,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,158,88,91,98,19,36.3,12,None,Albuterol,COPD,Stroke Indicator,88,Critical
+ER0414,27,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,130,65,91,100,13,37.0,15,Peanuts,None,Depression,No Critical Flag,8,Low
+ER0415,48,Male,White,"Rash spreading on torso, started 47 hours ago after new medication",Generalized rash,122,88,87,99,13,37.3,15,Penicillin,Sertraline,Depression,Possible Allergic Reaction,72,Medium
+ER0416,1,Non-Binary,Middle Eastern,"Rash spreading on torso, started 11 hours ago after new medication",Generalized rash,119,76,62,98,20,36.9,15,Peanuts,Albuterol,Depression,Possible Allergic Reaction,72,Medium
+ER0417,6,Non-Binary,Middle Eastern,"Bee sting about 62 minutes ago, throat feels tight",Bee sting with throat tightness,99,52,124,88,28,37.0,15,Latex,Aspirin,Hypertension,Anaphylaxis,96,Critical
+ER0418,60,Non-Binary,White,"Feeling dizzy for 56 days, not eating well",Dizziness,116,62,85,100,18,37.2,15,Penicillin,Aspirin,COPD,No Critical Flag,15,Low
+ER0419,62,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,115,67,64,98,18,36.7,15,Sulfa Drugs,None,None,No Critical Flag,8,Low
+ER0420,54,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,120,71,98,96,16,36.5,15,Peanuts,Albuterol,COPD,No Critical Flag,8,Low
+ER0421,56,Male,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,123,64,65,96,12,36.6,15,Sulfa Drugs,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0422,14,Female,Mixed,"Patient says chest tightness and left arm pain for 65 min, started at rest",Chest pain with left arm radiation,146,95,113,93,23,37.2,15,Peanuts,Albuterol,COPD,Acute MI Indicator,91,Critical
+ER0423,18,Non-Binary,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,137,88,93,96,16,36.5,15,Peanuts,Aspirin,Depression,No Critical Flag,8,Low
+ER0424,6,Female,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,124,81,77,98,13,36.3,15,Latex,Aspirin,COPD,No Critical Flag,8,Low
+ER0425,12,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,111,66,92,99,20,37.3,15,None,None,Hypertension,No Critical Flag,8,Low
+ER0426,39,Female,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,177,80,100,86,32,37.2,15,Peanuts,Lisinopril,Depression,Respiratory Distress,85,High
+ER0427,64,Female,White,"Feeling dizzy for 37 days, not eating well",Dizziness,124,88,61,100,16,36.5,15,Peanuts,Metformin,Depression,No Critical Flag,15,Low
+ER0428,48,Non-Binary,Hispanic,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,165,98,84,97,20,37.4,12,Latex,Albuterol,Hypertension,Stroke Indicator,88,Critical
+ER0429,17,Non-Binary,Hispanic,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,169,102,102,98,18,36.6,11,Sulfa Drugs,Aspirin,Diabetes,Stroke Indicator,88,Critical
+ER0430,68,Non-Binary,Black,"Patient says chest tightness and left arm pain for 28 min, started at rest",Chest pain with left arm radiation,165,89,101,95,26,37.7,15,Peanuts,Metformin,Depression,Acute MI Indicator,91,Critical
+ER0431,35,Male,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,138,80,100,90,31,37.2,15,Sulfa Drugs,Lisinopril,CAD,Respiratory Distress,85,High
+ER0432,29,Non-Binary,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,101,71,65,99,14,36.9,15,Sulfa Drugs,Metformin,Depression,No Critical Flag,8,Low
+ER0433,23,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,108,65,72,97,12,36.7,15,None,Lisinopril,COPD,No Critical Flag,8,Low
+ER0434,25,Male,Black,"Bee sting about 27 minutes ago, throat feels tight",Bee sting with throat tightness,94,65,130,89,27,37.0,15,Latex,Metformin,None,Anaphylaxis,96,Critical
+ER0435,48,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,139,90,96,100,20,36.9,15,None,Albuterol,None,No Critical Flag,8,Low
+ER0436,5,Male,Middle Eastern,"Feeling dizzy for 10 days, not eating well",Dizziness,135,72,93,96,15,36.6,15,Latex,Lisinopril,Diabetes,No Critical Flag,15,Low
+ER0437,54,Female,White,"Feeling dizzy for 71 days, not eating well",Dizziness,109,74,88,96,20,36.4,15,Sulfa Drugs,Sertraline,CAD,No Critical Flag,15,Low
+ER0438,52,Female,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,161,94,98,99,19,37.3,10,Peanuts,Lisinopril,Depression,Stroke Indicator,88,Critical
+ER0439,20,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,107,82,88,98,13,36.9,15,Latex,Sertraline,CAD,No Critical Flag,8,Low
+ER0440,20,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,110,89,81,100,14,36.5,15,Penicillin,Aspirin,Depression,No Critical Flag,8,Low
+ER0441,39,Female,Mixed,"Patient says chest tightness and left arm pain for 41 min, started at rest",Chest pain with left arm radiation,185,90,107,92,23,36.5,15,Peanuts,None,COPD,Acute MI Indicator,91,Critical
+ER0442,63,Non-Binary,White,"Feeling dizzy for 68 days, not eating well",Dizziness,115,66,97,99,19,36.8,15,None,Albuterol,CAD,No Critical Flag,15,Low
+ER0443,70,Female,Hispanic,"Patient says chest tightness and left arm pain for 11 min, started at rest",Chest pain with left arm radiation,156,89,103,95,20,36.7,15,None,Sertraline,CAD,Acute MI Indicator,91,Critical
+ER0444,38,Female,Black,"Rash spreading on torso, started 11 hours ago after new medication",Generalized rash,106,73,71,97,16,37.0,15,Sulfa Drugs,Albuterol,CAD,Possible Allergic Reaction,72,Medium
+ER0445,58,Non-Binary,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,155,104,89,96,21,37.3,10,Latex,Albuterol,None,Stroke Indicator,88,Critical
+ER0446,17,Male,Native American,"Bee sting about 47 minutes ago, throat feels tight",Bee sting with throat tightness,96,63,143,85,35,37.0,15,Penicillin,Albuterol,None,Anaphylaxis,96,Critical
+ER0447,80,Non-Binary,Black,"Patient says chest tightness and left arm pain for 66 min, started at rest",Chest pain with left arm radiation,189,104,118,96,29,37.6,15,Peanuts,Albuterol,CAD,Acute MI Indicator,91,Critical
+ER0448,45,Male,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,176,95,115,87,34,37.2,15,Penicillin,Albuterol,Hypertension,Respiratory Distress,85,High
+ER0449,24,Male,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,129,80,67,97,18,36.8,15,Peanuts,Lisinopril,CAD,Suicidal Ideation,97,High
+ER0450,27,Male,Hispanic,"Rash spreading on torso, started 41 hours ago after new medication",Generalized rash,116,85,64,98,16,36.9,15,Peanuts,None,None,Possible Allergic Reaction,72,Medium
+ER0451,43,Female,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,112,70,81,99,19,37.2,15,Penicillin,Metformin,Hypertension,No Critical Flag,8,Low
+ER0452,68,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,103,86,93,98,17,36.9,15,None,Aspirin,CAD,No Critical Flag,8,Low
+ER0453,45,Male,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,101,70,84,100,14,36.9,15,Latex,Aspirin,CAD,No Critical Flag,8,Low
+ER0454,39,Non-Binary,Pacific Islander,"Patient says chest tightness and left arm pain for 9 min, started at rest",Chest pain with left arm radiation,162,98,105,97,23,37.0,15,Peanuts,Aspirin,CAD,Acute MI Indicator,91,Critical
+ER0455,14,Female,White,"Feeling dizzy for 30 days, not eating well",Dizziness,105,74,92,96,19,37.3,15,Penicillin,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0456,67,Female,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,179,78,126,88,32,37.2,15,Penicillin,Aspirin,Depression,Respiratory Distress,85,High
+ER0457,49,Non-Binary,Black,"Patient says chest tightness and left arm pain for 5 min, started at rest",Chest pain with left arm radiation,164,86,138,91,25,37.1,15,None,None,CAD,Acute MI Indicator,91,Critical
+ER0458,39,Male,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,120,66,72,98,16,36.9,15,Latex,Sertraline,None,Suicidal Ideation,97,High
+ER0459,20,Female,Black,"Bee sting about 6 minutes ago, throat feels tight",Bee sting with throat tightness,99,53,123,90,29,37.0,15,Sulfa Drugs,Lisinopril,Diabetes,Anaphylaxis,96,Critical
+ER0460,36,Non-Binary,Hispanic,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,154,89,99,96,24,36.7,11,None,Metformin,Depression,Stroke Indicator,88,Critical
+ER0461,49,Male,Black,"Patient says chest tightness and left arm pain for 59 min, started at rest",Chest pain with left arm radiation,170,90,138,97,29,37.0,15,Peanuts,Aspirin,Depression,Acute MI Indicator,91,Critical
+ER0462,68,Male,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,105,86,89,96,19,36.6,15,Latex,Metformin,Hypertension,Suicidal Ideation,97,High
+ER0463,18,Non-Binary,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,155,80,122,89,27,37.2,15,Peanuts,Metformin,COPD,Respiratory Distress,85,High
+ER0464,60,Male,Pacific Islander,"Patient says chest tightness and left arm pain for 66 min, started at rest",Chest pain with left arm radiation,174,90,118,95,29,37.2,15,Sulfa Drugs,None,COPD,Acute MI Indicator,91,Critical
+ER0465,13,Female,Black,"Rash spreading on torso, started 43 hours ago after new medication",Generalized rash,134,74,85,100,18,36.6,15,Penicillin,Albuterol,Hypertension,Possible Allergic Reaction,72,Medium
+ER0466,49,Male,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,174,93,113,90,28,37.2,15,Sulfa Drugs,Lisinopril,CAD,Respiratory Distress,85,High
+ER0467,22,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,107,78,98,99,17,36.9,15,Latex,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0468,8,Non-Binary,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,150,90,120,89,22,37.2,15,None,Aspirin,Hypertension,Respiratory Distress,85,High
+ER0469,0,Male,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,164,84,112,88,31,37.2,15,Latex,Aspirin,Hypertension,Respiratory Distress,85,High
+ER0470,40,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,122,62,97,96,20,36.7,15,Penicillin,Lisinopril,None,No Critical Flag,8,Low
+ER0471,70,Male,White,"Feeling dizzy for 50 days, not eating well",Dizziness,107,87,78,96,15,36.8,15,Sulfa Drugs,Metformin,Depression,No Critical Flag,15,Low
+ER0472,48,Female,Middle Eastern,"Feeling dizzy for 60 days, not eating well",Dizziness,134,66,71,99,14,36.5,15,Latex,Lisinopril,COPD,No Critical Flag,15,Low
+ER0473,16,Male,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,191,80,84,99,23,37.0,11,None,Aspirin,Depression,Stroke Indicator,88,Critical
+ER0474,58,Non-Binary,Middle Eastern,"Rash spreading on torso, started 28 hours ago after new medication",Generalized rash,129,76,87,100,19,36.7,15,Penicillin,Aspirin,COPD,Possible Allergic Reaction,72,Medium
+ER0475,73,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,117,73,94,100,17,36.3,15,None,Albuterol,COPD,No Critical Flag,8,Low
+ER0476,14,Non-Binary,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,109,83,93,98,19,36.9,15,Sulfa Drugs,Albuterol,None,Suicidal Ideation,97,High
+ER0477,80,Non-Binary,Black,"Bee sting about 44 minutes ago, throat feels tight",Bee sting with throat tightness,99,51,131,90,36,37.0,15,None,Metformin,COPD,Anaphylaxis,96,Critical
+ER0478,60,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,122,90,78,98,14,36.3,15,Sulfa Drugs,Sertraline,Diabetes,No Critical Flag,8,Low
+ER0479,72,Female,White,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,137,65,96,96,16,37.2,15,Sulfa Drugs,None,Diabetes,Suicidal Ideation,97,High
+ER0480,16,Non-Binary,Black,"Feeling dizzy for 40 days, not eating well",Dizziness,116,64,99,98,16,37.2,15,None,Sertraline,None,No Critical Flag,15,Low
+ER0481,75,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,123,85,71,98,15,36.8,15,Sulfa Drugs,None,Diabetes,No Critical Flag,8,Low
+ER0482,18,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,178,88,124,87,25,37.2,15,Latex,Sertraline,Depression,Respiratory Distress,85,High
+ER0483,73,Non-Binary,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,191,88,104,94,16,36.3,13,Latex,Lisinopril,COPD,Stroke Indicator,88,Critical
+ER0484,68,Male,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,130,68,69,100,18,36.3,15,Latex,Metformin,Depression,Suicidal Ideation,97,High
+ER0485,67,Non-Binary,White,"Feeling dizzy for 17 days, not eating well",Dizziness,134,80,82,99,16,36.7,15,Peanuts,None,Diabetes,No Critical Flag,15,Low
+ER0486,50,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,133,70,71,98,20,36.3,15,None,None,None,No Critical Flag,8,Low
+ER0487,67,Male,Mixed,"Feeling dizzy for 49 days, not eating well",Dizziness,114,83,78,98,15,36.3,15,Sulfa Drugs,None,None,No Critical Flag,15,Low
+ER0488,27,Non-Binary,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,135,94,104,87,32,37.2,15,Sulfa Drugs,Aspirin,None,Respiratory Distress,85,High
+ER0489,32,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,140,74,77,99,17,36.6,15,None,Lisinopril,None,No Critical Flag,8,Low
+ER0490,42,Male,Native American,"Feeling dizzy for 38 days, not eating well",Dizziness,111,74,64,99,15,37.0,15,Penicillin,Sertraline,COPD,No Critical Flag,15,Low
+ER0491,69,Female,Hispanic,"Patient says chest tightness and left arm pain for 18 min, started at rest",Chest pain with left arm radiation,173,107,116,91,20,36.6,15,Sulfa Drugs,Sertraline,Diabetes,Acute MI Indicator,91,Critical
+ER0492,2,Female,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,102,81,84,98,14,37.1,15,Latex,Albuterol,None,Suicidal Ideation,97,High
+ER0493,62,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,104,77,74,96,18,37.3,15,Latex,None,CAD,No Critical Flag,8,Low
+ER0494,45,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,103,80,65,98,20,37.2,15,Peanuts,None,COPD,No Critical Flag,8,Low
+ER0495,37,Non-Binary,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,135,61,84,97,16,37.1,15,None,Sertraline,Depression,Suicidal Ideation,97,High
+ER0496,10,Non-Binary,Mixed,"Feeling dizzy for 29 days, not eating well",Dizziness,108,61,72,96,15,36.8,15,None,Albuterol,Depression,No Critical Flag,15,Low
+ER0497,68,Female,White,"Feeling dizzy for 9 days, not eating well",Dizziness,121,61,81,96,18,36.4,15,Sulfa Drugs,Metformin,Depression,No Critical Flag,15,Low
+ER0498,68,Male,Hispanic,"Rash spreading on torso, started 14 hours ago after new medication",Generalized rash,102,83,69,99,12,36.8,15,Sulfa Drugs,None,Hypertension,Possible Allergic Reaction,72,Medium
+ER0499,16,Male,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,119,86,66,99,14,37.2,15,None,None,None,Suicidal Ideation,97,High
+ER0500,78,Male,Black,"Feeling dizzy for 30 days, not eating well",Dizziness,127,70,85,98,13,37.4,15,Sulfa Drugs,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0501,27,Male,Asian,"Feeling dizzy for 47 days, not eating well",Dizziness,104,63,77,97,18,36.5,15,Peanuts,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0502,74,Male,Asian,"Feeling dizzy for 17 days, not eating well",Dizziness,140,79,84,97,12,37.3,15,None,None,None,No Critical Flag,15,Low
+ER0503,11,Non-Binary,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,194,105,105,97,18,36.3,12,Sulfa Drugs,Metformin,COPD,Stroke Indicator,88,Critical
+ER0504,22,Non-Binary,White,"Bee sting about 28 minutes ago, throat feels tight",Bee sting with throat tightness,95,52,150,86,29,37.0,15,Latex,None,CAD,Anaphylaxis,96,Critical
+ER0505,15,Non-Binary,Black,"Bee sting about 51 minutes ago, throat feels tight",Bee sting with throat tightness,97,57,139,92,34,37.0,15,Penicillin,Lisinopril,None,Anaphylaxis,96,Critical
+ER0506,19,Non-Binary,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,161,85,101,94,16,37.0,12,Penicillin,Metformin,Diabetes,Stroke Indicator,88,Critical
+ER0507,58,Male,Black,"Feeling dizzy for 11 days, not eating well",Dizziness,134,65,70,96,19,36.9,15,None,Aspirin,Depression,No Critical Flag,15,Low
+ER0508,74,Female,Middle Eastern,"Feeling dizzy for 30 days, not eating well",Dizziness,120,67,67,98,15,36.4,15,Latex,Aspirin,COPD,No Critical Flag,15,Low
+ER0509,9,Female,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,157,79,106,88,29,37.2,15,Penicillin,Metformin,Diabetes,Respiratory Distress,85,High
+ER0510,24,Non-Binary,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,162,90,84,94,16,36.4,10,Latex,Metformin,COPD,Stroke Indicator,88,Critical
+ER0511,43,Male,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,200,105,100,98,18,36.9,14,Penicillin,None,COPD,Stroke Indicator,88,Critical
+ER0512,62,Male,Mixed,"Rash spreading on torso, started 64 hours ago after new medication",Generalized rash,117,60,87,97,15,36.7,15,Sulfa Drugs,Aspirin,CAD,Possible Allergic Reaction,72,Medium
+ER0513,73,Male,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,132,90,123,90,30,37.2,15,None,Metformin,CAD,Respiratory Distress,85,High
+ER0514,12,Female,Mixed,"Feeling dizzy for 35 days, not eating well",Dizziness,105,77,60,99,15,36.4,15,Peanuts,Aspirin,Depression,No Critical Flag,15,Low
+ER0515,2,Female,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,175,89,127,88,33,37.2,15,Sulfa Drugs,None,COPD,Respiratory Distress,85,High
+ER0516,17,Non-Binary,Middle Eastern,"Feeling dizzy for 28 days, not eating well",Dizziness,123,80,89,96,13,36.7,15,Peanuts,Albuterol,None,No Critical Flag,15,Low
+ER0517,34,Non-Binary,Hispanic,"Bee sting about 15 minutes ago, throat feels tight",Bee sting with throat tightness,99,60,113,90,34,37.0,15,Peanuts,None,None,Anaphylaxis,96,Critical
+ER0518,59,Non-Binary,White,"Feeling dizzy for 51 days, not eating well",Dizziness,123,65,95,96,20,37.1,15,Penicillin,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0519,14,Non-Binary,Mixed,"Bee sting about 31 minutes ago, throat feels tight",Bee sting with throat tightness,87,60,132,86,32,37.0,15,Latex,Lisinopril,None,Anaphylaxis,96,Critical
+ER0520,44,Female,Mixed,"Patient says chest tightness and left arm pain for 69 min, started at rest",Chest pain with left arm radiation,178,88,130,94,27,37.3,15,None,Aspirin,COPD,Acute MI Indicator,91,Critical
+ER0521,50,Male,Native American,"Patient says chest tightness and left arm pain for 14 min, started at rest",Chest pain with left arm radiation,151,90,117,91,22,37.1,15,Penicillin,Albuterol,Depression,Acute MI Indicator,91,Critical
+ER0522,53,Non-Binary,Asian,"Patient says chest tightness and left arm pain for 65 min, started at rest",Chest pain with left arm radiation,167,98,128,90,24,36.7,15,None,Aspirin,CAD,Acute MI Indicator,91,Critical
+ER0523,52,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,131,78,93,100,19,36.8,15,Sulfa Drugs,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0524,33,Male,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,168,104,107,94,18,36.5,13,Penicillin,Albuterol,Hypertension,Stroke Indicator,88,Critical
+ER0525,36,Male,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,110,67,67,96,17,36.9,15,Latex,Lisinopril,Diabetes,Suicidal Ideation,97,High
+ER0526,71,Non-Binary,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,172,84,91,97,24,37.5,14,Peanuts,None,None,Stroke Indicator,88,Critical
+ER0527,63,Male,Mixed,"Feeling dizzy for 45 days, not eating well",Dizziness,109,60,94,100,17,37.0,15,Peanuts,Metformin,Diabetes,No Critical Flag,15,Low
+ER0528,73,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,151,78,123,87,22,37.2,15,Penicillin,Sertraline,CAD,Respiratory Distress,85,High
+ER0529,3,Female,Hispanic,"Patient says chest tightness and left arm pain for 62 min, started at rest",Chest pain with left arm radiation,167,87,120,90,29,37.3,15,Sulfa Drugs,Albuterol,Hypertension,Acute MI Indicator,91,Critical
+ER0530,35,Male,White,"Rash spreading on torso, started 15 hours ago after new medication",Generalized rash,134,87,88,96,20,36.7,15,Latex,Lisinopril,CAD,Possible Allergic Reaction,72,Medium
+ER0531,7,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,109,82,87,98,18,36.7,15,Peanuts,Lisinopril,Diabetes,No Critical Flag,8,Low
+ER0532,57,Non-Binary,Black,"Feeling dizzy for 32 days, not eating well",Dizziness,128,83,86,99,16,36.5,15,Latex,Sertraline,COPD,No Critical Flag,15,Low
+ER0533,75,Non-Binary,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,163,89,95,98,21,36.1,14,Latex,None,None,Stroke Indicator,88,Critical
+ER0534,34,Female,Asian,"Feeling dizzy for 64 days, not eating well",Dizziness,136,84,68,97,14,37.2,15,Peanuts,Albuterol,COPD,No Critical Flag,15,Low
+ER0535,38,Non-Binary,Native American,"Patient says chest tightness and left arm pain for 68 min, started at rest",Chest pain with left arm radiation,180,108,129,93,20,37.5,15,Penicillin,Lisinopril,Diabetes,Acute MI Indicator,91,Critical
+ER0536,60,Male,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,141,90,129,89,32,37.2,15,Penicillin,None,None,Respiratory Distress,85,High
+ER0537,63,Male,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,136,73,76,99,13,36.7,15,Sulfa Drugs,None,Diabetes,Suicidal Ideation,97,High
+ER0538,7,Male,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,194,84,91,95,16,36.4,13,Peanuts,None,Diabetes,Stroke Indicator,88,Critical
+ER0539,9,Non-Binary,Hispanic,"Bee sting about 28 minutes ago, throat feels tight",Bee sting with throat tightness,83,55,144,87,29,37.0,15,Peanuts,Lisinopril,Depression,Anaphylaxis,96,Critical
+ER0540,46,Male,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,100,64,93,98,17,37.2,15,Latex,Lisinopril,Hypertension,No Critical Flag,8,Low
+ER0541,19,Non-Binary,Hispanic,"Patient says chest tightness and left arm pain for 29 min, started at rest",Chest pain with left arm radiation,180,104,133,91,26,37.1,15,None,None,Hypertension,Acute MI Indicator,91,Critical
+ER0542,61,Female,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,138,89,128,88,30,37.2,15,Peanuts,Aspirin,Depression,Respiratory Distress,85,High
+ER0543,15,Male,Asian,"Feeling dizzy for 23 days, not eating well",Dizziness,114,69,68,97,14,37.4,15,Latex,Sertraline,None,No Critical Flag,15,Low
+ER0544,61,Female,White,"Patient says chest tightness and left arm pain for 30 min, started at rest",Chest pain with left arm radiation,151,86,132,90,27,36.7,15,Peanuts,None,None,Acute MI Indicator,91,Critical
+ER0545,1,Male,Black,"Feeling dizzy for 31 days, not eating well",Dizziness,137,88,72,97,17,36.3,15,Penicillin,Sertraline,Diabetes,No Critical Flag,15,Low
+ER0546,44,Female,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,179,94,107,88,31,37.2,15,None,None,CAD,Respiratory Distress,85,High
+ER0547,67,Male,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,110,88,94,96,13,37.3,15,Sulfa Drugs,Sertraline,COPD,Suicidal Ideation,97,High
+ER0548,75,Male,Mixed,"Feeling dizzy for 18 days, not eating well",Dizziness,111,86,82,99,18,36.5,15,Penicillin,Metformin,None,No Critical Flag,15,Low
+ER0549,40,Male,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,133,64,91,98,16,36.9,15,None,None,Diabetes,Suicidal Ideation,97,High
+ER0550,49,Female,Mixed,"Feeling dizzy for 44 days, not eating well",Dizziness,128,67,95,99,16,37.4,15,Latex,Aspirin,None,No Critical Flag,15,Low
+ER0551,60,Non-Binary,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,130,90,121,84,28,37.2,15,Latex,Albuterol,Depression,Respiratory Distress,85,High
+ER0552,15,Male,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,137,63,70,96,17,37.4,15,Peanuts,Aspirin,CAD,No Critical Flag,8,Low
+ER0553,51,Male,Hispanic,"Rash spreading on torso, started 59 hours ago after new medication",Generalized rash,131,68,97,100,16,37.1,15,Latex,Lisinopril,COPD,Possible Allergic Reaction,72,Medium
+ER0554,51,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,129,63,67,98,19,36.8,15,Penicillin,None,None,No Critical Flag,8,Low
+ER0555,8,Female,White,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,124,79,80,97,16,37.0,15,None,None,Depression,Suicidal Ideation,97,High
+ER0556,63,Female,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,131,75,92,98,20,36.7,15,Sulfa Drugs,Albuterol,None,Suicidal Ideation,97,High
+ER0557,4,Female,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,158,85,127,87,29,37.2,15,Latex,None,None,Respiratory Distress,85,High
+ER0558,38,Non-Binary,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,177,84,89,99,22,36.7,10,Sulfa Drugs,Sertraline,COPD,Stroke Indicator,88,Critical
+ER0559,69,Non-Binary,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,135,87,70,100,12,36.7,15,Latex,Albuterol,COPD,No Critical Flag,8,Low
+ER0560,45,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,101,78,62,97,17,36.7,15,Sulfa Drugs,None,Depression,No Critical Flag,8,Low
+ER0561,12,Female,Pacific Islander,"Feeling dizzy for 50 days, not eating well",Dizziness,126,71,63,97,15,36.6,15,Peanuts,Albuterol,None,No Critical Flag,15,Low
+ER0562,8,Female,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,140,75,117,86,22,37.2,15,Latex,Sertraline,COPD,Respiratory Distress,85,High
+ER0563,53,Female,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,137,60,80,99,18,36.7,15,None,Metformin,None,No Critical Flag,8,Low
+ER0564,26,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,121,65,99,98,17,37.4,15,Penicillin,Metformin,Depression,No Critical Flag,8,Low
+ER0565,9,Non-Binary,Hispanic,"Rash spreading on torso, started 41 hours ago after new medication",Generalized rash,116,61,79,100,18,37.2,15,Sulfa Drugs,Sertraline,None,Possible Allergic Reaction,72,Medium
+ER0566,74,Male,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,104,78,93,99,18,36.5,15,None,Sertraline,Diabetes,Suicidal Ideation,97,High
+ER0567,38,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,126,72,76,100,20,36.8,15,Sulfa Drugs,Aspirin,None,No Critical Flag,8,Low
+ER0568,66,Male,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,129,68,100,100,18,37.3,15,None,Albuterol,Hypertension,No Critical Flag,8,Low
+ER0569,18,Male,Asian,"Feeling dizzy for 43 days, not eating well",Dizziness,127,73,80,96,15,37.2,15,Peanuts,Lisinopril,Depression,No Critical Flag,15,Low
+ER0570,76,Male,Middle Eastern,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,157,84,86,94,19,37.2,12,Latex,Metformin,CAD,Stroke Indicator,88,Critical
+ER0571,54,Non-Binary,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,140,83,104,84,26,37.2,15,Peanuts,Sertraline,CAD,Respiratory Distress,85,High
+ER0572,5,Non-Binary,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,153,82,90,98,20,37.3,13,Peanuts,Sertraline,Depression,Stroke Indicator,88,Critical
+ER0573,50,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,137,93,123,88,23,37.2,15,Sulfa Drugs,Sertraline,CAD,Respiratory Distress,85,High
+ER0574,67,Female,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,145,94,103,90,34,37.2,15,Peanuts,Lisinopril,CAD,Respiratory Distress,85,High
+ER0575,30,Female,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,106,65,73,98,19,36.7,15,Sulfa Drugs,None,COPD,Suicidal Ideation,97,High
+ER0576,14,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,115,90,77,97,17,36.8,15,Peanuts,Lisinopril,None,No Critical Flag,8,Low
+ER0577,77,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,77,84,98,17,37.3,15,None,Albuterol,Hypertension,No Critical Flag,8,Low
+ER0578,49,Male,Middle Eastern,"Rash spreading on torso, started 37 hours ago after new medication",Generalized rash,119,62,75,98,15,37.2,15,Penicillin,Metformin,Depression,Possible Allergic Reaction,72,Medium
+ER0579,52,Male,Native American,"Feeling dizzy for 15 days, not eating well",Dizziness,131,75,86,98,18,37.3,15,None,Aspirin,Depression,No Critical Flag,15,Low
+ER0580,8,Female,Middle Eastern,"Bee sting about 46 minutes ago, throat feels tight",Bee sting with throat tightness,94,50,113,92,34,37.0,15,Penicillin,Sertraline,COPD,Anaphylaxis,96,Critical
+ER0581,17,Male,Middle Eastern,"Rash spreading on torso, started 30 hours ago after new medication",Generalized rash,140,69,80,100,13,36.4,15,Penicillin,Albuterol,Depression,Possible Allergic Reaction,72,Medium
+ER0582,16,Non-Binary,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,158,90,127,89,24,37.2,15,Peanuts,Aspirin,Depression,Respiratory Distress,85,High
+ER0583,41,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,126,71,71,99,18,37.3,15,Sulfa Drugs,Aspirin,None,No Critical Flag,8,Low
+ER0584,71,Non-Binary,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,159,81,108,89,24,37.2,15,None,Metformin,CAD,Respiratory Distress,85,High
+ER0585,33,Male,Black,"Feeling dizzy for 52 days, not eating well",Dizziness,110,90,96,96,12,37.1,15,Latex,Metformin,Depression,No Critical Flag,15,Low
+ER0586,28,Non-Binary,Hispanic,"Feeling dizzy for 29 days, not eating well",Dizziness,117,69,91,99,14,36.8,15,Penicillin,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0587,36,Non-Binary,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,141,88,125,85,22,37.2,15,Peanuts,Lisinopril,Hypertension,Respiratory Distress,85,High
+ER0588,31,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,100,75,68,98,18,37.1,15,Latex,Sertraline,COPD,No Critical Flag,8,Low
+ER0589,32,Male,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,103,70,75,99,17,37.4,15,Sulfa Drugs,Sertraline,Depression,Suicidal Ideation,97,High
+ER0590,0,Female,Middle Eastern,"Rash spreading on torso, started 43 hours ago after new medication",Generalized rash,125,81,83,97,20,36.3,15,Penicillin,Lisinopril,Hypertension,Possible Allergic Reaction,72,Medium
+ER0591,43,Female,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,120,82,93,99,14,36.6,15,Peanuts,None,Hypertension,No Critical Flag,8,Low
+ER0592,35,Non-Binary,Pacific Islander,"Feeling dizzy for 60 days, not eating well",Dizziness,118,88,76,100,16,36.9,15,Latex,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0593,62,Male,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,112,64,63,97,14,36.3,15,Peanuts,Aspirin,Depression,Suicidal Ideation,97,High
+ER0594,14,Female,White,"Feeling dizzy for 61 days, not eating well",Dizziness,122,82,95,99,19,36.8,15,Penicillin,None,Diabetes,No Critical Flag,15,Low
+ER0595,36,Male,Asian,"Patient says chest tightness and left arm pain for 70 min, started at rest",Chest pain with left arm radiation,162,103,137,93,29,37.8,15,None,Albuterol,CAD,Acute MI Indicator,91,Critical
+ER0596,9,Male,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,171,80,89,99,17,36.6,14,None,Lisinopril,Hypertension,Stroke Indicator,88,Critical
+ER0597,58,Non-Binary,Mixed,"Patient says chest tightness and left arm pain for 63 min, started at rest",Chest pain with left arm radiation,185,93,138,90,25,37.8,15,Sulfa Drugs,Metformin,Diabetes,Acute MI Indicator,91,Critical
+ER0598,72,Male,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,171,84,110,90,22,37.2,15,None,Albuterol,CAD,Respiratory Distress,85,High
+ER0599,51,Female,Asian,"Feeling dizzy for 35 days, not eating well",Dizziness,125,62,61,97,14,36.7,15,Latex,Lisinopril,Depression,No Critical Flag,15,Low
+ER0600,19,Male,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,127,83,79,100,14,36.7,15,None,Lisinopril,CAD,Suicidal Ideation,97,High
+ER0601,57,Female,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,186,99,93,94,22,37.2,14,Penicillin,Metformin,Depression,Stroke Indicator,88,Critical
+ER0602,5,Non-Binary,Pacific Islander,"Feeling dizzy for 64 days, not eating well",Dizziness,114,80,69,99,20,37.0,15,Sulfa Drugs,None,Diabetes,No Critical Flag,15,Low
+ER0603,10,Female,Native American,"Feeling dizzy for 24 days, not eating well",Dizziness,108,81,79,97,20,36.8,15,Sulfa Drugs,None,CAD,No Critical Flag,15,Low
+ER0604,5,Non-Binary,Black,"Patient says chest tightness and left arm pain for 70 min, started at rest",Chest pain with left arm radiation,172,98,106,97,30,37.4,15,Peanuts,Lisinopril,Diabetes,Acute MI Indicator,91,Critical
+ER0605,64,Male,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,111,85,71,99,12,36.4,15,Peanuts,Lisinopril,CAD,No Critical Flag,8,Low
+ER0606,57,Non-Binary,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,111,66,71,96,16,37.3,15,None,Metformin,CAD,Suicidal Ideation,97,High
+ER0607,50,Male,White,"Patient says chest tightness and left arm pain for 26 min, started at rest",Chest pain with left arm radiation,186,100,129,96,30,37.8,15,Sulfa Drugs,Sertraline,COPD,Acute MI Indicator,91,Critical
+ER0608,78,Female,Middle Eastern,"Feeling dizzy for 43 days, not eating well",Dizziness,105,64,68,96,15,36.4,15,None,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0609,26,Female,Asian,"Rash spreading on torso, started 35 hours ago after new medication",Generalized rash,127,86,100,100,15,36.4,15,Latex,Aspirin,COPD,Possible Allergic Reaction,72,Medium
+ER0610,14,Male,Asian,"Feeling dizzy for 61 days, not eating well",Dizziness,131,75,61,99,15,36.5,15,Sulfa Drugs,Metformin,None,No Critical Flag,15,Low
+ER0611,13,Non-Binary,Middle Eastern,"Feeling dizzy for 58 days, not eating well",Dizziness,131,83,97,100,20,37.4,15,None,Metformin,COPD,No Critical Flag,15,Low
+ER0612,75,Non-Binary,Mixed,"Feeling dizzy for 34 days, not eating well",Dizziness,103,76,61,99,17,36.9,15,Peanuts,Sertraline,COPD,No Critical Flag,15,Low
+ER0613,14,Female,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,174,88,100,85,26,37.2,15,Penicillin,Metformin,Diabetes,Respiratory Distress,85,High
+ER0614,64,Male,Pacific Islander,"Feeling dizzy for 64 days, not eating well",Dizziness,108,88,78,99,18,37.2,15,Peanuts,Metformin,Hypertension,No Critical Flag,15,Low
+ER0615,36,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,108,65,72,97,19,36.4,15,Latex,Metformin,Diabetes,No Critical Flag,8,Low
+ER0616,71,Male,White,"Bee sting about 50 minutes ago, throat feels tight",Bee sting with throat tightness,88,61,120,84,32,37.0,15,None,None,Diabetes,Anaphylaxis,96,Critical
+ER0617,79,Male,Black,"Feeling dizzy for 33 days, not eating well",Dizziness,131,68,81,98,12,37.1,15,Sulfa Drugs,Lisinopril,Hypertension,No Critical Flag,15,Low
+ER0618,65,Non-Binary,Black,"Rash spreading on torso, started 11 hours ago after new medication",Generalized rash,128,85,89,96,13,37.2,15,Sulfa Drugs,None,CAD,Possible Allergic Reaction,72,Medium
+ER0619,13,Male,Black,"Patient says chest tightness and left arm pain for 31 min, started at rest",Chest pain with left arm radiation,168,90,118,97,28,37.1,15,None,Aspirin,Depression,Acute MI Indicator,91,Critical
+ER0620,17,Male,Hispanic,"Feeling dizzy for 61 days, not eating well",Dizziness,126,84,60,97,19,36.7,15,Sulfa Drugs,Aspirin,None,No Critical Flag,15,Low
+ER0621,53,Female,Hispanic,"Bee sting about 24 minutes ago, throat feels tight",Bee sting with throat tightness,96,63,124,84,36,37.0,15,Latex,Metformin,COPD,Anaphylaxis,96,Critical
+ER0622,66,Non-Binary,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,158,79,124,84,33,37.2,15,Sulfa Drugs,None,None,Respiratory Distress,85,High
+ER0623,51,Male,Middle Eastern,"Feeling dizzy for 12 days, not eating well",Dizziness,125,84,62,97,12,37.4,15,Sulfa Drugs,Lisinopril,COPD,No Critical Flag,15,Low
+ER0624,70,Female,Pacific Islander,"Feeling dizzy for 49 days, not eating well",Dizziness,100,86,77,100,14,37.1,15,Latex,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0625,79,Non-Binary,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,180,95,112,90,25,37.2,15,Peanuts,None,None,Respiratory Distress,85,High
+ER0626,49,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,134,69,73,96,20,36.9,15,Sulfa Drugs,Lisinopril,Depression,No Critical Flag,8,Low
+ER0627,3,Non-Binary,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,199,89,103,97,24,36.2,10,Peanuts,Lisinopril,Depression,Stroke Indicator,88,Critical
+ER0628,15,Male,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,119,78,60,99,17,37.4,15,Sulfa Drugs,Albuterol,Depression,No Critical Flag,8,Low
+ER0629,80,Non-Binary,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,149,84,121,90,33,37.2,15,Sulfa Drugs,Sertraline,Hypertension,Respiratory Distress,85,High
+ER0630,66,Non-Binary,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,120,76,97,97,17,36.8,15,Penicillin,Sertraline,COPD,Suicidal Ideation,97,High
+ER0631,10,Male,White,"Rash spreading on torso, started 59 hours ago after new medication",Generalized rash,108,75,73,99,13,36.7,15,Sulfa Drugs,Metformin,CAD,Possible Allergic Reaction,72,Medium
+ER0632,50,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,128,82,91,99,14,36.5,15,Penicillin,Metformin,Depression,No Critical Flag,8,Low
+ER0633,65,Non-Binary,Black,"Feeling dizzy for 32 days, not eating well",Dizziness,129,75,62,97,20,36.7,15,None,Albuterol,COPD,No Critical Flag,15,Low
+ER0634,47,Non-Binary,Native American,"Patient says chest tightness and left arm pain for 10 min, started at rest",Chest pain with left arm radiation,178,89,107,95,24,37.8,15,Peanuts,Lisinopril,COPD,Acute MI Indicator,91,Critical
+ER0635,18,Male,Middle Eastern,"Patient says chest tightness and left arm pain for 11 min, started at rest",Chest pain with left arm radiation,164,94,113,92,27,36.5,15,Sulfa Drugs,Lisinopril,None,Acute MI Indicator,91,Critical
+ER0636,53,Female,Native American,"Rash spreading on torso, started 62 hours ago after new medication",Generalized rash,121,85,84,99,14,37.1,15,Sulfa Drugs,Sertraline,COPD,Possible Allergic Reaction,72,Medium
+ER0637,57,Male,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,139,81,99,99,18,36.6,15,Latex,Lisinopril,CAD,Suicidal Ideation,97,High
+ER0638,56,Non-Binary,Native American,"Patient says chest tightness and left arm pain for 16 min, started at rest",Chest pain with left arm radiation,155,107,101,94,28,37.3,15,Sulfa Drugs,None,Hypertension,Acute MI Indicator,91,Critical
+ER0639,69,Non-Binary,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,142,90,116,84,23,37.2,15,Sulfa Drugs,Aspirin,None,Respiratory Distress,85,High
+ER0640,26,Male,Mixed,"Bee sting about 15 minutes ago, throat feels tight",Bee sting with throat tightness,97,60,135,91,24,37.0,15,Latex,None,Diabetes,Anaphylaxis,96,Critical
+ER0641,53,Male,Pacific Islander,"Feeling dizzy for 53 days, not eating well",Dizziness,116,62,67,96,20,36.5,15,Penicillin,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0642,19,Female,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,103,79,80,97,12,37.1,15,Peanuts,Metformin,None,Suicidal Ideation,97,High
+ER0643,52,Female,Native American,"Feeling dizzy for 53 days, not eating well",Dizziness,107,61,72,97,15,36.8,15,Sulfa Drugs,Metformin,None,No Critical Flag,15,Low
+ER0644,40,Female,Middle Eastern,"Bee sting about 13 minutes ago, throat feels tight",Bee sting with throat tightness,95,50,136,92,27,37.0,15,None,Lisinopril,CAD,Anaphylaxis,96,Critical
+ER0645,12,Male,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,166,88,114,84,32,37.2,15,Sulfa Drugs,Aspirin,Hypertension,Respiratory Distress,85,High
+ER0646,21,Male,Middle Eastern,"Feeling dizzy for 62 days, not eating well",Dizziness,102,60,89,100,16,37.0,15,Penicillin,None,None,No Critical Flag,15,Low
+ER0647,61,Female,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,152,95,106,88,30,37.2,15,Peanuts,None,Hypertension,Respiratory Distress,85,High
+ER0648,72,Male,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,125,82,67,97,20,37.4,15,Latex,Aspirin,CAD,Suicidal Ideation,97,High
+ER0649,40,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,128,68,75,98,17,36.5,15,Sulfa Drugs,Lisinopril,None,No Critical Flag,8,Low
+ER0650,17,Non-Binary,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,130,75,121,85,28,37.2,15,Sulfa Drugs,Sertraline,Depression,Respiratory Distress,85,High
+ER0651,50,Non-Binary,Black,"Feeling dizzy for 14 days, not eating well",Dizziness,134,60,88,96,17,37.4,15,Latex,Albuterol,Diabetes,No Critical Flag,15,Low
+ER0652,1,Male,Mixed,"Feeling dizzy for 52 days, not eating well",Dizziness,112,74,60,97,12,37.1,15,Peanuts,Aspirin,None,No Critical Flag,15,Low
+ER0653,80,Female,Hispanic,"Rash spreading on torso, started 34 hours ago after new medication",Generalized rash,131,90,83,96,16,36.8,15,Sulfa Drugs,Aspirin,None,Possible Allergic Reaction,72,Medium
+ER0654,50,Male,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,181,85,97,95,18,36.1,11,None,Aspirin,Diabetes,Stroke Indicator,88,Critical
+ER0655,29,Non-Binary,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,173,75,122,89,30,37.2,15,Sulfa Drugs,Lisinopril,Depression,Respiratory Distress,85,High
+ER0656,58,Male,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,120,73,86,98,13,37.0,15,Latex,Metformin,Diabetes,No Critical Flag,8,Low
+ER0657,5,Non-Binary,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,117,89,86,100,19,36.6,15,Latex,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0658,73,Male,Hispanic,"Patient says chest tightness and left arm pain for 59 min, started at rest",Chest pain with left arm radiation,149,92,112,92,25,36.9,15,None,None,COPD,Acute MI Indicator,91,Critical
+ER0659,3,Non-Binary,Pacific Islander,"Feeling dizzy for 37 days, not eating well",Dizziness,115,63,90,97,17,37.2,15,Peanuts,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0660,76,Non-Binary,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,170,89,118,84,23,37.2,15,None,None,COPD,Respiratory Distress,85,High
+ER0661,8,Male,White,"Feeling dizzy for 61 days, not eating well",Dizziness,103,69,99,99,13,36.4,15,None,Albuterol,None,No Critical Flag,15,Low
+ER0662,48,Female,Black,"Bee sting about 57 minutes ago, throat feels tight",Bee sting with throat tightness,87,50,139,88,31,37.0,15,Latex,Albuterol,CAD,Anaphylaxis,96,Critical
+ER0663,3,Female,Pacific Islander,"Patient says chest tightness and left arm pain for 29 min, started at rest",Chest pain with left arm radiation,151,88,100,91,29,37.5,15,Penicillin,Albuterol,Hypertension,Acute MI Indicator,91,Critical
+ER0664,32,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,139,74,71,97,14,37.2,15,None,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0665,65,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,137,88,94,97,14,36.8,15,Sulfa Drugs,Lisinopril,Diabetes,No Critical Flag,8,Low
+ER0666,1,Non-Binary,Asian,"Feeling dizzy for 12 days, not eating well",Dizziness,115,76,95,96,18,36.7,15,Penicillin,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0667,43,Male,Mixed,"Rash spreading on torso, started 64 hours ago after new medication",Generalized rash,138,82,81,100,17,37.0,15,Latex,Lisinopril,Hypertension,Possible Allergic Reaction,72,Medium
+ER0668,5,Female,Hispanic,"Patient says chest tightness and left arm pain for 5 min, started at rest",Chest pain with left arm radiation,185,92,114,97,29,36.8,15,Latex,Sertraline,Diabetes,Acute MI Indicator,91,Critical
+ER0669,48,Male,Middle Eastern,"Rash spreading on torso, started 28 hours ago after new medication",Generalized rash,100,71,60,96,17,36.3,15,None,Aspirin,Diabetes,Possible Allergic Reaction,72,Medium
+ER0670,80,Non-Binary,Pacific Islander,"Feeling dizzy for 10 days, not eating well",Dizziness,101,66,72,98,14,36.5,15,Peanuts,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0671,70,Male,Asian,"Feeling dizzy for 30 days, not eating well",Dizziness,101,65,76,96,12,37.2,15,Penicillin,Metformin,Depression,No Critical Flag,15,Low
+ER0672,14,Female,Hispanic,"Rash spreading on torso, started 44 hours ago after new medication",Generalized rash,129,67,83,98,14,37.3,15,Sulfa Drugs,Metformin,Depression,Possible Allergic Reaction,72,Medium
+ER0673,18,Male,Hispanic,"Patient says chest tightness and left arm pain for 29 min, started at rest",Chest pain with left arm radiation,179,97,123,95,29,37.1,15,Penicillin,None,CAD,Acute MI Indicator,91,Critical
+ER0674,68,Female,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,115,61,100,98,14,37.2,15,Sulfa Drugs,Metformin,Hypertension,No Critical Flag,8,Low
+ER0675,60,Non-Binary,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,132,72,92,98,19,36.9,15,Penicillin,Lisinopril,Depression,Suicidal Ideation,97,High
+ER0676,61,Non-Binary,Mixed,"Feeling dizzy for 65 days, not eating well",Dizziness,117,78,85,100,12,36.5,15,Penicillin,Metformin,Hypertension,No Critical Flag,15,Low
+ER0677,39,Female,Middle Eastern,"Feeling dizzy for 25 days, not eating well",Dizziness,123,68,95,96,14,37.1,15,Peanuts,Metformin,CAD,No Critical Flag,15,Low
+ER0678,74,Male,Mixed,"Feeling dizzy for 70 days, not eating well",Dizziness,139,70,87,99,19,36.8,15,Peanuts,Metformin,Diabetes,No Critical Flag,15,Low
+ER0679,3,Male,Mixed,"Bee sting about 34 minutes ago, throat feels tight",Bee sting with throat tightness,88,52,132,83,28,37.0,15,Sulfa Drugs,Albuterol,CAD,Anaphylaxis,96,Critical
+ER0680,35,Male,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,104,71,62,100,15,36.7,15,Peanuts,Lisinopril,Diabetes,No Critical Flag,8,Low
+ER0681,35,Male,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,100,84,79,98,17,37.2,15,Latex,Metformin,CAD,Suicidal Ideation,97,High
+ER0682,1,Female,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,114,67,73,99,15,36.9,15,Sulfa Drugs,Metformin,Depression,Suicidal Ideation,97,High
+ER0683,43,Male,Pacific Islander,"Rash spreading on torso, started 29 hours ago after new medication",Generalized rash,127,84,86,97,19,36.8,15,Sulfa Drugs,None,Diabetes,Possible Allergic Reaction,72,Medium
+ER0684,16,Female,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,192,91,90,95,22,36.6,13,Sulfa Drugs,Lisinopril,Diabetes,Stroke Indicator,88,Critical
+ER0685,72,Male,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,121,78,100,100,18,37.4,15,Penicillin,Metformin,None,No Critical Flag,8,Low
+ER0686,24,Female,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,136,90,88,98,13,36.5,15,Sulfa Drugs,Aspirin,None,No Critical Flag,8,Low
+ER0687,77,Female,White,"Rash spreading on torso, started 28 hours ago after new medication",Generalized rash,112,62,84,98,15,36.6,15,Sulfa Drugs,None,COPD,Possible Allergic Reaction,72,Medium
+ER0688,66,Male,Asian,"Patient says chest tightness and left arm pain for 46 min, started at rest",Chest pain with left arm radiation,171,97,110,91,22,37.2,15,Latex,Sertraline,None,Acute MI Indicator,91,Critical
+ER0689,26,Male,Hispanic,"Feeling dizzy for 44 days, not eating well",Dizziness,127,86,90,97,16,36.9,15,Sulfa Drugs,Sertraline,Depression,No Critical Flag,15,Low
+ER0690,25,Male,Asian,"Feeling dizzy for 62 days, not eating well",Dizziness,104,86,85,100,15,36.9,15,Sulfa Drugs,Metformin,COPD,No Critical Flag,15,Low
+ER0691,5,Non-Binary,Black,"Feeling dizzy for 41 days, not eating well",Dizziness,129,71,79,99,14,36.8,15,Penicillin,Albuterol,Depression,No Critical Flag,15,Low
+ER0692,49,Non-Binary,Asian,"Feeling dizzy for 17 days, not eating well",Dizziness,125,82,62,97,14,36.6,15,Sulfa Drugs,Lisinopril,Depression,No Critical Flag,15,Low
+ER0693,27,Female,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,153,77,124,84,30,37.2,15,Peanuts,Metformin,COPD,Respiratory Distress,85,High
+ER0694,26,Non-Binary,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,151,82,100,99,23,36.6,13,Penicillin,Metformin,None,Stroke Indicator,88,Critical
+ER0695,14,Non-Binary,Asian,"Patient says chest tightness and left arm pain for 46 min, started at rest",Chest pain with left arm radiation,187,108,129,97,27,36.6,15,Sulfa Drugs,Sertraline,Hypertension,Acute MI Indicator,91,Critical
+ER0696,56,Male,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,110,65,61,100,13,36.5,15,None,Albuterol,Depression,Suicidal Ideation,97,High
+ER0697,9,Non-Binary,White,"Feeling dizzy for 39 days, not eating well",Dizziness,109,74,82,97,15,37.1,15,Sulfa Drugs,Aspirin,COPD,No Critical Flag,15,Low
+ER0698,66,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,119,74,63,100,12,36.4,15,Latex,Aspirin,Hypertension,No Critical Flag,8,Low
+ER0699,30,Male,Black,"Feeling dizzy for 7 days, not eating well",Dizziness,126,60,60,98,15,37.0,15,None,Aspirin,None,No Critical Flag,15,Low
+ER0700,21,Non-Binary,Asian,"Rash spreading on torso, started 10 hours ago after new medication",Generalized rash,126,76,66,98,17,36.9,15,Penicillin,Albuterol,Hypertension,Possible Allergic Reaction,72,Medium
+ER0701,50,Female,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,143,78,111,86,24,37.2,15,None,Metformin,Depression,Respiratory Distress,85,High
+ER0702,49,Male,Mixed,"Feeling dizzy for 33 days, not eating well",Dizziness,104,81,77,100,17,36.3,15,Penicillin,Metformin,Diabetes,No Critical Flag,15,Low
+ER0703,63,Male,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,106,79,80,99,14,36.7,15,Peanuts,Sertraline,COPD,Suicidal Ideation,97,High
+ER0704,2,Non-Binary,Mixed,"Patient says chest tightness and left arm pain for 53 min, started at rest",Chest pain with left arm radiation,177,105,114,90,23,36.5,15,None,Lisinopril,Hypertension,Acute MI Indicator,91,Critical
+ER0705,31,Non-Binary,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,108,71,91,98,15,36.5,15,Penicillin,Sertraline,None,Suicidal Ideation,97,High
+ER0706,76,Female,Pacific Islander,"Bee sting about 22 minutes ago, throat feels tight",Bee sting with throat tightness,88,60,112,90,36,37.0,15,Latex,Sertraline,Diabetes,Anaphylaxis,96,Critical
+ER0707,29,Non-Binary,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,115,66,94,96,15,37.2,15,Penicillin,Albuterol,COPD,Suicidal Ideation,97,High
+ER0708,23,Female,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,131,62,72,96,14,37.3,15,Penicillin,None,Hypertension,No Critical Flag,8,Low
+ER0709,26,Male,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,129,69,70,97,15,36.8,15,Sulfa Drugs,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0710,57,Non-Binary,Hispanic,"Bee sting about 39 minutes ago, throat feels tight",Bee sting with throat tightness,95,52,133,88,30,37.0,15,Penicillin,Metformin,COPD,Anaphylaxis,96,Critical
+ER0711,78,Non-Binary,Middle Eastern,"Feeling dizzy for 24 days, not eating well",Dizziness,130,60,84,99,13,37.1,15,Peanuts,Albuterol,CAD,No Critical Flag,15,Low
+ER0712,22,Female,Middle Eastern,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,169,94,89,97,24,36.9,10,Peanuts,Aspirin,Depression,Stroke Indicator,88,Critical
+ER0713,19,Male,White,"Feeling dizzy for 6 days, not eating well",Dizziness,132,83,83,99,18,37.3,15,Latex,Sertraline,Diabetes,No Critical Flag,15,Low
+ER0714,39,Non-Binary,Black,"Feeling dizzy for 57 days, not eating well",Dizziness,102,89,67,99,14,36.5,15,Latex,Lisinopril,Depression,No Critical Flag,15,Low
+ER0715,62,Non-Binary,Pacific Islander,"Feeling dizzy for 12 days, not eating well",Dizziness,124,89,87,97,15,36.8,15,Peanuts,Sertraline,Depression,No Critical Flag,15,Low
+ER0716,18,Female,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,67,98,100,14,36.3,15,None,Sertraline,Depression,No Critical Flag,8,Low
+ER0717,50,Non-Binary,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,142,88,105,90,28,37.2,15,Peanuts,Sertraline,Diabetes,Respiratory Distress,85,High
+ER0718,68,Non-Binary,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,126,84,65,96,17,37.2,15,Peanuts,Sertraline,Hypertension,No Critical Flag,8,Low
+ER0719,50,Non-Binary,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,140,90,100,84,23,37.2,15,Latex,Albuterol,COPD,Respiratory Distress,85,High
+ER0720,55,Male,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,111,82,68,97,19,36.5,15,None,Metformin,CAD,No Critical Flag,8,Low
+ER0721,23,Male,White,"Rash spreading on torso, started 28 hours ago after new medication",Generalized rash,112,68,86,99,13,37.3,15,Penicillin,None,Diabetes,Possible Allergic Reaction,72,Medium
+ER0722,15,Female,Black,"Patient says chest tightness and left arm pain for 48 min, started at rest",Chest pain with left arm radiation,146,103,115,97,27,37.4,15,None,None,None,Acute MI Indicator,91,Critical
+ER0723,0,Non-Binary,White,"Bee sting about 17 minutes ago, throat feels tight",Bee sting with throat tightness,86,50,134,91,32,37.0,15,Peanuts,Metformin,COPD,Anaphylaxis,96,Critical
+ER0724,77,Female,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,121,70,75,98,18,36.7,15,None,Lisinopril,Diabetes,Suicidal Ideation,97,High
+ER0725,0,Female,Middle Eastern,"Rash spreading on torso, started 22 hours ago after new medication",Generalized rash,101,79,67,100,16,37.3,15,Penicillin,Lisinopril,COPD,Possible Allergic Reaction,72,Medium
+ER0726,60,Non-Binary,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,100,80,80,96,17,37.3,15,Peanuts,Sertraline,COPD,No Critical Flag,8,Low
+ER0727,62,Female,Black,"Bee sting about 49 minutes ago, throat feels tight",Bee sting with throat tightness,93,65,116,88,28,37.0,15,Sulfa Drugs,Aspirin,Depression,Anaphylaxis,96,Critical
+ER0728,66,Non-Binary,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,181,105,82,96,24,37.5,13,Penicillin,Metformin,None,Stroke Indicator,88,Critical
+ER0729,69,Male,Hispanic,"Feeling dizzy for 32 days, not eating well",Dizziness,110,84,65,96,18,37.4,15,None,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0730,35,Male,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,172,78,121,85,30,37.2,15,Latex,None,Depression,Respiratory Distress,85,High
+ER0731,28,Non-Binary,Black,"Feeling dizzy for 48 days, not eating well",Dizziness,124,89,84,100,18,37.2,15,Penicillin,Lisinopril,None,No Critical Flag,15,Low
+ER0732,14,Male,Pacific Islander,"Bee sting about 29 minutes ago, throat feels tight",Bee sting with throat tightness,83,61,118,87,30,37.0,15,Sulfa Drugs,Sertraline,None,Anaphylaxis,96,Critical
+ER0733,75,Non-Binary,Hispanic,"Feeling dizzy for 54 days, not eating well",Dizziness,127,70,83,97,20,37.0,15,Sulfa Drugs,Aspirin,None,No Critical Flag,15,Low
+ER0734,68,Female,Pacific Islander,"Feeling dizzy for 23 days, not eating well",Dizziness,118,86,74,99,19,36.5,15,Peanuts,Aspirin,Depression,No Critical Flag,15,Low
+ER0735,4,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,132,82,67,98,19,37.0,15,Penicillin,Metformin,Diabetes,No Critical Flag,8,Low
+ER0736,48,Male,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,113,87,74,96,14,37.2,15,Latex,Lisinopril,Depression,Suicidal Ideation,97,High
+ER0737,20,Male,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,157,90,111,90,28,37.2,15,Latex,None,CAD,Respiratory Distress,85,High
+ER0738,36,Non-Binary,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,106,64,80,100,12,37.2,15,Peanuts,Metformin,Depression,Suicidal Ideation,97,High
+ER0739,17,Female,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,159,86,86,99,19,37.1,10,Peanuts,Sertraline,CAD,Stroke Indicator,88,Critical
+ER0740,18,Female,Middle Eastern,"Patient says chest tightness and left arm pain for 26 min, started at rest",Chest pain with left arm radiation,148,88,122,97,22,37.7,15,None,Albuterol,Depression,Acute MI Indicator,91,Critical
+ER0741,55,Male,Middle Eastern,"Feeling dizzy for 36 days, not eating well",Dizziness,102,63,75,99,19,36.6,15,Sulfa Drugs,Aspirin,Depression,No Critical Flag,15,Low
+ER0742,11,Female,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,140,80,88,98,12,36.4,15,None,None,COPD,Suicidal Ideation,97,High
+ER0743,65,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,117,82,66,100,14,36.7,15,Latex,Lisinopril,CAD,No Critical Flag,8,Low
+ER0744,41,Male,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,194,80,92,98,24,37.2,14,Latex,None,CAD,Stroke Indicator,88,Critical
+ER0745,68,Non-Binary,Black,"Rash spreading on torso, started 31 hours ago after new medication",Generalized rash,107,65,98,97,12,36.9,15,Peanuts,None,None,Possible Allergic Reaction,72,Medium
+ER0746,26,Non-Binary,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,185,88,107,94,17,37.5,14,Peanuts,Lisinopril,CAD,Stroke Indicator,88,Critical
+ER0747,0,Male,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,183,105,89,99,24,36.7,14,Latex,Sertraline,Diabetes,Stroke Indicator,88,Critical
+ER0748,45,Non-Binary,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,102,67,62,97,14,36.6,15,Penicillin,Aspirin,CAD,No Critical Flag,8,Low
+ER0749,75,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,139,73,64,100,16,36.6,15,Penicillin,Metformin,COPD,No Critical Flag,8,Low
+ER0750,32,Non-Binary,Middle Eastern,"Patient says chest tightness and left arm pain for 23 min, started at rest",Chest pain with left arm radiation,179,91,104,94,30,37.4,15,Penicillin,Sertraline,Diabetes,Acute MI Indicator,91,Critical
+ER0751,65,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,109,70,87,99,12,37.4,15,Penicillin,None,Diabetes,No Critical Flag,8,Low
+ER0752,14,Non-Binary,Middle Eastern,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,171,100,82,96,21,37.2,11,Penicillin,Lisinopril,None,Stroke Indicator,88,Critical
+ER0753,28,Female,Black,"Patient says chest tightness and left arm pain for 20 min, started at rest",Chest pain with left arm radiation,156,101,119,97,21,37.2,15,Sulfa Drugs,Lisinopril,CAD,Acute MI Indicator,91,Critical
+ER0754,12,Male,Asian,"Bee sting about 45 minutes ago, throat feels tight",Bee sting with throat tightness,92,55,132,92,36,37.0,15,Sulfa Drugs,Albuterol,CAD,Anaphylaxis,96,Critical
+ER0755,51,Female,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,130,91,122,85,32,37.2,15,Penicillin,Aspirin,COPD,Respiratory Distress,85,High
+ER0756,34,Male,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,138,73,89,97,19,37.4,15,Latex,Albuterol,Diabetes,No Critical Flag,8,Low
+ER0757,54,Non-Binary,Hispanic,"Bee sting about 44 minutes ago, throat feels tight",Bee sting with throat tightness,100,52,129,88,36,37.0,15,Peanuts,None,Depression,Anaphylaxis,96,Critical
+ER0758,30,Male,Asian,"Patient says chest tightness and left arm pain for 12 min, started at rest",Chest pain with left arm radiation,150,108,118,97,20,37.8,15,Latex,Sertraline,CAD,Acute MI Indicator,91,Critical
+ER0759,17,Female,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,173,92,122,84,28,37.2,15,None,Albuterol,Hypertension,Respiratory Distress,85,High
+ER0760,0,Non-Binary,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,145,91,121,88,22,37.2,15,Sulfa Drugs,Metformin,Hypertension,Respiratory Distress,85,High
+ER0761,67,Male,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,123,86,68,100,17,37.3,15,Latex,Metformin,COPD,No Critical Flag,8,Low
+ER0762,14,Female,Hispanic,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,168,89,95,96,20,36.3,14,Latex,Aspirin,Diabetes,Stroke Indicator,88,Critical
+ER0763,65,Male,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,133,86,100,88,29,37.2,15,Peanuts,Lisinopril,Diabetes,Respiratory Distress,85,High
+ER0764,44,Non-Binary,Asian,"Patient says chest tightness and left arm pain for 56 min, started at rest",Chest pain with left arm radiation,167,85,106,96,27,36.8,15,Sulfa Drugs,Albuterol,Hypertension,Acute MI Indicator,91,Critical
+ER0765,62,Male,Asian,"Feeling dizzy for 37 days, not eating well",Dizziness,114,75,85,98,16,36.7,15,Penicillin,Albuterol,Diabetes,No Critical Flag,15,Low
+ER0766,56,Non-Binary,Mixed,"Patient says chest tightness and left arm pain for 25 min, started at rest",Chest pain with left arm radiation,153,96,127,90,25,37.6,15,Penicillin,None,Hypertension,Acute MI Indicator,91,Critical
+ER0767,17,Female,Middle Eastern,"Bee sting about 47 minutes ago, throat feels tight",Bee sting with throat tightness,81,55,122,89,34,37.0,15,Peanuts,None,COPD,Anaphylaxis,96,Critical
+ER0768,63,Non-Binary,Asian,"Feeling dizzy for 46 days, not eating well",Dizziness,125,76,84,97,13,37.4,15,None,Aspirin,Hypertension,No Critical Flag,15,Low
+ER0769,1,Non-Binary,Hispanic,"Feeling dizzy for 11 days, not eating well",Dizziness,121,73,98,96,18,36.8,15,Peanuts,Metformin,None,No Critical Flag,15,Low
+ER0770,31,Non-Binary,Asian,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,111,67,77,96,16,37.4,15,Penicillin,Sertraline,COPD,Suicidal Ideation,97,High
+ER0771,13,Non-Binary,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,187,100,100,95,19,36.2,13,None,Lisinopril,Hypertension,Stroke Indicator,88,Critical
+ER0772,54,Male,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,133,87,113,88,26,37.2,15,Penicillin,Aspirin,Diabetes,Respiratory Distress,85,High
+ER0773,7,Non-Binary,Middle Eastern,"Feeling dizzy for 11 days, not eating well",Dizziness,119,63,77,98,16,37.3,15,Latex,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0774,23,Male,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,172,85,106,86,29,37.2,15,Peanuts,Albuterol,None,Respiratory Distress,85,High
+ER0775,32,Female,Pacific Islander,"Feeling dizzy for 47 days, not eating well",Dizziness,119,63,66,96,20,37.1,15,Penicillin,Lisinopril,Diabetes,No Critical Flag,15,Low
+ER0776,46,Non-Binary,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,117,66,97,99,13,37.3,15,Penicillin,Sertraline,Depression,Suicidal Ideation,97,High
+ER0777,5,Non-Binary,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,128,89,66,96,20,37.0,15,Peanuts,Sertraline,COPD,No Critical Flag,8,Low
+ER0778,25,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,138,81,113,88,33,37.2,15,Peanuts,Albuterol,Diabetes,Respiratory Distress,85,High
+ER0779,57,Non-Binary,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,134,90,113,88,30,37.2,15,None,Aspirin,CAD,Respiratory Distress,85,High
+ER0780,16,Female,White,"Bee sting about 12 minutes ago, throat feels tight",Bee sting with throat tightness,86,62,141,92,32,37.0,15,Sulfa Drugs,None,Hypertension,Anaphylaxis,96,Critical
+ER0781,65,Female,Middle Eastern,"Feeling dizzy for 56 days, not eating well",Dizziness,138,68,73,97,12,36.5,15,Penicillin,Albuterol,Depression,No Critical Flag,15,Low
+ER0782,65,Female,Native American,"Patient says chest tightness and left arm pain for 43 min, started at rest",Chest pain with left arm radiation,159,94,117,91,22,36.8,15,Sulfa Drugs,Aspirin,Diabetes,Acute MI Indicator,91,Critical
+ER0783,18,Female,Asian,"Patient says chest tightness and left arm pain for 39 min, started at rest",Chest pain with left arm radiation,148,105,115,93,28,36.7,15,Peanuts,Sertraline,CAD,Acute MI Indicator,91,Critical
+ER0784,41,Male,Native American,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,156,94,109,86,22,37.2,15,None,Lisinopril,Hypertension,Respiratory Distress,85,High
+ER0785,35,Male,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,134,81,97,96,18,37.3,15,Peanuts,Sertraline,Depression,Suicidal Ideation,97,High
+ER0786,26,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,117,66,97,99,14,36.8,15,Latex,Lisinopril,Hypertension,No Critical Flag,8,Low
+ER0787,11,Female,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,141,80,106,88,29,37.2,15,Penicillin,Sertraline,Diabetes,Respiratory Distress,85,High
+ER0788,20,Male,Middle Eastern,"Patient says chest tightness and left arm pain for 29 min, started at rest",Chest pain with left arm radiation,149,89,104,96,23,37.1,15,Latex,None,Depression,Acute MI Indicator,91,Critical
+ER0789,1,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,124,60,67,96,12,36.4,15,None,Lisinopril,Hypertension,No Critical Flag,8,Low
+ER0790,76,Male,White,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,164,85,127,89,23,37.2,15,Penicillin,Aspirin,COPD,Respiratory Distress,85,High
+ER0791,56,Male,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,130,64,75,96,20,37.1,15,Sulfa Drugs,None,None,Suicidal Ideation,97,High
+ER0792,13,Non-Binary,Native American,"Rash spreading on torso, started 18 hours ago after new medication",Generalized rash,132,88,86,97,12,37.3,15,None,Aspirin,COPD,Possible Allergic Reaction,72,Medium
+ER0793,45,Non-Binary,Native American,"Feeling dizzy for 33 days, not eating well",Dizziness,124,81,67,99,14,37.4,15,Penicillin,None,Diabetes,No Critical Flag,15,Low
+ER0794,78,Female,Black,"Feeling dizzy for 51 days, not eating well",Dizziness,105,88,62,100,14,36.5,15,Sulfa Drugs,Lisinopril,CAD,No Critical Flag,15,Low
+ER0795,54,Male,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,172,83,88,97,21,37.4,10,None,Aspirin,Depression,Stroke Indicator,88,Critical
+ER0796,18,Female,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,154,83,98,97,20,36.2,12,Penicillin,Aspirin,COPD,Stroke Indicator,88,Critical
+ER0797,63,Female,Mixed,"Feeling dizzy for 57 days, not eating well",Dizziness,138,85,100,98,14,37.2,15,Penicillin,Metformin,COPD,No Critical Flag,15,Low
+ER0798,68,Non-Binary,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,124,62,97,99,20,36.9,15,Penicillin,Sertraline,None,No Critical Flag,8,Low
+ER0799,0,Male,White,"Bee sting about 51 minutes ago, throat feels tight",Bee sting with throat tightness,97,65,118,83,24,37.0,15,Peanuts,Lisinopril,Hypertension,Anaphylaxis,96,Critical
+ER0800,18,Non-Binary,Middle Eastern,"Bee sting about 36 minutes ago, throat feels tight",Bee sting with throat tightness,86,57,113,84,25,37.0,15,Penicillin,Metformin,Depression,Anaphylaxis,96,Critical
+ER0801,54,Female,White,"Patient says chest tightness and left arm pain for 18 min, started at rest",Chest pain with left arm radiation,187,103,104,97,29,37.6,15,None,Aspirin,Diabetes,Acute MI Indicator,91,Critical
+ER0802,31,Male,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,159,104,85,97,18,37.1,12,Latex,Metformin,Depression,Stroke Indicator,88,Critical
+ER0803,1,Female,Black,"Feeling dizzy for 24 days, not eating well",Dizziness,103,88,62,100,14,36.9,15,None,Metformin,COPD,No Critical Flag,15,Low
+ER0804,58,Non-Binary,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,119,82,74,99,14,36.6,15,None,Albuterol,COPD,No Critical Flag,8,Low
+ER0805,16,Non-Binary,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,169,76,107,87,24,37.2,15,Sulfa Drugs,Albuterol,None,Respiratory Distress,85,High
+ER0806,59,Female,Pacific Islander,"Rash spreading on torso, started 56 hours ago after new medication",Generalized rash,124,65,63,98,18,36.5,15,None,None,None,Possible Allergic Reaction,72,Medium
+ER0807,42,Male,Hispanic,"Feeling dizzy for 41 days, not eating well",Dizziness,110,77,66,96,15,37.0,15,Peanuts,Aspirin,CAD,No Critical Flag,15,Low
+ER0808,4,Male,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,186,98,81,98,23,36.1,12,None,Lisinopril,None,Stroke Indicator,88,Critical
+ER0809,36,Female,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,178,87,123,86,24,37.2,15,None,Lisinopril,COPD,Respiratory Distress,85,High
+ER0810,64,Male,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,167,87,115,88,22,37.2,15,Peanuts,Aspirin,Hypertension,Respiratory Distress,85,High
+ER0811,10,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,113,85,69,97,20,36.9,15,Sulfa Drugs,Sertraline,CAD,No Critical Flag,8,Low
+ER0812,43,Female,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,148,86,119,90,28,37.2,15,None,Sertraline,Depression,Respiratory Distress,85,High
+ER0813,26,Non-Binary,Black,"Feeling dizzy for 24 days, not eating well",Dizziness,136,80,91,96,12,36.5,15,Peanuts,Albuterol,None,No Critical Flag,15,Low
+ER0814,58,Female,Asian,"Feeling dizzy for 42 days, not eating well",Dizziness,110,62,77,100,17,36.7,15,None,Aspirin,Depression,No Critical Flag,15,Low
+ER0815,33,Female,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,108,90,67,100,19,36.3,15,Peanuts,Metformin,COPD,Suicidal Ideation,97,High
+ER0816,16,Female,Pacific Islander,"Rash spreading on torso, started 70 hours ago after new medication",Generalized rash,139,90,80,98,13,37.1,15,Sulfa Drugs,Metformin,Diabetes,Possible Allergic Reaction,72,Medium
+ER0817,5,Non-Binary,White,"Rash spreading on torso, started 36 hours ago after new medication",Generalized rash,135,60,69,96,16,36.7,15,Sulfa Drugs,Metformin,None,Possible Allergic Reaction,72,Medium
+ER0818,59,Non-Binary,Black,"Bee sting about 49 minutes ago, throat feels tight",Bee sting with throat tightness,94,64,144,89,25,37.0,15,None,Aspirin,Depression,Anaphylaxis,96,Critical
+ER0819,50,Female,Hispanic,"Patient says chest tightness and left arm pain for 56 min, started at rest",Chest pain with left arm radiation,166,87,120,95,29,37.1,15,Latex,None,Diabetes,Acute MI Indicator,91,Critical
+ER0820,69,Male,Mixed,"Feeling dizzy for 23 days, not eating well",Dizziness,140,66,80,100,12,37.4,15,Latex,None,Diabetes,No Critical Flag,15,Low
+ER0821,60,Male,White,"Rash spreading on torso, started 32 hours ago after new medication",Generalized rash,101,90,87,98,16,37.0,15,None,Aspirin,None,Possible Allergic Reaction,72,Medium
+ER0822,10,Female,Mixed,"Bee sting about 58 minutes ago, throat feels tight",Bee sting with throat tightness,96,56,126,84,24,37.0,15,None,Metformin,Diabetes,Anaphylaxis,96,Critical
+ER0823,38,Male,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,156,90,115,88,33,37.2,15,Penicillin,Sertraline,COPD,Respiratory Distress,85,High
+ER0824,73,Female,White,"Feeling dizzy for 30 days, not eating well",Dizziness,104,83,97,100,14,36.7,15,Peanuts,None,Hypertension,No Critical Flag,15,Low
+ER0825,18,Female,Pacific Islander,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,180,88,108,88,33,37.2,15,None,Metformin,Hypertension,Respiratory Distress,85,High
+ER0826,74,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,112,73,94,97,18,36.5,15,Penicillin,Aspirin,Depression,No Critical Flag,8,Low
+ER0827,1,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,119,88,79,100,13,37.1,15,Latex,Metformin,COPD,No Critical Flag,8,Low
+ER0828,69,Female,Pacific Islander,"Feeling dizzy for 19 days, not eating well",Dizziness,111,74,87,98,14,36.9,15,Penicillin,Albuterol,COPD,No Critical Flag,15,Low
+ER0829,55,Non-Binary,Native American,"Feeling dizzy for 17 days, not eating well",Dizziness,105,85,66,96,12,37.0,15,Latex,None,COPD,No Critical Flag,15,Low
+ER0830,79,Non-Binary,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,132,78,62,98,18,36.5,15,Latex,Albuterol,COPD,Suicidal Ideation,97,High
+ER0831,60,Male,Pacific Islander,"Patient says chest tightness and left arm pain for 64 min, started at rest",Chest pain with left arm radiation,171,105,125,90,25,37.5,15,Sulfa Drugs,Lisinopril,Diabetes,Acute MI Indicator,91,Critical
+ER0832,33,Female,Middle Eastern,"Rash spreading on torso, started 35 hours ago after new medication",Generalized rash,100,88,86,96,12,36.3,15,Peanuts,Albuterol,Depression,Possible Allergic Reaction,72,Medium
+ER0833,42,Male,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,135,72,72,100,18,37.2,15,Sulfa Drugs,Metformin,Hypertension,No Critical Flag,8,Low
+ER0834,49,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,150,91,105,87,25,37.2,15,None,Sertraline,Hypertension,Respiratory Distress,85,High
+ER0835,80,Non-Binary,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,135,65,80,97,13,36.4,15,Latex,None,Depression,No Critical Flag,8,Low
+ER0836,19,Male,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,101,83,68,99,17,36.5,15,Penicillin,Lisinopril,Hypertension,Suicidal Ideation,97,High
+ER0837,31,Non-Binary,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,103,68,65,97,12,37.0,15,Sulfa Drugs,None,None,No Critical Flag,8,Low
+ER0838,76,Male,Black,"Feeling dizzy for 23 days, not eating well",Dizziness,118,68,71,96,13,36.8,15,Peanuts,Aspirin,COPD,No Critical Flag,15,Low
+ER0839,2,Female,Black,"Patient says chest tightness and left arm pain for 67 min, started at rest",Chest pain with left arm radiation,185,87,113,96,26,37.7,15,Latex,Aspirin,Hypertension,Acute MI Indicator,91,Critical
+ER0840,22,Non-Binary,White,"Bee sting about 20 minutes ago, throat feels tight",Bee sting with throat tightness,90,61,140,91,33,37.0,15,Sulfa Drugs,None,Hypertension,Anaphylaxis,96,Critical
+ER0841,32,Male,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,134,60,93,100,14,36.5,15,Peanuts,None,Hypertension,No Critical Flag,8,Low
+ER0842,17,Male,Black,"Patient says chest tightness and left arm pain for 21 min, started at rest",Chest pain with left arm radiation,162,93,130,93,21,37.0,15,Sulfa Drugs,Sertraline,Diabetes,Acute MI Indicator,91,Critical
+ER0843,63,Female,Middle Eastern,"Feeling dizzy for 29 days, not eating well",Dizziness,116,65,72,98,18,36.4,15,Sulfa Drugs,Lisinopril,Hypertension,No Critical Flag,15,Low
+ER0844,62,Female,Mixed,"Rash spreading on torso, started 59 hours ago after new medication",Generalized rash,138,83,77,98,13,37.0,15,Latex,Aspirin,CAD,Possible Allergic Reaction,72,Medium
+ER0845,80,Male,Mixed,"Feeling dizzy for 26 days, not eating well",Dizziness,102,90,92,98,18,36.6,15,Sulfa Drugs,Lisinopril,COPD,No Critical Flag,15,Low
+ER0846,23,Female,Middle Eastern,"Patient says chest tightness and left arm pain for 28 min, started at rest",Chest pain with left arm radiation,167,92,104,93,30,37.0,15,Penicillin,Lisinopril,None,Acute MI Indicator,91,Critical
+ER0847,1,Non-Binary,Pacific Islander,"Patient says chest tightness and left arm pain for 32 min, started at rest",Chest pain with left arm radiation,174,103,120,93,28,36.6,15,Peanuts,Albuterol,Hypertension,Acute MI Indicator,91,Critical
+ER0848,13,Non-Binary,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,136,88,86,99,17,37.2,15,Penicillin,Aspirin,None,No Critical Flag,8,Low
+ER0849,63,Male,Native American,"Rash spreading on torso, started 58 hours ago after new medication",Generalized rash,107,63,88,97,17,37.0,15,Penicillin,Albuterol,None,Possible Allergic Reaction,72,Medium
+ER0850,73,Male,Mixed,"Bee sting about 41 minutes ago, throat feels tight",Bee sting with throat tightness,84,62,112,90,32,37.0,15,None,Lisinopril,Depression,Anaphylaxis,96,Critical
+ER0851,60,Male,Middle Eastern,"Patient says chest tightness and left arm pain for 43 min, started at rest",Chest pain with left arm radiation,162,95,122,96,21,37.2,15,Peanuts,Metformin,CAD,Acute MI Indicator,91,Critical
+ER0852,38,Non-Binary,Mixed,"Patient says chest tightness and left arm pain for 68 min, started at rest",Chest pain with left arm radiation,186,88,123,91,20,36.8,15,None,Aspirin,None,Acute MI Indicator,91,Critical
+ER0853,55,Male,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,142,86,126,88,22,37.2,15,None,Lisinopril,None,Respiratory Distress,85,High
+ER0854,38,Male,Native American,"Patient says chest tightness and left arm pain for 47 min, started at rest",Chest pain with left arm radiation,189,104,124,94,22,37.7,15,Sulfa Drugs,Metformin,None,Acute MI Indicator,91,Critical
+ER0855,18,Non-Binary,Middle Eastern,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,192,83,96,98,19,36.9,13,Peanuts,Lisinopril,Depression,Stroke Indicator,88,Critical
+ER0856,11,Female,Native American,"Feeling dizzy for 15 days, not eating well",Dizziness,122,77,75,97,13,36.4,15,Latex,None,Hypertension,No Critical Flag,15,Low
+ER0857,27,Female,Middle Eastern,"Patient says chest tightness and left arm pain for 29 min, started at rest",Chest pain with left arm radiation,176,88,121,93,29,37.5,15,Sulfa Drugs,Lisinopril,Diabetes,Acute MI Indicator,91,Critical
+ER0858,19,Non-Binary,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,114,89,83,99,19,37.3,15,Sulfa Drugs,Aspirin,COPD,Suicidal Ideation,97,High
+ER0859,35,Female,Asian,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,186,100,83,95,23,37.3,10,Penicillin,None,COPD,Stroke Indicator,88,Critical
+ER0860,3,Female,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,166,83,109,98,17,36.5,11,Penicillin,Metformin,CAD,Stroke Indicator,88,Critical
+ER0861,42,Male,Mixed,"Feeling dizzy for 39 days, not eating well",Dizziness,123,63,63,99,18,36.5,15,Penicillin,Metformin,Hypertension,No Critical Flag,15,Low
+ER0862,67,Non-Binary,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,127,63,63,97,13,36.5,15,None,None,CAD,No Critical Flag,8,Low
+ER0863,8,Non-Binary,Black,"Bee sting about 40 minutes ago, throat feels tight",Bee sting with throat tightness,87,62,135,88,25,37.0,15,Penicillin,Sertraline,Depression,Anaphylaxis,96,Critical
+ER0864,26,Male,Hispanic,"Bee sting about 49 minutes ago, throat feels tight",Bee sting with throat tightness,100,59,148,86,35,37.0,15,None,None,Hypertension,Anaphylaxis,96,Critical
+ER0865,79,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,110,70,64,97,14,36.7,15,Latex,Aspirin,None,No Critical Flag,8,Low
+ER0866,54,Female,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,88,64,97,12,37.0,15,Latex,Albuterol,None,No Critical Flag,8,Low
+ER0867,31,Female,Black,"Feeling dizzy for 10 days, not eating well",Dizziness,101,78,78,97,20,36.9,15,Penicillin,None,None,No Critical Flag,15,Low
+ER0868,42,Female,Mixed,"Feeling dizzy for 49 days, not eating well",Dizziness,134,68,91,98,17,36.8,15,Peanuts,Lisinopril,Depression,No Critical Flag,15,Low
+ER0869,66,Non-Binary,Mixed,"Feeling dizzy for 19 days, not eating well",Dizziness,117,81,93,96,14,37.4,15,Penicillin,Sertraline,Hypertension,No Critical Flag,15,Low
+ER0870,3,Male,Middle Eastern,"Feeling dizzy for 51 days, not eating well",Dizziness,113,83,65,97,18,37.0,15,Peanuts,Sertraline,Depression,No Critical Flag,15,Low
+ER0871,57,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,122,88,81,99,18,37.3,15,Peanuts,Lisinopril,Hypertension,No Critical Flag,8,Low
+ER0872,66,Non-Binary,Pacific Islander,"Patient says chest tightness and left arm pain for 20 min, started at rest",Chest pain with left arm radiation,172,110,129,95,24,36.6,15,None,Metformin,Depression,Acute MI Indicator,91,Critical
+ER0873,19,Non-Binary,Native American,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,169,95,89,94,20,36.0,10,Penicillin,Lisinopril,CAD,Stroke Indicator,88,Critical
+ER0874,62,Female,White,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,172,101,106,94,16,36.4,12,Peanuts,Albuterol,Depression,Stroke Indicator,88,Critical
+ER0875,71,Male,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,139,81,113,88,23,37.2,15,Peanuts,Aspirin,None,Respiratory Distress,85,High
+ER0876,45,Male,Middle Eastern,"Feeling dizzy for 59 days, not eating well",Dizziness,125,90,66,98,16,37.0,15,Penicillin,Albuterol,COPD,No Critical Flag,15,Low
+ER0877,41,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,64,86,100,15,36.6,15,None,Lisinopril,CAD,No Critical Flag,8,Low
+ER0878,59,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,180,88,103,85,30,37.2,15,Latex,Sertraline,Diabetes,Respiratory Distress,85,High
+ER0879,45,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,129,73,86,99,12,37.3,15,None,Metformin,None,No Critical Flag,8,Low
+ER0880,78,Female,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,123,64,99,100,16,36.4,15,Latex,Aspirin,COPD,Suicidal Ideation,97,High
+ER0881,59,Non-Binary,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,105,61,77,96,17,37.0,15,Peanuts,Albuterol,COPD,No Critical Flag,8,Low
+ER0882,7,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,133,64,95,99,14,36.5,15,Penicillin,Lisinopril,Depression,No Critical Flag,8,Low
+ER0883,0,Female,Hispanic,"Feeling dizzy for 19 days, not eating well",Dizziness,104,60,69,100,13,36.9,15,Penicillin,Aspirin,None,No Critical Flag,15,Low
+ER0884,64,Female,Middle Eastern,"Feeling dizzy for 12 days, not eating well",Dizziness,107,69,85,99,14,37.2,15,Sulfa Drugs,Lisinopril,CAD,No Critical Flag,15,Low
+ER0885,78,Male,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,140,60,71,97,15,36.5,15,Sulfa Drugs,Aspirin,COPD,No Critical Flag,8,Low
+ER0886,37,Non-Binary,Black,"Feeling dizzy for 68 days, not eating well",Dizziness,123,81,77,99,18,37.1,15,None,Metformin,COPD,No Critical Flag,15,Low
+ER0887,18,Male,Native American,"Rash spreading on torso, started 63 hours ago after new medication",Generalized rash,107,78,84,96,16,36.3,15,Sulfa Drugs,Metformin,None,Possible Allergic Reaction,72,Medium
+ER0888,45,Male,Mixed,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,147,75,105,86,30,37.2,15,Sulfa Drugs,Aspirin,Diabetes,Respiratory Distress,85,High
+ER0889,67,Female,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,171,79,111,89,33,37.2,15,Sulfa Drugs,Lisinopril,COPD,Respiratory Distress,85,High
+ER0890,17,Female,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,104,89,90,99,19,37.0,15,Penicillin,Albuterol,Depression,Suicidal Ideation,97,High
+ER0891,67,Female,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,167,93,111,88,31,37.2,15,Latex,None,None,Respiratory Distress,85,High
+ER0892,20,Male,Black,"Patient says chest tightness and left arm pain for 18 min, started at rest",Chest pain with left arm radiation,176,106,130,95,23,37.8,15,Penicillin,None,Hypertension,Acute MI Indicator,91,Critical
+ER0893,49,Female,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,139,68,67,96,13,36.8,15,Peanuts,Albuterol,Depression,Suicidal Ideation,97,High
+ER0894,22,Female,Black,"Rash spreading on torso, started 62 hours ago after new medication",Generalized rash,124,64,100,100,20,36.5,15,Peanuts,Metformin,COPD,Possible Allergic Reaction,72,Medium
+ER0895,28,Male,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,133,85,72,96,12,37.0,15,None,Aspirin,None,No Critical Flag,8,Low
+ER0896,0,Female,Middle Eastern,"Rash spreading on torso, started 14 hours ago after new medication",Generalized rash,121,65,93,99,15,37.2,15,Sulfa Drugs,Metformin,CAD,Possible Allergic Reaction,72,Medium
+ER0897,79,Non-Binary,Asian,"Feeling dizzy for 13 days, not eating well",Dizziness,128,73,100,99,13,36.9,15,Penicillin,Albuterol,Diabetes,No Critical Flag,15,Low
+ER0898,63,Male,White,"Patient says chest tightness and left arm pain for 47 min, started at rest",Chest pain with left arm radiation,146,92,118,94,26,37.4,15,None,Aspirin,Diabetes,Acute MI Indicator,91,Critical
+ER0899,73,Male,Native American,"Patient says chest tightness and left arm pain for 56 min, started at rest",Chest pain with left arm radiation,184,86,134,91,29,37.1,15,Peanuts,Sertraline,None,Acute MI Indicator,91,Critical
+ER0900,53,Female,Hispanic,"Patient says chest tightness and left arm pain for 47 min, started at rest",Chest pain with left arm radiation,148,89,113,95,30,37.7,15,None,Aspirin,COPD,Acute MI Indicator,91,Critical
+ER0901,72,Non-Binary,White,"Patient says chest tightness and left arm pain for 49 min, started at rest",Chest pain with left arm radiation,149,98,138,91,28,37.1,15,Penicillin,Lisinopril,Depression,Acute MI Indicator,91,Critical
+ER0902,4,Female,Hispanic,"Patient says chest tightness and left arm pain for 49 min, started at rest",Chest pain with left arm radiation,172,100,119,93,20,37.7,15,None,Aspirin,CAD,Acute MI Indicator,91,Critical
+ER0903,48,Non-Binary,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,103,72,84,97,18,37.1,15,Sulfa Drugs,Aspirin,None,No Critical Flag,8,Low
+ER0904,78,Female,Pacific Islander,"Feeling dizzy for 29 days, not eating well",Dizziness,121,73,63,97,15,36.4,15,None,Aspirin,COPD,No Critical Flag,15,Low
+ER0905,68,Non-Binary,White,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,115,86,63,96,12,36.4,15,Penicillin,Lisinopril,None,Suicidal Ideation,97,High
+ER0906,77,Non-Binary,Hispanic,"Feeling dizzy for 42 days, not eating well",Dizziness,108,79,85,99,13,37.0,15,None,Lisinopril,CAD,No Critical Flag,15,Low
+ER0907,45,Male,Mixed,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,173,104,97,96,19,36.8,12,Peanuts,Sertraline,CAD,Stroke Indicator,88,Critical
+ER0908,6,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,117,62,73,97,20,36.6,15,Sulfa Drugs,Aspirin,None,No Critical Flag,8,Low
+ER0909,18,Male,Hispanic,"Feeling dizzy for 61 days, not eating well",Dizziness,129,90,67,96,19,37.2,15,Peanuts,Lisinopril,CAD,No Critical Flag,15,Low
+ER0910,10,Male,Native American,"Feeling dizzy for 54 days, not eating well",Dizziness,131,60,84,99,19,36.3,15,Penicillin,Metformin,Hypertension,No Critical Flag,15,Low
+ER0911,68,Male,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,134,84,82,96,17,37.3,15,Peanuts,Albuterol,Hypertension,No Critical Flag,8,Low
+ER0912,43,Non-Binary,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,103,85,66,100,18,37.3,15,Peanuts,Albuterol,COPD,Suicidal Ideation,97,High
+ER0913,72,Non-Binary,Native American,"Feeling dizzy for 25 days, not eating well",Dizziness,124,74,75,97,12,36.6,15,Peanuts,None,Hypertension,No Critical Flag,15,Low
+ER0914,37,Female,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,139,68,83,98,16,37.2,15,Sulfa Drugs,None,None,Suicidal Ideation,97,High
+ER0915,41,Female,Asian,"Feeling dizzy for 61 days, not eating well",Dizziness,129,60,88,96,19,36.3,15,Peanuts,Metformin,Depression,No Critical Flag,15,Low
+ER0916,27,Female,White,"Rash spreading on torso, started 15 hours ago after new medication",Generalized rash,117,88,99,100,17,37.3,15,Latex,Aspirin,Diabetes,Possible Allergic Reaction,72,Medium
+ER0917,35,Female,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,114,80,71,97,12,36.6,15,None,Aspirin,Depression,Suicidal Ideation,97,High
+ER0918,56,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,135,82,74,96,16,37.4,15,None,Sertraline,Diabetes,No Critical Flag,8,Low
+ER0919,5,Non-Binary,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,106,62,92,99,13,36.9,15,Penicillin,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0920,53,Male,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,109,60,80,100,17,36.7,15,Latex,Sertraline,Diabetes,No Critical Flag,8,Low
+ER0921,37,Non-Binary,White,"Feeling dizzy for 25 days, not eating well",Dizziness,123,61,78,97,12,36.4,15,Penicillin,Lisinopril,CAD,No Critical Flag,15,Low
+ER0922,65,Non-Binary,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,124,86,97,96,14,36.7,15,None,None,Hypertension,Suicidal Ideation,97,High
+ER0923,73,Non-Binary,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,133,85,63,100,19,37.0,15,Sulfa Drugs,Metformin,Diabetes,No Critical Flag,8,Low
+ER0924,73,Female,Hispanic,"Bee sting about 47 minutes ago, throat feels tight",Bee sting with throat tightness,87,61,124,89,29,37.0,15,None,Sertraline,Hypertension,Anaphylaxis,96,Critical
+ER0925,52,Female,Black,"Feeling dizzy for 50 days, not eating well",Dizziness,135,76,64,98,19,37.0,15,Latex,Metformin,Hypertension,No Critical Flag,15,Low
+ER0926,16,Non-Binary,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,137,81,68,100,16,37.2,15,Peanuts,Lisinopril,None,No Critical Flag,8,Low
+ER0927,53,Non-Binary,Asian,"Patient says chest tightness and left arm pain for 68 min, started at rest",Chest pain with left arm radiation,185,109,112,92,27,36.5,15,None,Metformin,Diabetes,Acute MI Indicator,91,Critical
+ER0928,60,Non-Binary,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,102,86,87,96,14,37.4,15,Penicillin,Albuterol,CAD,Suicidal Ideation,97,High
+ER0929,54,Female,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,174,92,107,89,26,37.2,15,None,Lisinopril,Diabetes,Respiratory Distress,85,High
+ER0930,78,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,122,90,88,99,19,37.1,15,Latex,Lisinopril,COPD,No Critical Flag,8,Low
+ER0931,23,Non-Binary,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,100,78,97,98,19,36.7,15,Latex,Aspirin,CAD,Suicidal Ideation,97,High
+ER0932,35,Male,Hispanic,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,131,70,63,100,20,37.3,15,Sulfa Drugs,Albuterol,COPD,Suicidal Ideation,97,High
+ER0933,49,Female,Asian,"Bee sting about 23 minutes ago, throat feels tight",Bee sting with throat tightness,81,56,137,90,28,37.0,15,Sulfa Drugs,Albuterol,Diabetes,Anaphylaxis,96,Critical
+ER0934,36,Male,Black,"Patient says chest tightness and left arm pain for 41 min, started at rest",Chest pain with left arm radiation,162,100,128,93,22,36.9,15,Peanuts,Albuterol,None,Acute MI Indicator,91,Critical
+ER0935,35,Male,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,165,91,124,85,22,37.2,15,Sulfa Drugs,None,CAD,Respiratory Distress,85,High
+ER0936,24,Male,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,123,66,78,100,18,37.1,15,Sulfa Drugs,Aspirin,COPD,No Critical Flag,8,Low
+ER0937,14,Non-Binary,Black,"Bee sting about 61 minutes ago, throat feels tight",Bee sting with throat tightness,93,65,126,83,26,37.0,15,Peanuts,Sertraline,Depression,Anaphylaxis,96,Critical
+ER0938,45,Male,Hispanic,"Patient says chest tightness and left arm pain for 14 min, started at rest",Chest pain with left arm radiation,165,90,132,95,24,37.1,15,Sulfa Drugs,Sertraline,None,Acute MI Indicator,91,Critical
+ER0939,40,Male,Middle Eastern,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,133,70,72,100,12,37.3,15,None,Aspirin,Hypertension,Suicidal Ideation,97,High
+ER0940,28,Non-Binary,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,130,64,91,97,19,36.6,15,Penicillin,Sertraline,None,No Critical Flag,8,Low
+ER0941,27,Male,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,161,92,119,85,33,37.2,15,Penicillin,None,COPD,Respiratory Distress,85,High
+ER0942,78,Female,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,130,76,71,98,15,37.3,15,Latex,Metformin,Depression,No Critical Flag,8,Low
+ER0943,45,Non-Binary,Mixed,"Feeling dizzy for 42 days, not eating well",Dizziness,106,67,67,98,18,37.4,15,Peanuts,Aspirin,Depression,No Critical Flag,15,Low
+ER0944,22,Female,Pacific Islander,"Feeling dizzy for 19 days, not eating well",Dizziness,122,82,85,97,19,37.2,15,Latex,Albuterol,COPD,No Critical Flag,15,Low
+ER0945,3,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,113,88,86,96,20,37.1,15,Peanuts,Sertraline,Diabetes,No Critical Flag,8,Low
+ER0946,56,Female,Middle Eastern,"Feeling dizzy for 38 days, not eating well",Dizziness,103,68,91,97,17,37.0,15,None,Lisinopril,COPD,No Critical Flag,15,Low
+ER0947,73,Male,Hispanic,"Feeling dizzy for 19 days, not eating well",Dizziness,139,79,81,97,20,36.3,15,None,Metformin,None,No Critical Flag,15,Low
+ER0948,42,Female,Black,"Rash spreading on torso, started 11 hours ago after new medication",Generalized rash,133,66,83,100,15,37.4,15,Sulfa Drugs,Metformin,Depression,Possible Allergic Reaction,72,Medium
+ER0949,20,Female,Pacific Islander,"Bee sting about 57 minutes ago, throat feels tight",Bee sting with throat tightness,86,57,110,82,24,37.0,15,Sulfa Drugs,None,CAD,Anaphylaxis,96,Critical
+ER0950,62,Male,Asian,"Feeling dizzy for 41 days, not eating well",Dizziness,119,60,74,97,12,36.6,15,None,Metformin,Depression,No Critical Flag,15,Low
+ER0951,34,Male,Black,"Feeling dizzy for 14 days, not eating well",Dizziness,132,83,86,96,12,37.1,15,Sulfa Drugs,Albuterol,Hypertension,No Critical Flag,15,Low
+ER0952,75,Female,Hispanic,"Patient says chest tightness and left arm pain for 44 min, started at rest",Chest pain with left arm radiation,165,98,132,90,24,36.9,15,Penicillin,None,Diabetes,Acute MI Indicator,91,Critical
+ER0953,73,Female,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,157,77,107,87,30,37.2,15,Peanuts,Metformin,Diabetes,Respiratory Distress,85,High
+ER0954,68,Non-Binary,Hispanic,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,131,90,123,87,27,37.2,15,Sulfa Drugs,Sertraline,None,Respiratory Distress,85,High
+ER0955,73,Male,Middle Eastern,"Feeling dizzy for 34 days, not eating well",Dizziness,128,71,90,100,13,37.0,15,Peanuts,Aspirin,Depression,No Critical Flag,15,Low
+ER0956,12,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,161,93,107,84,24,37.2,15,Latex,Albuterol,COPD,Respiratory Distress,85,High
+ER0957,72,Male,White,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,116,73,79,98,14,36.3,15,Sulfa Drugs,Albuterol,COPD,No Critical Flag,8,Low
+ER0958,34,Non-Binary,Hispanic,"Rash spreading on torso, started 67 hours ago after new medication",Generalized rash,134,75,80,97,17,36.8,15,Latex,Albuterol,CAD,Possible Allergic Reaction,72,Medium
+ER0959,10,Male,Middle Eastern,"Rash spreading on torso, started 14 hours ago after new medication",Generalized rash,124,64,60,97,20,37.1,15,Penicillin,Aspirin,COPD,Possible Allergic Reaction,72,Medium
+ER0960,14,Male,Middle Eastern,"Rash spreading on torso, started 68 hours ago after new medication",Generalized rash,110,80,93,99,14,37.1,15,Sulfa Drugs,Metformin,COPD,Possible Allergic Reaction,72,Medium
+ER0961,15,Female,Native American,"Patient says chest tightness and left arm pain for 39 min, started at rest",Chest pain with left arm radiation,178,95,139,95,29,37.3,15,Penicillin,Lisinopril,CAD,Acute MI Indicator,91,Critical
+ER0962,78,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,138,68,90,99,15,37.3,15,Penicillin,Aspirin,CAD,No Critical Flag,8,Low
+ER0963,60,Male,Pacific Islander,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,111,64,90,96,12,36.6,15,Penicillin,Aspirin,Depression,Suicidal Ideation,97,High
+ER0964,58,Female,Black,"Patient says chest tightness and left arm pain for 12 min, started at rest",Chest pain with left arm radiation,184,99,138,92,21,37.0,15,Sulfa Drugs,Aspirin,Diabetes,Acute MI Indicator,91,Critical
+ER0965,24,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,137,83,79,98,18,37.3,15,Sulfa Drugs,Albuterol,Depression,No Critical Flag,8,Low
+ER0966,9,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,113,68,71,98,13,36.4,15,Sulfa Drugs,Albuterol,Depression,No Critical Flag,8,Low
+ER0967,42,Non-Binary,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,113,65,60,97,15,36.4,15,Sulfa Drugs,Aspirin,Hypertension,Suicidal Ideation,97,High
+ER0968,0,Female,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,158,96,105,97,22,37.0,12,Peanuts,Albuterol,None,Stroke Indicator,88,Critical
+ER0969,50,Female,Middle Eastern,"Bee sting about 65 minutes ago, throat feels tight",Bee sting with throat tightness,91,59,143,87,32,37.0,15,None,Albuterol,Hypertension,Anaphylaxis,96,Critical
+ER0970,35,Non-Binary,Asian,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,165,89,115,89,34,37.2,15,Peanuts,Sertraline,None,Respiratory Distress,85,High
+ER0971,55,Non-Binary,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,101,87,83,99,17,37.1,15,Penicillin,Albuterol,CAD,No Critical Flag,8,Low
+ER0972,24,Female,Pacific Islander,"Rash spreading on torso, started 27 hours ago after new medication",Generalized rash,100,66,88,98,20,36.5,15,Sulfa Drugs,Lisinopril,Diabetes,Possible Allergic Reaction,72,Medium
+ER0973,47,Female,White,"Patient says chest tightness and left arm pain for 39 min, started at rest",Chest pain with left arm radiation,147,105,117,97,26,36.6,15,Peanuts,Lisinopril,Depression,Acute MI Indicator,91,Critical
+ER0974,73,Male,Mixed,"Patient says chest tightness and left arm pain for 63 min, started at rest",Chest pain with left arm radiation,176,90,130,91,20,37.0,15,Sulfa Drugs,Sertraline,Hypertension,Acute MI Indicator,91,Critical
+ER0975,22,Male,Black,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,107,61,88,96,17,36.4,15,Sulfa Drugs,Lisinopril,Hypertension,Suicidal Ideation,97,High
+ER0976,2,Female,Pacific Islander,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,137,83,83,100,12,37.3,15,Latex,Metformin,Depression,No Critical Flag,8,Low
+ER0977,8,Male,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,105,65,88,96,16,37.0,15,Sulfa Drugs,Metformin,Hypertension,No Critical Flag,8,Low
+ER0978,0,Female,Native American,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,107,70,89,100,13,36.9,15,Latex,None,None,No Critical Flag,8,Low
+ER0979,23,Non-Binary,Black,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,150,93,120,84,34,37.2,15,Penicillin,None,Hypertension,Respiratory Distress,85,High
+ER0980,58,Male,Hispanic,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,112,83,68,98,12,36.7,15,Peanuts,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0981,40,Female,Hispanic,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,167,86,85,96,20,37.0,12,None,Metformin,Diabetes,Stroke Indicator,88,Critical
+ER0982,44,Non-Binary,Mixed,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,102,90,97,99,14,36.9,15,Penicillin,Sertraline,COPD,No Critical Flag,8,Low
+ER0983,36,Male,Pacific Islander,"Feeling dizzy for 69 days, not eating well",Dizziness,135,86,77,96,20,37.2,15,Peanuts,Aspirin,COPD,No Critical Flag,15,Low
+ER0984,14,Non-Binary,Asian,"Bee sting about 65 minutes ago, throat feels tight",Bee sting with throat tightness,84,64,147,87,29,37.0,15,Sulfa Drugs,Metformin,Depression,Anaphylaxis,96,Critical
+ER0985,4,Female,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,100,65,86,99,17,36.7,15,None,Aspirin,Diabetes,No Critical Flag,8,Low
+ER0986,59,Non-Binary,Asian,"Feeling dizzy for 7 days, not eating well",Dizziness,128,85,99,99,18,37.1,15,Latex,Aspirin,Diabetes,No Critical Flag,15,Low
+ER0987,76,Female,Mixed,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,119,61,74,100,13,36.8,15,Peanuts,Albuterol,COPD,Suicidal Ideation,97,High
+ER0988,20,Non-Binary,Asian,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,138,90,93,97,14,36.4,15,Peanuts,None,None,No Critical Flag,8,Low
+ER0989,18,Female,Mixed,"Feeling dizzy for 55 days, not eating well",Dizziness,110,74,60,97,15,37.3,15,Peanuts,Lisinopril,None,No Critical Flag,15,Low
+ER0990,26,Female,Black,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,159,101,97,96,16,36.7,12,None,Metformin,CAD,Stroke Indicator,88,Critical
+ER0991,27,Female,Middle Eastern,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,115,84,66,99,14,36.7,15,Penicillin,Metformin,Diabetes,No Critical Flag,8,Low
+ER0992,54,Non-Binary,Middle Eastern,"Shortness of breath, oxygen reading at home was 88%",Dyspnea,152,90,121,89,31,37.2,15,None,Aspirin,CAD,Respiratory Distress,85,High
+ER0993,30,Female,Pacific Islander,"Came in confused, family says she was fine this morning, slurring her words",Acute confusion and dysarthria,182,80,99,98,22,37.4,11,Penicillin,Metformin,Hypertension,Stroke Indicator,88,Critical
+ER0994,38,Female,Black,"Patient says chest tightness and left arm pain for 48 min, started at rest",Chest pain with left arm radiation,169,105,111,96,22,36.9,15,Latex,Sertraline,COPD,Acute MI Indicator,91,Critical
+ER0995,53,Male,Asian,"Patient says chest tightness and left arm pain for 55 min, started at rest",Chest pain with left arm radiation,188,101,106,97,21,37.0,15,None,Sertraline,COPD,Acute MI Indicator,91,Critical
+ER0996,1,Male,Pacific Islander,"Rash spreading on torso, started 21 hours ago after new medication",Generalized rash,136,76,84,99,12,36.8,15,Latex,Metformin,None,Possible Allergic Reaction,72,Medium
+ER0997,33,Non-Binary,Black,"Feeling dizzy for 62 days, not eating well",Dizziness,132,71,90,98,20,37.4,15,None,Aspirin,COPD,No Critical Flag,15,Low
+ER0998,49,Non-Binary,Black,"Cut on hand from kitchen accident, bleeding controlled",Hand laceration,100,70,97,98,15,36.9,15,Sulfa Drugs,Sertraline,COPD,No Critical Flag,8,Low
+ER0999,59,Female,White,"Feeling dizzy for 20 days, not eating well",Dizziness,131,74,83,96,17,36.6,15,Peanuts,Sertraline,Diabetes,No Critical Flag,15,Low
+ER1000,3,Non-Binary,Native American,"Says he wants to hurt himself, was brought in by police",Suicidal ideation,118,71,86,96,19,36.7,15,None,Albuterol,None,Suicidal Ideation,97,High

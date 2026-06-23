@@ -1,0 +1,336 @@
+{
+  "name": "ER Triage: Parse Complaint + Detect Flags (merged)",
+  "nodes": [
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 380],
+      "webhookId": "parse-complaint",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "parse-complaint",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000002",
+      "name": "Extract Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [460, 380],
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "field-001",
+              "name": "complaint_text",
+              "value": "={{ $json.body.complaint_text }}",
+              "type": "string"
+            },
+            {
+              "id": "field-002",
+              "name": "vitals",
+              "value": "={{ $json.body.vitals ?? null }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000003",
+      "name": "Check Complaint Length",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 380],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-001",
+              "leftValue": "={{ $json.complaint_text.length }}",
+              "rightValue": 10,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000004",
+      "name": "Respond: Insufficient Detail",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 200],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ \"error\": \"Insufficient detail\", \"complaint_text\": $json.complaint_text }) }}",
+        "options": {
+          "responseCode": 400,
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000005",
+      "name": "OpenAI: Extract Structured Complaint",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [900, 460],
+      "parameters": {
+        "resource": "chat",
+        "operation": "complete",
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a clinical NLP assistant for ER triage. Extract structured fields from the nurse's transcribed chief complaint. Return JSON only.\nNever infer beyond what is stated. If a field is unclear, return null.\n\nReturn this schema:\n{\n  \"complaint_category\": \"string\",\n  \"onset\": \"string\",\n  \"duration\": \"string\",\n  \"symptoms\": [\"string\"],\n  \"trigger\": \"string or null\",\n  \"context\": \"string or null\"\n}"
+            },
+            {
+              "role": "user",
+              "content": "={{ $json.complaint_text }}"
+            }
+          ]
+        },
+        "options": {
+          "responseFormat": "json_object",
+          "temperature": 0
+        }
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000006",
+      "name": "OpenAI: Detect Critical Flags",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [900, 620],
+      "parameters": {
+        "resource": "chat",
+        "operation": "complete",
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a clinical AI flag detection engine for ER triage. Given a nurse's raw free-text chief complaint (and optional vitals), evaluate whether any critical condition flag should be raised.\n\nDo not wait for structured extraction — reason directly over the raw text. Vitals are supporting context for the 10 conditions below, not an independent trigger for any of them.\n\nEvaluate against these 10 conditions:\n1. Acute MI — chest pain, left arm/jaw radiation, diaphoresis, pain at rest\n2. Stroke — sudden confusion, facial droop, speech slurring, unilateral weakness, acute onset\n3. Anaphylaxis — insect sting/allergen trigger, throat tightness, tongue/lip swelling, hives, rapid onset\n4. Sepsis — fever/chills, suspected infection source, altered mental status, tachycardia\n5. Respiratory distress — dyspnea, low SpO2 (< 94%), accessory muscle use, cyanosis\n6. Suicidal ideation — explicit self-harm statement, brought in by police/family for safety concern\n7. Major trauma — high-energy mechanism (MVA, fall from height, assault), multi-system involvement\n8. Hypertensive crisis — severe headache, visual changes, chest pain with high BP context\n9. Altered mental status — acute confusion, unresponsiveness, disorientation without other flag\n10. Anaphylactoid reaction — allergic-type skin or systemic symptoms (rash, hives, swelling, itching) following a new medication, food, or other exposure, without airway/breathing involvement; trigger may or may not be identified\n\nSeparately, run a vitals consistency check, independent of the 10 conditions above. Compare provided vitals against these critical thresholds: SpO2 < 90%, systolic BP >= 180 or diastolic >= 120, GCS <= 13, HR >= 150 or HR <= 40, Temp >= 39.5°C. If any vital crosses a threshold AND the complaint text does not plausibly explain that abnormality, set vitals_mismatch.triggered to true — this is a prompt for the nurse to double check the reading, not a diagnosis. If the complaint text already explains the abnormal vital (e.g. low SpO2 with a shortness-of-breath complaint), do not trigger the mismatch; let it support the relevant condition flag above instead.\n\nReturn JSON only:\n{\n  \"flag_detected\": boolean,\n  \"flag_type\": \"string or null\",\n  \"confidence\": \"number 0.0 to 1.0 or null\",\n  \"urgency\": \"standard or high or null\",\n  \"source_citation\": \"string or null\",\n  \"reasoning\": \"string or null\",\n  \"vitals_mismatch\": {\n    \"triggered\": boolean,\n    \"vital\": \"string or null\",\n    \"reason\": \"string or null\"\n  }\n}\n\nRules:\n- flag_detected: true only if confidence >= 0.70\n- urgency: 'high' if confidence >= 0.90, 'standard' if 0.70 to 0.89\n- source_citation: quote the exact phrase from the raw complaint text (not a paraphrase) that triggered the flag\n- reasoning: one sentence explaining the clinical basis for the flag\n- If no flag matches or confidence < 0.70: return flag_detected false, all other fields null\n- vitals_mismatch is independent of flag_detected — it can be true even when flag_detected is false, and vice versa"
+            },
+            {
+              "role": "user",
+              "content": "={{ \"Chief complaint: \" + $json.complaint_text + \"\\nVitals: \" + JSON.stringify($json.vitals) }}"
+            }
+          ]
+        },
+        "options": {
+          "responseFormat": "json_object",
+          "temperature": 0
+        }
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000007",
+      "name": "Parse Structured Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 460],
+      "parameters": {
+        "jsCode": "const parsed = JSON.parse($input.item.json.message.content);\nreturn { structured: parsed };"
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000008",
+      "name": "Parse Flag Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 620],
+      "parameters": {
+        "jsCode": "const parsed = JSON.parse($input.item.json.message.content);\nreturn { flags: parsed };"
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000009",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1340, 540],
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 2,
+        "options": {}
+      }
+    },
+    {
+      "id": "c3d4e5f6-0003-0003-0003-000000000010",
+      "name": "Respond: Merged JSON",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1560, 540],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Fields": {
+      "main": [
+        [
+          {
+            "node": "Check Complaint Length",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Complaint Length": {
+      "main": [
+        [
+          {
+            "node": "Respond: Insufficient Detail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI: Extract Structured Complaint",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenAI: Detect Critical Flags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: Extract Structured Complaint": {
+      "main": [
+        [
+          {
+            "node": "Parse Structured Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: Detect Critical Flags": {
+      "main": [
+        [
+          {
+            "node": "Parse Flag Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Structured Output": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Flag Output": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Respond: Merged JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "er-triage"
+    }
+  ]
+}

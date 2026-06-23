@@ -1,0 +1,146 @@
+[
+  {
+    "id": "case-001",
+    "source": "case_examples",
+    "title": "Bee sting with throat tightness \u2014 ESI 2 (low severity)",
+    "text": "70-year-old Female presents with Bee sting about 28 minutes ago, throat feels tight. Vitals: BP 98/62, HR 115, SpO2 91%, RR 28, Temp 37.0C. Expected ESI: 2. Expected flag: Anaphylaxis. Recommended actions: Epinephrine 0.3mg IM, antihistamine, monitor 4h, IV access."
+  },
+  {
+    "id": "case-002",
+    "source": "case_examples",
+    "title": "Bee sting with throat tightness \u2014 ESI 1 (mid severity)",
+    "text": "72-year-old Male presents with Bee sting about 67 minutes ago, throat feels tight. Vitals: BP 82/54, HR 118, SpO2 92%, RR 31, Temp 37.0C. Expected ESI: 1. Expected flag: Anaphylaxis. Recommended actions: Epinephrine 0.3mg IM STAT, airway assessment, O2, IV fluids, resuscitation room."
+  },
+  {
+    "id": "case-003",
+    "source": "case_examples",
+    "title": "Bee sting with throat tightness \u2014 ESI 1 (high severity)",
+    "text": "25-year-old Male presents with Bee sting about 10 minutes ago, throat feels tight. Vitals: BP 87/65, HR 149, SpO2 83%, RR 31, Temp 37.0C. Expected ESI: 1. Expected flag: Anaphylaxis. Recommended actions: Epinephrine 0.5mg IM STAT, intubation standby, vasopressors, ICU alert."
+  },
+  {
+    "id": "case-004",
+    "source": "case_examples",
+    "title": "Acute confusion and dysarthria \u2014 ESI 2 (low severity)",
+    "text": "68-year-old Female presents with Came in confused, family says she was fine this morning, slurring her words. Vitals: BP 161/88, HR 94, SpO2 95%, RR 17, Temp 36.7C. Expected ESI: 2. Expected flag: Acute Stroke. Recommended actions: FAST screen, last known well time, CT head stat, neurology alert, IV access."
+  },
+  {
+    "id": "case-005",
+    "source": "case_examples",
+    "title": "Acute confusion and dysarthria \u2014 ESI 2 (mid severity)",
+    "text": "33-year-old Male presents with Came in confused, family says she was fine this morning, slurring her words. Vitals: BP 168/104, HR 107, SpO2 94%, RR 18, Temp 36.5C. Expected ESI: 2. Expected flag: Acute Stroke. Recommended actions: Stroke code, CT head without contrast stat, tPA eligibility assessment, neurology bedside 15min."
+  },
+  {
+    "id": "case-006",
+    "source": "case_examples",
+    "title": "Acute confusion and dysarthria \u2014 ESI 1 (high severity)",
+    "text": "3-year-old Non-Binary presents with Came in confused, family says she was fine this morning, slurring her words. Vitals: BP 199/89, HR 103, SpO2 97%, RR 24, Temp 36.2C. Expected ESI: 1. Expected flag: Acute Stroke. Recommended actions: Stroke code STAT, CT head, tPA if eligible and BP < 185/110, neurology at bedside immediately."
+  },
+  {
+    "id": "case-007",
+    "source": "case_examples",
+    "title": "Chest pain with left arm radiation \u2014 ESI 2 (low severity)",
+    "text": "44-year-old Female presents with Patient says chest tightness and left arm pain for 36 min, started at rest. Vitals: BP 147/106, HR 120, SpO2 96%, RR 21, Temp 37.0C. Expected ESI: 2. Expected flag: ACS / STEMI. Recommended actions: ECG within 10min, aspirin 325mg, troponin stat, IV access, cardiac monitor."
+  },
+  {
+    "id": "case-008",
+    "source": "case_examples",
+    "title": "Chest pain with left arm radiation \u2014 ESI 2 (mid severity)",
+    "text": "50-year-old Non-Binary presents with Patient says chest tightness and left arm pain for 35 min, started at rest. Vitals: BP 158/103, HR 122, SpO2 90%, RR 20, Temp 36.9C. Expected ESI: 2. Expected flag: STEMI. Recommended actions: STEMI protocol, ECG within 10min, aspirin 325mg stat, cardiology alert, door-to-balloon < 90min."
+  },
+  {
+    "id": "case-009",
+    "source": "case_examples",
+    "title": "Chest pain with left arm radiation \u2014 ESI 1 (high severity)",
+    "text": "73-year-old Male presents with Patient says chest tightness and left arm pain for 56 min, started at rest. Vitals: BP 184/86, HR 134, SpO2 91%, RR 29, Temp 37.1C. Expected ESI: 1. Expected flag: STEMI. Recommended actions: Resuscitation room, STEMI protocol, cardiology at bedside, cath lab activation."
+  },
+  {
+    "id": "case-010",
+    "source": "case_examples",
+    "title": "Dyspnea \u2014 ESI 2 (low severity)",
+    "text": "72-year-old Male presents with Shortness of breath, oxygen reading at home was 88%. Vitals: BP 171/84, HR 110, SpO2 90%, RR 22, Temp 37.2C. Expected ESI: 2. Expected flag: Respiratory Distress. Recommended actions: O2 to SpO2 > 94%, upright, IV, monitor, CXR stat."
+  },
+  {
+    "id": "case-011",
+    "source": "case_examples",
+    "title": "Dyspnea \u2014 ESI 1 (mid severity)",
+    "text": "40-year-old Female presents with Shortness of breath, oxygen reading at home was 88%. Vitals: BP 146/76, HR 124, SpO2 89%, RR 25, Temp 37.2C. Expected ESI: 1. Expected flag: Respiratory Failure. Recommended actions: O2 high-flow, consider NIV/intubation, ABG, resuscitation room, pulmonology alert."
+  },
+  {
+    "id": "case-012",
+    "source": "case_examples",
+    "title": "Dyspnea \u2014 ESI 1 (high severity)",
+    "text": "18-year-old Female presents with Shortness of breath, oxygen reading at home was 88%. Vitals: BP 180/88, HR 108, SpO2 88%, RR 33, Temp 37.2C. Expected ESI: 1. Expected flag: Respiratory Failure. Recommended actions: Immediate intubation assessment, 100% O2, resuscitation room, anesthesia alert."
+  },
+  {
+    "id": "case-013",
+    "source": "case_examples",
+    "title": "Dizziness \u2014 ESI 4 (low severity)",
+    "text": "33-year-old Male presents with Feeling dizzy for 38 days, not eating well. Vitals: BP 137/73, HR 97, SpO2 99%, RR 17, Temp 36.5C. Expected ESI: 4. Expected flag: None. Recommended actions: Orthostatic vitals, fingerstick glucose, basic workup, oral hydration."
+  },
+  {
+    "id": "case-014",
+    "source": "case_examples",
+    "title": "Dizziness \u2014 ESI 3 (mid severity)",
+    "text": "59-year-old Non-Binary presents with Feeling dizzy for 51 days, not eating well. Vitals: BP 123/65, HR 95, SpO2 96%, RR 20, Temp 37.1C. Expected ESI: 3. Expected flag: None. Recommended actions: ECG, orthostatic vitals, IV access, glucose, cardiac monitor, symptom duration noted."
+  },
+  {
+    "id": "case-015",
+    "source": "case_examples",
+    "title": "Dizziness \u2014 ESI 3 (high severity)",
+    "text": "59-year-old Female presents with Feeling dizzy for 20 days, not eating well. Vitals: BP 131/74, HR 83, SpO2 96%, RR 17, Temp 36.6C. Expected ESI: 3. Expected flag: Syncope / Cardiac. Recommended actions: ECG stat, IV access, cardiac monitor, orthostatic vitals, San Francisco Rule applied."
+  },
+  {
+    "id": "case-016",
+    "source": "case_examples",
+    "title": "Hand laceration \u2014 ESI 4 (low severity)",
+    "text": "3-year-old Non-Binary presents with Cut on hand from kitchen accident, bleeding controlled. Vitals: BP 114/64, HR 66, SpO2 100%, RR 13, Temp 36.9C. Expected ESI: 4. Expected flag: None. Recommended actions: Wound irrigation, closure assessment, tetanus prophylaxis if needed."
+  },
+  {
+    "id": "case-017",
+    "source": "case_examples",
+    "title": "Hand laceration \u2014 ESI 4 (mid severity)",
+    "text": "52-year-old Non-Binary presents with Cut on hand from kitchen accident, bleeding controlled. Vitals: BP 131/78, HR 93, SpO2 100%, RR 19, Temp 36.8C. Expected ESI: 4. Expected flag: None. Recommended actions: Wound assessment, irrigation, laceration repair, neurovascular check distal."
+  },
+  {
+    "id": "case-018",
+    "source": "case_examples",
+    "title": "Hand laceration \u2014 ESI 3 (high severity)",
+    "text": "49-year-old Non-Binary presents with Cut on hand from kitchen accident, bleeding controlled. Vitals: BP 100/70, HR 97, SpO2 98%, RR 15, Temp 36.9C. Expected ESI: 3. Expected flag: None. Recommended actions: Wound assessment, hemorrhage control check, irrigation, repair, neurovascular check."
+  },
+  {
+    "id": "case-019",
+    "source": "case_examples",
+    "title": "Generalized rash \u2014 ESI 4 (low severity)",
+    "text": "58-year-old Non-Binary presents with Rash spreading on torso, started 53 hours ago after new medication. Vitals: BP 105/77, HR 78, SpO2 100%, RR 17, Temp 36.9C. Expected ESI: 4. Expected flag: Drug Reaction. Recommended actions: Medication review, antihistamine, topical treatment, allergy consult if needed."
+  },
+  {
+    "id": "case-020",
+    "source": "case_examples",
+    "title": "Generalized rash \u2014 ESI 3 (mid severity)",
+    "text": "68-year-old Male presents with Rash spreading on torso, started 14 hours ago after new medication. Vitals: BP 102/83, HR 69, SpO2 99%, RR 12, Temp 36.8C. Expected ESI: 3. Expected flag: Drug Reaction. Recommended actions: Discontinue offending medication, antihistamine IV, monitor for anaphylaxis progression."
+  },
+  {
+    "id": "case-021",
+    "source": "case_examples",
+    "title": "Generalized rash \u2014 ESI 2 (high severity)",
+    "text": "1-year-old Male presents with Rash spreading on torso, started 21 hours ago after new medication. Vitals: BP 136/76, HR 84, SpO2 99%, RR 12, Temp 36.8C. Expected ESI: 2. Expected flag: Anaphylaxis Risk. Recommended actions: IV antihistamine, steroids, monitor BP/SpO2, anaphylaxis protocol on standby."
+  },
+  {
+    "id": "case-022",
+    "source": "case_examples",
+    "title": "Suicidal ideation \u2014 ESI 2 (low severity)",
+    "text": "7-year-old Non-Binary presents with Says he wants to hurt himself, was brought in by police. Vitals: BP 103/78, HR 90, SpO2 100%, RR 20, Temp 36.5C. Expected ESI: 2. Expected flag: Psychiatric Emergency. Recommended actions: Psychiatric consult, safety assessment, 1:1 monitoring, secure environment."
+  },
+  {
+    "id": "case-023",
+    "source": "case_examples",
+    "title": "Suicidal ideation \u2014 ESI 2 (mid severity)",
+    "text": "40-year-old Male presents with Says he wants to hurt himself, was brought in by police. Vitals: BP 133/64, HR 91, SpO2 98%, RR 16, Temp 36.9C. Expected ESI: 2. Expected flag: Psychiatric Emergency. Recommended actions: Immediate psychiatric evaluation, safety search, IV access, 1:1 sitter, social work."
+  },
+  {
+    "id": "case-024",
+    "source": "case_examples",
+    "title": "Suicidal ideation \u2014 ESI 2 (high severity)",
+    "text": "3-year-old Non-Binary presents with Says he wants to hurt himself, was brought in by police. Vitals: BP 118/71, HR 86, SpO2 96%, RR 19, Temp 36.7C. Expected ESI: 2. Expected flag: Psychiatric Emergency. Recommended actions: Psychiatric emergency, safety restraints if needed, medical clearance, crisis team."
+  }
+]

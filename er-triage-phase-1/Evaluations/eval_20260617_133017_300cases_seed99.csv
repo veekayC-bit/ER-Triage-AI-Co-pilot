@@ -1,0 +1,301 @@
+id,category,acuity,expected_esi,flag,overall_pass,keyword_hit,source_match,relevance_ok,top_score,match_count,top_guideline
+eval-0002,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0004,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,82,4,Drug Reaction and Allergic Rash Protocol
+eval-0005,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0006,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0008,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0012,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0022,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0024,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0033,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0038,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0039,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0044,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0049,Acute confusion and dysarthria,Critical,1,Stroke Indicator,False,True,False,True,82,4,ESI Level 2 — Emergent
+eval-0053,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0057,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0058,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,87,4,Anaphylaxis
+eval-0060,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0072,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0075,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0078,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0083,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0084,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0085,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,Psychiatric Emergency and Suicidal Ideation Protocol
+eval-0089,Dyspnea,High,2,Respiratory Distress,True,True,True,True,86,4,SpO2 and Respiratory Rate Thresholds
+eval-0090,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0092,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,ESI Level 3 — Urgent
+eval-0095,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,83,4,Psychiatric Emergency and Suicidal Ideation Protocol
+eval-0099,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0103,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 3 — Urgent
+eval-0108,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0109,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0113,Hand laceration,Low,4,No Critical Flag,True,True,True,True,86,4,Laceration and Wound Care Triage Protocol
+eval-0116,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0121,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0122,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0128,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 3 — Urgent
+eval-0130,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,82,4,Drug Reaction and Allergic Rash Protocol
+eval-0131,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0132,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0133,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0134,Hand laceration,Low,4,No Critical Flag,True,True,True,True,86,4,Laceration and Wound Care Triage Protocol
+eval-0135,Dyspnea,High,2,Respiratory Distress,True,True,True,True,86,4,SpO2 and Respiratory Rate Thresholds
+eval-0137,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0140,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0147,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0148,Dizziness,Low,4,No Critical Flag,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0150,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0155,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0156,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0164,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0165,Dyspnea,High,2,Respiratory Distress,True,True,True,True,88,4,SpO2 and Respiratory Rate Thresholds
+eval-0172,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0176,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0177,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0179,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0181,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0182,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0184,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0186,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,Dizziness and Vertigo Triage Protocol
+eval-0191,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 3 — Urgent
+eval-0198,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0199,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,89,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0200,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0203,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0205,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,87,4,Anaphylaxis
+eval-0206,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0208,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0209,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0211,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0213,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0217,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0218,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0222,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 3 — Urgent
+eval-0224,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0232,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 3 — Urgent
+eval-0236,Dyspnea,High,2,Respiratory Distress,True,True,True,True,88,4,SpO2 and Respiratory Rate Thresholds
+eval-0237,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,ESI Level 3 — Urgent
+eval-0240,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0255,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0256,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,91,4,Anaphylaxis
+eval-0258,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0263,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0264,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0268,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0271,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0272,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0276,Dyspnea,High,2,Respiratory Distress,True,True,True,True,88,4,SpO2 and Respiratory Rate Thresholds
+eval-0290,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0295,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0298,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0301,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0303,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0304,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0307,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0315,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0318,Dyspnea,High,2,Respiratory Distress,True,True,True,True,86,4,SpO2 and Respiratory Rate Thresholds
+eval-0319,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0322,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0324,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0327,Acute confusion and dysarthria,Critical,1,Stroke Indicator,False,True,False,True,83,4,ESI Level 2 — Emergent
+eval-0329,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0337,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0338,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0345,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0346,Dizziness,Low,4,No Critical Flag,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0347,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0354,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0363,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0364,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0367,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0371,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0372,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0379,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0380,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0382,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0383,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0387,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0389,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0390,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0391,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0393,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0396,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,83,4,Psychiatric Emergency and Suicidal Ideation Protocol
+eval-0398,Acute confusion and dysarthria,Critical,1,Stroke Indicator,False,True,False,True,83,4,ESI Level 2 — Emergent
+eval-0399,Acute confusion and dysarthria,Critical,1,Stroke Indicator,False,True,False,True,83,4,ESI Level 2 — Emergent
+eval-0405,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0409,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0410,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0413,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0414,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0416,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,82,4,Anaphylaxis
+eval-0419,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0420,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0425,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0427,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0429,Acute confusion and dysarthria,Critical,1,Stroke Indicator,False,True,False,True,83,4,ESI Level 2 — Emergent
+eval-0430,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0432,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0436,Dizziness,Low,4,No Critical Flag,True,True,True,True,84,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0442,Dizziness,Low,4,No Critical Flag,True,True,True,True,81,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0449,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0451,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0453,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0454,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0455,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0458,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0472,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0473,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0474,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,82,4,Drug Reaction and Allergic Rash Protocol
+eval-0480,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0481,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0486,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0488,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0489,Hand laceration,Low,4,No Critical Flag,True,True,True,True,86,4,Laceration and Wound Care Triage Protocol
+eval-0502,Dizziness,Low,4,No Critical Flag,True,True,True,True,84,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0512,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,86,4,Drug Reaction and Allergic Rash Protocol
+eval-0514,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0516,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 3 — Urgent
+eval-0524,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0532,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0535,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0536,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0542,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0544,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0545,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0547,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0548,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0552,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0559,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0571,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0572,Acute confusion and dysarthria,Critical,1,Stroke Indicator,False,True,False,True,82,4,ESI Level 2 — Emergent
+eval-0574,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0575,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0581,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0589,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0595,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0600,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0603,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 3 — Urgent
+eval-0610,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0614,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0615,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0619,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,89,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0621,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0623,Dizziness,Low,4,No Critical Flag,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0626,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0628,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0633,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0634,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0635,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0639,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0642,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0647,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0648,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0656,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0670,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0671,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0673,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0675,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,83,4,Psychiatric Emergency and Suicidal Ideation Protocol
+eval-0677,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0681,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0683,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0684,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0689,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0691,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0694,Acute confusion and dysarthria,Critical,1,Stroke Indicator,False,True,False,True,83,4,ESI Level 2 — Emergent
+eval-0695,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0699,Dizziness,Low,4,No Critical Flag,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0701,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0702,Dizziness,Low,4,No Critical Flag,True,True,True,True,84,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0705,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,Psychiatric Emergency and Suicidal Ideation Protocol
+eval-0712,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0718,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0724,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0729,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0732,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0733,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0734,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0736,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0738,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,83,4,Psychiatric Emergency and Suicidal Ideation Protocol
+eval-0739,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0740,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,89,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0747,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0757,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,87,4,Anaphylaxis
+eval-0759,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0760,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0766,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0767,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0770,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,83,4,Psychiatric Emergency and Suicidal Ideation Protocol
+eval-0772,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0779,Dyspnea,High,2,Respiratory Distress,True,True,True,True,84,4,SpO2 and Respiratory Rate Thresholds
+eval-0783,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0784,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0790,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0794,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0798,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0801,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0805,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0806,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0807,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0808,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0811,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 3 — Urgent
+eval-0812,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0813,Dizziness,Low,4,No Critical Flag,True,True,True,True,81,4,ESI Level 2 — Emergent
+eval-0818,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,87,4,Anaphylaxis
+eval-0820,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0824,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0826,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0828,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0829,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0832,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0834,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0839,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,89,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0840,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,87,4,Anaphylaxis
+eval-0841,Hand laceration,Low,4,No Critical Flag,True,True,True,True,86,4,Laceration and Wound Care Triage Protocol
+eval-0842,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,89,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0843,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0845,Dizziness,Low,4,No Critical Flag,True,True,True,True,84,4,ESI Level 2 — Emergent
+eval-0849,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0850,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0852,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0861,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0866,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0869,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0871,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0874,Acute confusion and dysarthria,Critical,1,Stroke Indicator,True,True,True,True,86,4,ESI Level 2 — Emergent
+eval-0883,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0885,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0888,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0892,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0895,Hand laceration,Low,4,No Critical Flag,True,True,True,True,86,4,Laceration and Wound Care Triage Protocol
+eval-0898,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0906,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0916,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0922,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,83,4,Psychiatric Emergency and Suicidal Ideation Protocol
+eval-0923,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0924,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0927,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,87,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0930,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0935,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0936,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0937,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,87,4,Anaphylaxis
+eval-0939,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0940,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0941,Dyspnea,High,2,Respiratory Distress,True,True,True,True,87,4,SpO2 and Respiratory Rate Thresholds
+eval-0944,Dizziness,Low,4,No Critical Flag,True,True,True,True,83,4,ESI Level 2 — Emergent
+eval-0956,Dyspnea,High,2,Respiratory Distress,True,True,True,True,83,4,SpO2 and Respiratory Rate Thresholds
+eval-0961,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0962,Hand laceration,Low,4,No Critical Flag,True,True,True,True,82,4,Laceration and Wound Care Triage Protocol
+eval-0969,Bee sting with throat tightness,Critical,1,Anaphylaxis,True,True,True,True,90,4,Anaphylaxis
+eval-0973,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0974,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0975,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0978,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0986,Dizziness,Low,4,No Critical Flag,True,True,True,True,82,4,ESI Level 4 and 5 — Non-Urgent and Minor
+eval-0987,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,85,4,ESI Level 2 — Emergent
+eval-0988,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-0991,Hand laceration,Low,4,No Critical Flag,True,True,True,True,85,4,Laceration and Wound Care Triage Protocol
+eval-0995,Chest pain with left arm radiation,Critical,1,Acute MI Indicator,True,True,True,True,90,4,STEMI — ST-Elevation Myocardial Infarction
+eval-0996,Generalized rash,Medium,3,Possible Allergic Reaction,True,True,True,True,85,4,Drug Reaction and Allergic Rash Protocol
+eval-0998,Hand laceration,Low,4,No Critical Flag,True,True,True,True,83,4,Laceration and Wound Care Triage Protocol
+eval-1000,Suicidal ideation,High,2,Suicidal Ideation,True,True,True,True,83,4,Psychiatric Emergency and Suicidal Ideation Protocol
