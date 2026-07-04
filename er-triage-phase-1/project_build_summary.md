@@ -357,4 +357,42 @@ Full observability = data capture + storage + display. All three required to be 
 
 ---
 
-*Next immediate action: Supabase DB layer (Phase 4) → WF5 logging node → Observability dashboard (Phase 5).*
+## Session 4 — 2026-07-03: Phase 4 Closed, N8N Repo Resync
+
+**Note:** The "demo scope" framing above (Phase 4/5 sections) is superseded — as of this session, there is no target demo/shadow-mode milestone. The product is being built out for completeness, not staged toward a specific showcase. See `ROADMAP.md` "Scope Note (2026-07-03)" for the full decision.
+
+### Phase 4 (Agentic Architecture) — now fully complete
+
+All five R4 items closed this session:
+
+- **R4-4 (PII scope):** Removed `patient_name`/`patient_mrn` from the Supabase `encounters` upsert in `intake-normal.html` (Option B — kept on the form for display/context, never persisted). Two open questions deferred to the user: whether to clean up already-persisted PII rows, and whether `patient_dob` should also be dropped (roadmap only specified name/MRN).
+- **R4-2 (Stroke RAG source fix):** Two real bugs found and fixed, not the ranking problem originally assumed:
+  1. The live ingestion workflow ("ER Triage: Ingest Clinical Knowledge Base") was missing 6 of 24 knowledge-base documents, including `stroke-002` — never embedded into Pinecone. Fixed by restoring the full doc set and re-running ingestion.
+  2. `evaluation.py` (the 300-case eval harness) was calling WF4 with a synthetic narrative string that had demographics and raw vitals digits baked into `complaint_text`, unlike production (which sends clean complaint text only). This noise was crowding out stroke-relevant matches. Fixed by pointing the harness at `patient_case.chief_complaint` instead of `query_text`.
+  - Verified: 300/300 (100%) on re-run, up from 293/300 (97.67%). No knowledge-base synonym expansion was needed once the eval matched production's real input shape.
+- **R4-3 (Consistency test):** Built and ran a 6-case, run-twice consistency test against WF5. Result: 6/6 identical (ESI level, primary_flag, disposition) after fixing an unrelated regression (see below). One earlier 5/6 result showing `primary_flag` wording drift ("asthma" vs "asthma exacerbation") turned out to be one-off GPT-4o sampling noise, not a systematic issue — no prompt changes were ultimately needed.
+
+### Notable detour: self-inflicted `Quick Classify` regression
+
+While attempting to tighten the `primary_flag` prompt wording (later abandoned as unnecessary — see R4-3 above), repeated edits to the live `Quick Classify` node broke it with `"undefined" is not valid JSON` errors. Root cause: the local repo copy of `wf5-orchestrator.json` predated the guardrail integration and still referenced `$json.body.complaint_text` / `$json.body.{bp,hr,spo2,temp,rr}`. Production had already been correctly updated to `$json.complaint_text` / `$json.vitals.{bp,hr,spo2,temp,rr}` (matching the `Guardrail Route` node's output shape). Pasting prompt edits built from the stale local file overwrote the live node's correct logic with the outdated pattern — a regression introduced and fixed within this same session, with **no impact on historical production data**. Fixed by restoring the correct field references.
+
+### N8N workflow repo resync
+
+Discovered the local `n8n-workflows/` files were significantly out of sync with what's actually live in N8N Cloud — this was the second such discovery this session (the first being a stale, never-live draft ingestion workflow with a placeholder API key). User downloaded fresh exports of all 3 live workflows directly from N8N Cloud and shared them for reconciliation. Confirmed live topology:
+
+1. **"ER Triage: Backend"** → merges what the repo had as two separate files (`wf1-parse-complaint.json` + `wf2-detect-flags.json`) into one workflow container with two independent webhook triggers (no functional change, matches the documented split-architecture decision).
+2. **"ER Triage: Ingest Clinical Knowledge Base"** → merges retrieval (`wf4-retrieve-context.json`, exact match) with ingestion. Correction to what was believed earlier in this session: live ingestion uses raw HTTP nodes (`Embed Document` + `Upsert to Pinecone`, matching the old `wf3-ingest-knowledge.json` structure) with a **real** Pinecone API key — the LangChain-based file that was edited earlier for the R4-2 fix was never actually the live workflow (same workflow name, different/stale implementation). The R4-2 fix still worked correctly regardless, since the `Return Documents` code change is structure-agnostic and the user pasted it into whatever was actually live.
+3. **"ER Triage: Orchestrator Agent"** → replaces `wf5-orchestrator.json`, confirmed to include the guardrail logic directly (`Guardrail Check`/`Guardrail Route`/`Guardrail Switch`/`Respond Blocked`) rather than as a separate `wf-guardrail.json` workflow.
+
+Repo reorganized: fresh exports promoted to canonical names (`wf-backend.json`, `wf-ingest-and-retrieve.json`, `wf5-orchestrator.json`), 9 stale/superseded files moved to `n8n-workflows/archive/` (not deleted, kept for history): `wf1-parse-complaint.json`, `wf2-detect-flags.json`, `wf4-retrieve-context.json`, `ER Triage_ Ingest Clinical Knowledge Base.json` (LangChain draft, never live), `wf3-ingest-knowledge.json` (draft, never live), `wf-guardrail.json` (merged in), `wf-merged-parse-and-detect.json` + ` 2.json` variant (already-known retired), and the prior session's stale `wf5-orchestrator.json`.
+
+### Scope decisions this session
+
+- Demo/shadow-mode readiness dropped as a target milestone — building for product completeness instead. Phase 7 deprioritized accordingly (see `ROADMAP.md` Scope Note).
+- **P6-2 (External EHR/FHIR integration) put ON HOLD** — highest effort remaining item (2-3 weeks), lowest near-term leverage. Phase 7 (portfolio wrap-up) moves up ahead of it, after P6-1.
+
+### Current state
+
+HHH scorecard: 9 of 10 dimensions passing. Only **P5-1 (observability dashboard)** remains open. Next up per the sequenced queue: P5-1 → P5-2 (nurse field modification capture, currently partial) → P5-4 (validator agent) → P5-6 (audio-to-text intake) → P5-3 (multi-turn) → P5-5 (queue intelligence) → P6-1 (prior visit history) → Phase 7 (portfolio wrap-up). P6-2 (FHIR) on hold indefinitely.
+
+*Next immediate action: P5-1, Observability dashboard (2-3 hr) — reads from `encounters` + `eval_results` tables, closes the last open HHH gap.*

@@ -624,8 +624,6 @@ async function persistToSupabase(complaintText, vitals, structured, wf5) {
   try {
     const { error } = await db.from("encounters").upsert({
       encounter_id:        ENCOUNTER_ID,
-      patient_name:        $("patient-name")?.value || null,
-      patient_mrn:         $("patient-mrn")?.value || null,
       patient_dob:         $("patient-dob")?.value || null,
       patient_sex:         $("patient-sex")?.value || null,
       complaint_text:      complaintText,

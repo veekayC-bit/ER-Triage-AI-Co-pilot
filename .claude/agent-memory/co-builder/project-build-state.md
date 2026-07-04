@@ -7,7 +7,15 @@ metadata:
 
 # ER Triage AI Co-pilot — Build State
 
-Last updated: 2026-06-16
+Last updated: 2026-06-16 (see note below for current state)
+
+## ⚠️ Superseded — see `er-triage-phase-1/ROADMAP.md` and `er-triage-phase-1/project_build_summary.md` (Session 4, 2026-07-03) for current state
+
+As of 2026-07-03: Phase 4 (Agentic Architecture) is fully complete. HHH scorecard 9/10 passing, only P5-1 (observability dashboard) open. Next task: P5-1. P6-2 (FHIR EHR integration) is ON HOLD; Phase 7 (portfolio wrap-up) moved up ahead of it.
+
+`n8n-workflows/` was reorganized 2026-07-03 — canonical files are now `wf-backend.json`, `wf-ingest-and-retrieve.json`, `wf5-orchestrator.json` (the last now includes guardrail logic inline). Everything referencing `wf1-parse-complaint.json`, `wf2-detect-flags.json`, `wf4-retrieve-context.json`, or `wf-guardrail.json` below is stale — those files were moved to `n8n-workflows/archive/`. Local workflow JSON files can silently drift from what's actually live in N8N Cloud — verify before trusting, ask the user for a fresh export if unsure.
+
+Everything below this point is historical (pre-2026-07-03) context only.
 
 ## Current Phase: Phase 1 gate cleared (split architecture, live in production) / Phase 2 frontend wiring in progress
 

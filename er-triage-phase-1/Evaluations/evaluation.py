@@ -340,7 +340,7 @@ def main():
     for i, record in enumerate(sample):
         gt = record["ground_truth"]
         retrieved = call_wf4(
-            query_text=record["query_text"],
+            query_text=record["patient_case"]["chief_complaint"],
             flag=gt["flag"],
             acuity=gt["acuity"]
         )

@@ -1,0 +1,86 @@
+[
+  {
+    "case": "STEMI (Critical)",
+    "run1": {
+      "esi_level": 1,
+      "primary_flag": "suspected STEMI",
+      "disposition": "resuscitation_room"
+    },
+    "run2": {
+      "esi_level": 1,
+      "primary_flag": "suspected STEMI",
+      "disposition": "resuscitation_room"
+    },
+    "match": true
+  },
+  {
+    "case": "Stroke (Critical)",
+    "run1": {
+      "esi_level": 1,
+      "primary_flag": "acute stroke",
+      "disposition": "resuscitation_room"
+    },
+    "run2": {
+      "esi_level": 1,
+      "primary_flag": "acute stroke",
+      "disposition": "resuscitation_room"
+    },
+    "match": true
+  },
+  {
+    "case": "Anaphylaxis (Critical)",
+    "run1": {
+      "esi_level": 1,
+      "primary_flag": "anaphylaxis",
+      "disposition": "resuscitation_room"
+    },
+    "run2": {
+      "esi_level": 1,
+      "primary_flag": "anaphylaxis",
+      "disposition": "resuscitation_room"
+    },
+    "match": true
+  },
+  {
+    "case": "Sepsis (Urgent)",
+    "run1": {
+      "esi_level": 2,
+      "primary_flag": "sepsis",
+      "disposition": "immediate_bed"
+    },
+    "run2": {
+      "esi_level": 2,
+      "primary_flag": "sepsis",
+      "disposition": "immediate_bed"
+    },
+    "match": true
+  },
+  {
+    "case": "Dyspnea (Urgent)",
+    "run1": {
+      "esi_level": 3,
+      "primary_flag": "asthma exacerbation",
+      "disposition": "urgent_bed"
+    },
+    "run2": {
+      "esi_level": 3,
+      "primary_flag": "asthma exacerbation",
+      "disposition": "urgent_bed"
+    },
+    "match": true
+  },
+  {
+    "case": "Hand laceration (Low)",
+    "run1": {
+      "esi_level": 4,
+      "primary_flag": "none",
+      "disposition": "fast_track"
+    },
+    "run2": {
+      "esi_level": 4,
+      "primary_flag": "none",
+      "disposition": "fast_track"
+    },
+    "match": true
+  }
+]

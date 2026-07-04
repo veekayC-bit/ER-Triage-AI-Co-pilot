@@ -1,0 +1,160 @@
+{
+  "name": "ER Triage: Ingest Clinical Knowledge Base",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "b5845b04-827e-44e1-8077-492ed4b49fad",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  { json: { id: 'esi-1', source: 'esi_criteria', title: 'ESI Level 1 — Immediate / Resuscitation', text: 'ESI Level 1 — Patient requires immediate life-saving intervention. Any delay is life-threatening. Indicators: unresponsive, apneic, pulseless, severe respiratory distress, uncontrolled hemorrhage, GCS <= 8, refractory hypotension SBP < 80, anaphylaxis with airway compromise. Action: Physician at bedside immediately. Resuscitation room.' } },\n  { json: { id: 'esi-2', source: 'esi_criteria', title: 'ESI Level 2 — Emergent', text: 'ESI Level 2 — High-risk situation or patient confused, lethargic, or disoriented, or severe pain or distress. Indicators: altered mental status, FAST-positive stroke signs, chest pain with diaphoresis, active seizure, SpO2 < 90%, BP >= 180/120 with symptoms, HR > 150 or < 40, GCS 9-13, suspected STEMI, sepsis 2+ SIRS criteria, suicidal ideation. Action: Should not wait. Immediate room. Physician notified within 5 minutes.' } },\n  { json: { id: 'esi-3', source: 'esi_criteria', title: 'ESI Level 3 — Urgent', text: 'ESI Level 3 — Stable vital signs, requires two or more resources. Indicators: moderate pain 4-7/10, vomiting dehydration, shortness of breath SpO2 91-94%, laceration needing sutures, UTI with fever, moderate trauma. Target evaluation within 30 minutes.' } },\n  { json: { id: 'stemi-001', source: 'critical_conditions', title: 'STEMI — ST-Elevation Myocardial Infarction', text: 'STEMI: Chest pain with radiation to jaw or left arm, diaphoresis, nausea, duration > 20 minutes, nitrate-unresponsive. Keywords: chest tightness, chest pressure, jaw pain, left arm pain, crushing chest, diaphoresis. Vitals: HR > 100 with chest pain, SBP < 90. Action: STEMI protocol immediately. ECG within 10 minutes. Aspirin 325mg stat. Cardiology alert. Door-to-balloon < 90 minutes. ESI 1-2.' } },\n  { json: { id: 'sepsis-001', source: 'critical_conditions', title: 'Sepsis and Septic Shock', text: 'Sepsis: SIRS 2+ criteria: Temp > 38.3C or < 36C, HR > 90, RR > 20, WBC > 12000 or < 4000. Sepsis = SIRS plus infection source. Septic Shock = Sepsis plus SBP < 90 after 30mL/kg fluids or lactate > 4. Keywords: fever, infection, confusion, fast breathing, chills, rigors, low blood pressure. High-suspicion pattern: HR > 100 plus Temp > 38.5 plus RR > 22. Action: 1-hour bundle: cultures x2, antibiotics, 30mL/kg IV crystalloid, lactate. ESI 2 sepsis, ESI 1 septic shock.' } },\n  { json: { id: 'stroke-001', source: 'critical_conditions', title: 'Acute Ischemic Stroke', text: 'Stroke: FAST — Face drooping, Arm weakness, Speech difficulty, Time to call. BE-FAST adds Balance and Eyes. tPA window 4.5 hours from onset. Keywords: facial droop, arm weakness, slurred speech, sudden headache, vision loss, confusion, dizziness with fall. BP > 185/110 may contraindicate tPA. Action: Stroke code immediately. CT head without contrast stat. Neurology alert. Document last known well time. ESI 1-2.' } },\n  { json: { id: 'pe-001', source: 'critical_conditions', title: 'Pulmonary Embolism', text: 'PE: Sudden dyspnea plus pleuritic chest pain plus tachycardia. Keywords: sudden shortness of breath, chest pain worse with breathing, leg swelling, immobility, recent surgery, calf pain, hemoptysis. Vital flags: SpO2 < 92% plus HR > 100 plus pleuritic pain = high suspicion. Massive PE = hemodynamically unstable. Action: CTPA stat. Heparin. ESI 2 submassive, ESI 1 massive.' } },\n  { json: { id: 'htn-crisis-001', source: 'critical_conditions', title: 'Hypertensive Crisis', text: 'Hypertensive Emergency: SBP >= 180/120 with end-organ damage — encephalopathy, MI, aortic dissection, pulmonary edema, eclampsia, stroke. Urgency: SBP >= 180/120 no end-organ damage. Keywords: severe headache, vision changes, chest pain, confusion, very high blood pressure. Threshold: BP >= 220/140 treat regardless. Action: IV antihypertensives, reduce MAP max 25% in first hour. ESI 2 emergency, ESI 3 urgency.' } },\n  { json: { id: 'anaphylaxis-001', source: 'critical_conditions', title: 'Anaphylaxis', text: 'Anaphylaxis: Rapid onset with skin or mucosal symptoms plus airway compromise, hypotension, or organ dysfunction. Keywords: allergic reaction, bee sting, food allergy, medication reaction, hives with breathing difficulty, throat tightening, stridor. Vital flags: BP drop > 30%, HR > 100, SpO2 < 94%. Action: Epinephrine 0.3-0.5mg IM anterolateral thigh IMMEDIATELY. Supine. IV access. Monitor 4-6 hours. ESI 1-2.' } },\n  { json: { id: 'vitals-bp', source: 'vital_thresholds', title: 'Blood Pressure Thresholds', text: 'Blood Pressure: Normal 90-120 over 60-80 mmHg. Hypotension SBP < 90 = immediate assessment ESI 2. Shock SBP < 90 with altered mental status = ESI 1. Hypertensive Urgency SBP >= 180 or DBP >= 120 no end-organ damage. Hypertensive Emergency SBP >= 180/120 with end-organ damage. Critical upper SBP >= 220 treat regardless.' } },\n  { json: { id: 'vitals-hr', source: 'vital_thresholds', title: 'Heart Rate Thresholds', text: 'Heart Rate: Normal 60-100 bpm. Bradycardia HR < 60. Symptomatic bradycardia HR < 50 with hypotension or AMS = ESI 1-2. Tachycardia HR > 100. Severe HR > 150 = ESI 2, consider SVT, sepsis, PE, hemorrhage. Critical HR > 180 or < 40 = ESI 1 immediate intervention.' } },\n  { json: { id: 'vitals-spo2-rr', source: 'vital_thresholds', title: 'SpO2 and Respiratory Rate Thresholds', text: 'SpO2: Normal 95-100%. Mild hypoxemia 91-94% supplement oxygen. Severe < 88% = ESI 2. Critical < 85% = ESI 1 respiratory failure. COPD target 88-92%. Respiratory Rate: Normal 12-20/min. Critical > 30 or < 8 = ESI 2 airway assessment.' } },\n  { json: { id: 'vitals-temp-gcs', source: 'vital_thresholds', title: 'Temperature and GCS Thresholds', text: 'Temperature: Normal 36.1-37.2C. Fever >= 38.0C investigate. High fever >= 39.0C sepsis workup. Hyperpyrexia >= 41.0C life-threatening ESI 2. Hypothermia < 35C active rewarming. GCS: Normal 15. Impaired 13-14 monitor. Moderate 9-12 = ESI 2. Severe <= 8 = ESI 1 intubation consideration.' } },\n  { json: { id: 'protocol-chest-pain', source: 'triage_protocols', title: 'Chest Pain Triage Protocol', text: 'Chest pain: ECG within 10 minutes, IV access, cardiac monitor, aspirin 325mg, troponin stat. Red flags for ESI 2: diaphoresis, jaw or left arm radiation, SBP < 90, HR > 120, SpO2 < 94%, nitrate-unresponsive, new onset patient > 40. Differential: STEMI, ACS, PE, aortic dissection, GERD.' } },\n  { json: { id: 'protocol-dyspnea', source: 'triage_protocols', title: 'Shortness of Breath Protocol', text: 'Dyspnea red flags: SpO2 < 90%, cannot speak in sentences, cyanosis, stridor, silent chest. Differential: asthma wheezing, COPD exacerbation smoker, CHF crackles and edema, PE pleuritic tachycardia, pneumothorax unilateral decreased sounds, anaphylaxis urticaria. Action: oxygen to SpO2 > 94%, upright, IV, monitor.' } },\n  { json: { id: 'protocol-ams', source: 'triage_protocols', title: 'Altered Mental Status Protocol', text: 'AMS: Fingerstick glucose STAT for all altered mental status. AEIOU-TIPS: Alcohol, Epilepsy, Insulin, Opiates, Uremia, Trauma, Infection, Psychiatric, Stroke. Red flags: focal neuro deficits, GCS < 14, glucose < 60 or > 400, fever with AMS = meningitis concern. Action: glucose < 60 = D50 IV immediately. Focal deficits = stroke code.' } },\n  { json: { id: 'protocol-stroke', source: 'triage_protocols', title: 'Stroke and TIA Protocol', text: 'Stroke: FAST screen, document symptom onset or last known well. tPA: ischemic stroke onset < 4.5 hours no contraindications. Contraindications: hemorrhagic stroke, BP > 185/110, active bleeding, surgery < 14 days, prior intracranial hemorrhage. Action: stroke code, CT head stat, neurology bedside 15 minutes.' } },\n  { json: { id: 'protocol-syncope', source: 'triage_protocols', title: 'Syncope Protocol', text: 'Syncope: San Francisco Rule high risk if CHF history, hematocrit < 30%, abnormal ECG, shortness of breath, SBP < 90. Cardiac syncope: no prodrome, during exertion, palpitations preceding, structural heart disease. Vasovagal: prodrome, prolonged standing, emotional trigger, rapid recovery. Action: ECG stat, orthostatic vitals, IV, monitor.' } },\n  { json: { id: 'esi-4-5', source: 'esi_criteria', title: 'ESI Level 4 and 5 — Non-Urgent and Minor', text: 'ESI Level 4 — One resource needed. Patient is stable with a minor complaint. Non-urgent, low acuity. Examples: minor sprain, rash without systemic symptoms, medication refill, minor laceration, uncomplicated UTI without fever, dizziness without neurological symptoms, stable chronic complaint, mild abdominal pain, ear pain, sore throat. ESI Level 5 — No resources needed. Simple prescription renewal, stable follow-up, wound check. Keywords: non-urgent, stable, low acuity, minor complaint, dizziness, dizzy, benign, no focal deficit, mild symptoms, non-emergent. Target wait time ESI 4: 60-120 minutes. ESI 5: can wait. Discharge with instructions expected.' } },\n  { json: { id: 'dizziness-vertigo', source: 'triage_protocols', title: 'Dizziness and Vertigo Triage Protocol', text: 'Dizziness: Differentiate central versus peripheral. Central red flags: sudden onset severe headache, diplopia, dysphagia, ataxia, focal neurological deficit = stroke concern ESI 2. Peripheral: BPPV benign positional vertigo triggered by head position change, room spinning, Epley maneuver, self-limiting. Orthostatic hypotension: BP drop greater than 20 systolic on standing, dehydration, medication side effect. Keywords: dizziness, dizzy, vertigo, BPPV, benign positional vertigo, Epley, lightheadedness, spinning, orthostatic, near-syncope, unsteady, balance, room spinning, head movement. Stable dizziness without neurological symptoms, normal vitals = ESI 3-4. Red flag dizziness with neurological deficit = ESI 2. Hydration, Epley for BPPV, orthostatic precautions.' } },\n  { json: { id: 'psychiatric-001', source: 'triage_protocols', title: 'Psychiatric Emergency and Suicidal Ideation Protocol', text: 'Psychiatric Emergency: Suicidal ideation SI — assess plan, means, intent, timeline. Active SI with plan and means = ESI 2 immediate psychiatric evaluation. Passive SI no plan = ESI 2-3 with safety monitoring. Homicidal ideation HI = ESI 1-2. Behavioral emergency: agitation, psychosis, acute altered behavior. Keywords: suicidal ideation, suicidal, suicide, SI, self-harm, wants to hurt himself, wants to hurt herself, wants to die, does not want to live, psychiatric emergency, mental health crisis, safety assessment, psychiatric hold, danger to self, danger to others, hallucinations, psychosis, agitation, threatening, behavioral health, mood disorder, depression with suicidal thoughts. Action: remove sharps and ligatures, one-to-one continuous observation sitter, psychiatric consult, de-escalation, safe room, no elopement risk.' } },\n  { json: { id: 'laceration-001', source: 'triage_protocols', title: 'Laceration and Wound Care Triage Protocol', text: 'Laceration assessment: location, depth, contamination, bleeding control, neurovascular and tendon status distal to wound. High-risk wounds: hand or joint involvement, tendon or bone exposure, bite wounds, puncture wounds, crush injury, wound contamination with soil or foreign body. Tetanus prophylaxis: update if wound dirty and greater than 5 years since last booster, or any wound greater than 10 years. Keywords: laceration, cut, wound, bleeding, hand injury, finger injury, suture, repair, tetanus, puncture, knife wound, glass cut, kitchen accident, controlled bleeding, wound care, hand laceration, finger laceration, arm cut, face laceration. Vitals concern: uncontrolled bleeding with SBP less than 90 = ESI 2. Controlled bleeding, stable vitals, no tendon injury = ESI 3-4. Wound irrigation with normal saline, closure options suture or staple, discharge with wound care.' } },\n  { json: { id: 'drug-reaction-001', source: 'triage_protocols', title: 'Drug Reaction and Allergic Rash Protocol', text: 'Drug reaction classification: Severe = anaphylaxis with airway compromise, use Anaphylaxis protocol ESI 1-2. Moderate: urticaria hives spreading with systemic symptoms, angioedema without airway involvement, widespread rash with fever. Mild: localized rash, erythema, pruritus without systemic symptoms, stable vitals. Keywords: drug reaction, medication reaction, allergic reaction, rash, hives, urticaria, erythema, pruritus, itching, skin reaction, new medication, antibiotic reaction, penicillin allergy, amoxicillin rash, spreading rash, generalized rash, drug allergy, adverse drug reaction, medication side effect. Assessment: timing of rash relative to medication start, distribution and progression, mucosal involvement, fever, systemic symptoms. Stable localized drug rash no systemic symptoms = ESI 3-4. Treatment: diphenhydramine Benadryl, consider steroids for moderate reaction, discontinue offending medication.' } },\n  { json: { id: 'stroke-002', source: 'critical_conditions', title: 'Stroke and TIA Recognition — Neurological Assessment', text: 'Stroke recognition: FAST criteria — Face drooping facial asymmetry smile uneven, Arm weakness drift unable to raise arm, Speech difficulty slurred words cannot repeat phrase, Time last known well document immediately. Additional neurological signs: sudden severe headache worst of life, vision loss one or both eyes, balance loss ataxia falling, acute confusion disorientation. TIA transient ischemic attack: stroke symptoms that resolve, high risk for subsequent stroke, ESI 2. Keywords: stroke, TIA, facial droop, arm weakness, arm drift, speech difficulty, slurred speech, dysarthria, aphasia, cannot speak, word-finding difficulty, hemiplegia, hemiparesis, vision loss, sudden headache, balance loss, ataxia, confusion acute onset, stroke indicator, neurological deficit, brain attack, cerebrovascular. Action: activate stroke code immediately, document last known well time critical for tPA eligibility, CT head without contrast stat, neurology at bedside within 15 minutes, IV access, NPO, glucose check.' } }\n];"
+      },
+      "id": "57a5105d-7fa3-48e3-a144-363541c106ab",
+      "name": "Return Documents",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "er-triage-guidelines",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "163c6023-9cb5-4288-a301-e9cd138ab173",
+      "name": "Pinecone Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        256
+      ],
+      "credentials": {
+        "pineconeApi": {
+          "id": "0VejmoA7DNl9QnSu",
+          "name": "Pinecone account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6d289214-7575-4e4b-a0aa-5378500a1ec2",
+      "name": "OpenAI Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2lPRNHpRQH3SQk51",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a4e3c8ec-1052-4e1f-b2c1-e716572d199c",
+      "name": "Document Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        512,
+        480
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Return Documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Return Documents": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "100a01c1-7af9-4f37-9342-17085bca3993",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "294d336059e5429b44436f1afb8c14d8d95f883334bccebec8219fb0f7a7ad18"
+  },
+  "nodeGroups": [],
+  "id": "7xTlk2VfPIcd7Xum",
+  "tags": [
+    {
+      "name": "phase-3",
+      "id": "5DqaHtd2TazEGWcW",
+      "updatedAt": "2026-06-17T16:19:09.679Z",
+      "createdAt": "2026-06-17T16:19:09.679Z"
+    },
+    {
+      "updatedAt": "2026-06-04T16:56:33.858Z",
+      "createdAt": "2026-06-04T16:56:33.858Z",
+      "id": "tw9xxpoH1JUJJufd",
+      "name": "er-triage"
+    }
+  ]
+}

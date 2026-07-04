@@ -24,9 +24,11 @@ Last updated: 2026-06-13
   mockup-styles.css               — Shared stylesheet
 
 /er-triage-phase-1/
-  n8n-workflows/
-    wf1-parse-complaint.json      — WF-1 N8N workflow (ready to import)
-    wf2-detect-flags.json         — WF-2 N8N workflow (ready to import, separate endpoint)
+  n8n-workflows/                  — resynced 2026-07-03 to match live N8N Cloud; verify against a fresh export before trusting for edits
+    wf-backend.json               — live "ER Triage: Backend" (parse-complaint + detect-flags, 2 webhooks in one container)
+    wf-ingest-and-retrieve.json   — live "ER Triage: Ingest Clinical Knowledge Base" (Pinecone ingestion via raw HTTP nodes + retrieval)
+    wf5-orchestrator.json         — live "ER Triage: Orchestrator Agent" (includes guardrail logic inline)
+    archive/                      — 9 superseded files kept for history, not live (old wf1/wf2/wf4/wf-guardrail, stale drafts)
   tests/
     test-wf1.sh                   — 8 PRD acceptance tests for WF-1
     test-wf2.sh                   — 8 PRD acceptance tests for WF-2
