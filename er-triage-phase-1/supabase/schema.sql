@@ -59,5 +59,10 @@ ALTER TABLE nurse_actions ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "anon can insert encounters"
   ON encounters FOR INSERT TO anon WITH CHECK (true);
 
+-- Deliberately no UPDATE policy: the frontend writes with plain .insert()
+-- (one row per analyze() call, not one row upserted per encounter), so
+-- anon never needs update access. An UPDATE policy here would let anyone
+-- holding the public anon key rewrite any patient's existing encounter row.
+
 CREATE POLICY "anon can insert nurse_actions"
   ON nurse_actions FOR INSERT TO anon WITH CHECK (true);

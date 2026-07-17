@@ -153,19 +153,47 @@ Hash name and MRN before writing to Supabase. Reversible for authorized queries.
 ## Phase 5 — Enterprise AI Systems
 
 ### P5-1: Observability Dashboard (Honest Q4)
-**Status:** ⏳ Not started  
-**Effort:** ~2-3 hours  
+**Status:** ✅ Complete (2026-07-10)  
+**Effort:** ~2-3 hours (original estimate; instrumentation layer added ~1-1.5 hr on top, see build summary Session 5)  
 **Dependency:** eval_results table live (done), service_role key for read access
 
 **What:** Live dashboard reading from `encounters` + `eval_results` tables. Surface: calls today, branch distribution (critical/urgent/low %), avg latency by branch, estimated token cost, pass rate trend.
 
 **Why it matters for the demo:** Shows AI PM thinking beyond "it works." Cost tracking and latency by branch is what a real AI PM cares about — the eval eval pipeline exists to support this view.
 
-**Outcome required to close:**
-- `dashboard.html` reads from Supabase (service_role key scoped read-only) ✅
-- Shows: total encounters, branch split %, avg ESI, avg latency, token cost estimate ✅
-- Pass rate trend over time from eval_results ✅
-- Refreshes on load (no WebSocket required for MVP) ✅
+**Progress (2026-07-06):** Discovered `avg latency by branch` and `token cost estimate` had no data source at all — latency was computed client-side and discarded, token usage was returned by OpenAI but stripped out before reaching the frontend. Rather than fake these for an "Honest Q4" dashboard, built the real instrumentation first:
+- `supabase/schema_dashboard.sql` — migration adding `latency_ms`, `prompt_tokens`, `completion_tokens` to `encounters` (run against live DB).
+- `wf5-orchestrator.json` — added `Merge Usage: Critical/Urgent/Low` Code nodes that sum token usage across every OpenAI call in the request (Guardrail Check + Quick Classify + branch brief call) and attach it to the response. Verified live via direct webhook calls: Critical, Urgent, and Low branches all now return a populated `usage` object.
+- `intake-normal.html` — `persistToSupabase` now writes `latency_ms`/`prompt_tokens`/`completion_tokens` on every real intake.
+- Still need to confirm one live browser intake writes non-null values into Supabase (only curl-tested so far), then build the actual `GET /dashboard-data` webhook and wire `dashboard.html` to it.
+
+**Update (2026-07-08, Session 6):** Session 5's `Merge Usage` nodes deliberately excluded Pinecone embedding-call tokens from the total, decided unilaterally rather than discussed. Revisited with Venkat — decision: include embedding tokens, but as a separate `embedding_tokens` figure (not blended into `prompt_tokens`/`completion_tokens`), so the dashboard shows LLM cost and embedding cost as distinct line items. See `project_build_summary.md` Session 6 for the full tradeoff discussion. Adds to the outcome checklist below; not yet implemented.
+
+**Blocker found (2026-07-08, Session 6) — CORS blocks the browser intake test:** First real-browser attempt at Step 4 (confirm a live UI intake writes non-null `latency_ms`/`prompt_tokens`/`completion_tokens` to Supabase) failed before ever reaching N8N: `Access to fetch at '.../webhook/parse-complaint' from origin 'null' has been blocked by CORS policy`. Root cause: both webhook nodes (`parse-complaint` in `wf-backend.json`, `orchestrate-triage` in `wf5-orchestrator.json`) have `"options": {}` — no "Allowed Origins (CORS)" configured, so N8N never answers the browser's preflight `OPTIONS` request. This was invisible until now because every prior verification of these endpoints used `curl`, which doesn't send an `Origin` header or trigger CORS preflight at all — likely the actual reason this browser-confirmation step had been sitting open.
+
+**Resolved (2026-07-10):** CORS set to wildcard (`*`) on both `parse-complaint` and `orchestrate-triage` webhook nodes, backstopped by an OpenAI budget cap ($5/mo hard limit, alert at $3 — set after checking actual last-month spend of $1.26). Verified via direct preflight `curl -X OPTIONS` against both endpoints — both now return `204` with correct `access-control-allow-*` headers.
+- [x] Decide CORS scope for `parse-complaint` + `orchestrate-triage` webhooks — wildcard now
+- [x] Set an OpenAI usage budget cap/alert — $5/mo, alert at $3
+- [x] Once CORS is set, re-run Step 4 (browser intake → confirm non-null Supabase columns) — **done, see below**
+
+**Step 4 completed (2026-07-10), with an unplanned detour:** Real browser intake initially wrote zero rows — root cause was a two-layer RLS/upsert interaction (`.upsert()` needs both UPDATE and SELECT policies to resolve `ON CONFLICT`, and `anon` had neither beyond INSERT). Resolved by switching `intake-normal.html` to plain `.insert()` (no new grants needed, avoids ever exercising the `ON CONFLICT` path) rather than granting `anon` a blanket SELECT policy (would have made every patient's encounter data — complaint text, vitals, ESI, clinical brief — publicly readable via the plaintext client-side anon key). Confirmed via real browser test: no console errors, row present in `encounters`. Tradeoff accepted: one row per `analyze()` call rather than one row upserted per encounter — dedupe at query time (`GROUP BY encounter_id ORDER BY created_at DESC LIMIT 1`) when the dashboard is built. Full writeup in `project_build_summary.md`, Session 7.
+
+**Scope decision (2026-07-10):** Built as a new `observability.html` page rather than wiring `dashboard.html` — the two mockups turned out to serve different audiences. `dashboard.html` is a nurse-facing ER floor view (today's intake count, queue by ESI, recent patients) with no cost/latency/eval-trend metrics in it at all; the PM/ops metrics this item actually asks for (branch split %, latency by branch, token cost, eval pass-rate trend) don't belong mixed into a clinical shift-floor screen. `observability.html` is a separate page, linked from `dashboard.html`'s nav.
+
+**Built (2026-07-10):**
+- New N8N workflow `wf-observability.json` → `GET /observability-data`: two Supabase nodes (`Fetch Encounters`, `Fetch Eval Results`) reading via a `service_role` credential kept in N8N's credential store (never client-side — the service_role key bypasses RLS entirely, unlike the anon key the frontend uses), feeding a Code node that aggregates total encounters, branch split %, avg ESI, avg latency by branch, a token-cost estimate (prompt/completion tokens × approximate GPT-4o list rates — flagged as an estimate, excludes embedding tokens), and pass-rate trend grouped by `eval_run_id` from `eval_results`.
+- `observability.html` — stat tiles, branch-split and latency-by-branch bar charts (colored consistently with the app's existing ESI severity palette — critical/urgent/low map to `--danger`/`--warning`/`--success`), a token-cost breakdown, and an SVG pass-rate trend line with hover tooltips and a backing data table.
+- Verified end-to-end via `curl` (real aggregated numbers returned) and in-browser (charts render correctly against live data, no console errors).
+
+**Debugging detour:** the new webhook went through several N8N-specific failures before working — Webhook node's Response Mode defaulted to `Immediately` instead of `Using 'Respond to Webhook' Node` (caused an "unused Respond to Webhook node" error); the two Supabase nodes' default names didn't get fully renamed to match the Code node's `$('Fetch Encounters')`/`$('Fetch Eval Results')` references (caused "Referenced node doesn't exist" — resolved by fixing the actual node names, isolated by testing each `$()` reference individually); and the Respond to Webhook node's Response Body field wasn't actually in expression mode, so the literal text `={{ JSON.stringify($json) }}` failed JSON validation — fixed by switching to `{{ $json }}` in genuine expression mode.
+
+**Outcome — all closed:**
+- ✅ Reads from Supabase via `service_role` (scoped, server-side only)
+- ✅ Shows: total encounters, branch split %, avg ESI, avg latency by branch, token cost estimate
+- ⏳ `embedding_tokens` as a separate figure — still not implemented (2026-07-08 decision); current cost estimate is prompt+completion tokens only, clearly labeled as such in the UI
+- ✅ Pass rate trend over time from `eval_results`
+- ✅ Refreshes on page load
+- ✅ Browser intake write-path confirmed end-to-end (2026-07-10)
 
 **HHH impact:** Closes Honest Q4 (auditability/observability).
 
@@ -363,10 +391,93 @@ Prior visits (last 3):
 | Item | Status | Notes |
 |---|---|---|
 | GitHub README + architecture diagram | ⏳ | Update after Phase 6 complete; diagram must reflect audio capture, prior history, and FHIR layers |
-| Live demo link | ⏳ | Requires hosting or recorded demo video |
+| Live demo link | ⏳ | Expanded into P7-A/B/C below (2026-07-10) — hosting, auth, and per-user quota, not just a recorded video |
 | Case study write-up | ⏳ | RAG-before-routing decision + FHIR integration + token optimization = 3 strong AI PM stories |
 | EB1 content — Agentic AI in ER Triage | ⏳ | FHIR + prior history layer is the differentiator vs. generic AI triage — strongest EB1 angle |
 | Resume update — ER Triage project | ⏳ | Phase 4 Agentic cert claimable (done); FHIR integration claimable after P6-2 ships |
+
+---
+
+### P7-A: Production Hosting
+
+**Status:** ⏳ Not started
+**Effort:** ~1-2 hr
+**Dependency:** None
+
+**What:** Deploy `mockups/` to Vercel or Netlify (platform TBD — functionally equivalent for this project) as a real public URL, replacing local `file://` testing. Unlike GitHub Pages, add a small build step so Supabase credentials are injected from the platform's dashboard-configured environment variables at deploy time, rather than committed to the repo — meaningful once this repo goes public for the portfolio (Phase 7's other items).
+
+**Why not GitHub Pages instead:** Considered and rejected for this specific use — GitHub Pages has no env-var injection, so `env.local.js` (currently gitignored, generated by `scripts/gen-env-local.sh`) would have to be committed for the site to work once deployed there. The Supabase key involved is the `anon` key, which is meant to be public-safe (RLS protects the data, not key secrecy), so the actual risk is low — but Vercel/Netlify's real secret injection is cleaner and was the explicit choice here.
+
+**Implementation:**
+- Small build script (Node or shell), same shape as `scripts/gen-env-local.sh`, but reading from the platform's env vars instead of a local `.env` file — generates `env.local.js` at deploy time.
+- Configure `SUPABASE_URL` / `SUPABASE_KEY` (and once P7-B lands, the Supabase Auth anon/public key if different) in the Vercel/Netlify dashboard.
+- **Follow-up this triggers:** CORS on the N8N webhooks (`parse-complaint`, `orchestrate-triage`, `observability-data`) is currently wildcard `*`, deliberately deferred until there was a real production origin to scope to (see Session 6/7 CORS decision history above). Once hosted, tighten Allowed Origins from `*` to the actual production domain.
+
+**Outcome required to close:**
+- App reachable at a public Vercel/Netlify URL
+- No secret values committed to the git history
+- CORS tightened from wildcard to the actual production origin on all three webhooks
+
+---
+
+### P7-B: Auth + Admin User Management
+
+**Status:** ⏳ Not started
+**Effort:** ~4-6 hr
+**Dependency:** P7-A (needs a real hosted origin for auth redirect URLs)
+
+**What:** Gate the app behind login using **Supabase Auth** (already using Supabase for data — no new vendor). A login screen in front of `intake-normal.html` etc.; Venkat (admin) creates each external trial user directly via the Supabase dashboard's Authentication panel (Invite/Add User) — no custom admin UI needed for v1. Successful login issues a JWT the frontend attaches (`Authorization: Bearer <jwt>`) to every N8N webhook call.
+
+**Why it matters:** Turns this from "anyone with the URL can use it unlimited" into "specific invited people, individually identifiable" — the prerequisite for both controlled external sharing and the per-user quota in P7-C (quota needs to know *who* is asking).
+
+**Architecture — new to this project, webhooks currently have zero request-level auth:**
+- Add a JWT-verification step at the top of each webhook (`parse-complaint`, `orchestrate-triage`) — mirrors the existing length-guard pattern (`Webhook → Verify Auth → [valid: continue] / [invalid: 401]`). Verification either validates the JWT signature against Supabase's JWT secret, or calls Supabase's `/auth/v1/user` endpoint with the token to confirm validity and retrieve the user's id.
+- **Decided (2026-07-10): Option B for v1.** Supabase writes stay exactly as they are today — still via the `anon` key, still governed by the existing INSERT-only RLS policy. "Who's allowed to use the app at all" is handled entirely at the N8N/login-gate layer; the database itself doesn't enforce per-user row ownership. Chosen over the stricter alternative (below) because this is trial/demo data, nobody can currently read `encounters` at all regardless (no SELECT policy exists, by design, per this session's RLS hardening), and it avoids touching the RLS setup that was just hardened.
+
+- **Option A — captured as the documented upgrade path, not built now:** `authenticated`-role writes scoped by `auth.uid()`, giving real database-enforced per-user data isolation (a user could only write/see rows tagged as their own, enforced by Postgres itself rather than trusted to N8N's own bookkeeping). Would also enable a future "show me my own past cases" feature.
+
+  **Critical implementation note for Option B, to keep this migration cheap later:** whatever writes `user_id` onto each `encounters` row (frontend or N8N) **must store the real Supabase Auth user UUID** (`session.user.id` from the logged-in client, or the `id` field returned when N8N validates the JWT via `/auth/v1/user`) — never a placeholder, an email string, or `NULL`. If this discipline holds from the first row written under P7-B, moving to Option A later is nearly free:
+  1. Add a `WITH CHECK (user_id = auth.uid())` policy (and a matching scoped `SELECT` policy) — no data rewrite needed, since every row's `user_id` already matches what `auth.uid()` will resolve to.
+  2. Ensure the frontend's Supabase client uses the authenticated session (not the bare anon key) for these calls — supabase-js does this automatically once a user is signed in, as long as nothing bypasses it.
+
+  **If that discipline was ever violated** (a row with a non-UUID value, or `NULL`, in `user_id`): moving to Option A requires backfilling those rows with the correct `auth.uid()` by mapping back to the real account where possible, and explicitly deciding what happens to any row that can't be mapped (it becomes invisible to everyone under strict Option A, acceptable for throwaway trial data, not acceptable if continuity mattered).
+
+**Outcome required to close:**
+- Login screen live, backed by Supabase Auth
+- Admin (Venkat) can create/invite a new user without writing code
+- Every webhook call carries a JWT; N8N rejects unauthenticated requests with 401
+- Decision made (and documented) on the anon-vs-authenticated Supabase write question above
+
+---
+
+### P7-C: Per-User Transaction Quota
+
+**Status:** ⏳ Not started
+**Effort:** ~2-3 hr
+**Dependency:** P7-B (quota is keyed by the user identity auth provides)
+
+**What:** Cap the number of intake analyses ("transactions" — one `/orchestrate-triage` call) each invited user can run, so external reviewers get enough to evaluate the product without open-ended cost exposure. **Decided (2026-07-10): 10-15 transactions per user** (pick a specific number, e.g. 12, at implementation time), with the ability for admin (Venkat) to reset a user's count when needed — e.g. a reviewer who wants a second look, or ran out mid-demo.
+
+**Architecture:** Rather than counting rows in `encounters` directly (which would tie quota tracking to the audit history — resetting a user's quota would then mean either deleting their real triage records or fudging the count logic), use a **dedicated `user_quotas` table**:
+```sql
+CREATE TABLE user_quotas (
+  user_id           UUID PRIMARY KEY,   -- matches auth.users.id / auth.uid()
+  transactions_used INTEGER NOT NULL DEFAULT 0,
+  quota_limit       INTEGER NOT NULL DEFAULT 12,
+  last_reset_at     TIMESTAMPTZ,
+  created_at        TIMESTAMPTZ DEFAULT NOW()
+);
+```
+- At the top of WF5, after the P7-B auth-verification step and before the expensive Guardrail Check/Quick Classify/RAG/Brief chain, add a `Check Quota` step: read `transactions_used`/`quota_limit` for that `user_id` (creating the row with defaults on first use if it doesn't exist yet), and if `transactions_used >= quota_limit`, respond immediately (e.g. `403` with "you've used your N free analyses — contact Venkat for more") instead of running the pipeline — same early-exit principle as the complaint length-guard.
+- On a successful analysis, increment `transactions_used` by 1 (as part of the same request, after the pipeline completes — or right after the quota check passes, whichever is simpler to wire).
+- This read/write needs the `service_role` credential (already set up for the observability workflow), since `anon` has no access to this table either.
+- **Admin reset, no custom UI needed for v1:** consistent with how user creation itself works in P7-B (directly via the Supabase dashboard, no custom admin panel) — Venkat resets a user's quota by editing their row in `user_quotas` directly in the Supabase Table Editor (`transactions_used` back to `0`, optionally bump `quota_limit` for a specific person). A proper admin UI button is a reasonable later upgrade, not needed to close this item.
+
+**Outcome required to close:**
+- `user_quotas` table live, defaults to the chosen limit (10-15) per new user
+- WF5 rejects the (N+1)th transaction for a given user with a clear message, before any OpenAI/Pinecone calls fire
+- Quota check verified not to fire a false rejection for a user under the limit, and to correctly block a user who has hit it
+- Admin can reset a specific user's `transactions_used` via the Supabase dashboard and confirm they can transact again immediately after
 
 ---
 
@@ -382,14 +493,17 @@ Items ordered by dependency and HHH criticality:
 | ✅ | R4-4: PII scope — name/MRN removed from Supabase upsert | 4 | Done (code) | Harmless (PII) | 15 min |
 | ✅ | R4-2: Stroke RAG source fix (ingestion + eval harness bug) | 4 | Done | Helpful (recall ≥ 98%) · Honest (source) | ~1 hr |
 | ✅ | R4-3: Consistency test | 4 | Done | Honest (consistency) | 20 min |
-| 1 | P5-1: Observability dashboard | 5 | ⏳ Not started | Honest (auditability) | 2-3 hr |
+| ✅ | P5-1: Observability dashboard (`observability.html`) | 5 | Done (2026-07-10) | Honest (auditability) | 2-3 hr |
 | 2 | P5-2: Nurse field modification capture | 5 | ⚠️ Partial | Harmless (override audit) | 1 hr |
 | 3 | P5-4: Validator agent | 5 | ⏳ Not started | Harmless (action verification) | 3-4 hr |
 | 4 | P5-6: Audio-to-text intake capture | 5 | ⏳ Not started | — | 3-4 hr |
 | 5 | P5-3: Multi-turn interaction | 5 | ⏳ Not started | — | ~1 wk |
 | 6 | P5-5: Queue intelligence | 5 | ⏳ Not started | — | 2 hr |
 | 7 | P6-1: Prior visit history (internal Supabase) | 6 | ⏳ Not started | Helpful (longitudinal context) | 4-6 hr |
-| 8 | Phase 7: Portfolio wrap-up | 7 | ⏳ Not started | — | 1-2 days |
+| 8 | P7-A: Production hosting (Vercel/Netlify) | 7 | ⏳ Not started | — | 1-2 hr |
+| 9 | P7-B: Auth + admin user management | 7 | ⏳ Not started | — | 4-6 hr |
+| 10 | P7-C: Per-user transaction quota | 7 | ⏳ Not started | Harmless (cost containment) | 2-3 hr |
+| 11 | Phase 7: Portfolio wrap-up (README, case study, EB1 content, resume) | 7 | ⏳ Not started | — | 1-2 days |
 | 🔒 | P6-2: External EHR integration (FHIR R4) | 6 | **ON HOLD** (2026-07-03) | Helpful · Harmless (allergy conflict) | 2-3 wk |
 | ✅ | **Housekeeping: resync local N8N workflow JSON exports with live N8N Cloud instance** | — | Done (2026-07-03) | — | ~30 min |
 
@@ -407,6 +521,6 @@ Demo/shadow-mode is no longer a target milestone — this project is being built
 - [x] R4-2: Stroke RAG — eval recall 100% confirmed on re-run (2026-07-03)
 - [x] R4-3: Consistency — 6/6 identical outputs on same input (2026-07-03)
 - [x] R4-1: Stroke ESI 1 — FAST-positive → ESI 1 confirmed
-- [ ] P5-1: Observability dashboard live (at minimum: encounter count + branch distribution)
+- [x] P5-1: Observability dashboard live (`observability.html` + `wf-observability.json` → `GET /observability-data`) — complete 2026-07-10
 
-Full HHH pass remains the quality bar. 1 of 10 dimensions is open right now (observability dashboard).
+Full HHH pass achieved as of 2026-07-10 — all 10 dimensions now closed (observability dashboard was the last one open).

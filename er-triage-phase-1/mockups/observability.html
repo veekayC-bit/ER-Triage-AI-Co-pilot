@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Observability | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+<style>
+.obs-layout { max-width: 1080px; margin: 0 auto; padding: 28px 24px; }
+
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; }
+.stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
+.stat-value { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
+.stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+.panel-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; }
+.panel-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+.panel-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 14px; }
+
+/* Horizontal bar rows (branch split / latency) */
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; position: relative; }
+.bar-row:last-child { margin-bottom: 0; }
+.bar-legend-key { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.bar-label { font-size: 12px; font-weight: 600; color: var(--text); width: 58px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 20px; background: var(--muted-bg); border-radius: 5px; overflow: hidden; position: relative; cursor: default; }
+.bar-fill { height: 100%; border-radius: 5px 0 0 5px; transition: filter 0.1s; }
+.bar-fill.full { border-radius: 5px; }
+.bar-row:hover .bar-fill { filter: brightness(0.92); }
+.bar-value { font-size: 12px; font-weight: 700; color: var(--text); width: 84px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+
+/* Token cost split */
+.token-bar-wrap { height: 14px; border-radius: 4px; background: var(--muted-bg); display: flex; overflow: hidden; margin: 10px 0 8px; }
+.token-seg { height: 100%; }
+.token-legend { display: flex; gap: 16px; font-size: 11px; color: var(--text-muted); }
+.token-legend .key { display: inline-flex; align-items: center; gap: 5px; }
+.token-legend .swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+
+/* Tooltip */
+.viz-tooltip {
+  position: fixed; pointer-events: none; z-index: 50;
+  background: var(--text); color: #fff; font-size: 11px; line-height: 1.5;
+  padding: 6px 10px; border-radius: 6px; box-shadow: var(--shadow-md);
+  opacity: 0; transform: translate(-50%, -100%); transition: opacity 0.1s;
+  white-space: nowrap;
+}
+.viz-tooltip.show { opacity: 1; }
+.viz-tooltip .tt-value { font-weight: 700; }
+
+/* Pass-rate trend chart */
+.trend-svg-wrap { position: relative; }
+.trend-svg { width: 100%; height: 160px; display: block; overflow: visible; }
+.trend-crosshair { stroke: var(--border); stroke-width: 1; }
+.trend-dot { fill: var(--accent); stroke: var(--white); stroke-width: 2; }
+.trend-dot-hit { fill: transparent; cursor: pointer; }
+.trend-endlabel { font-size: 11px; font-weight: 700; fill: var(--text); }
+
+.trend-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 12px; }
+.trend-table th { text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.trend-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+.trend-table tr:last-child td { border-bottom: none; }
+.pass-pill { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+.pass-pill.good { background: var(--success-bg); color: var(--success); }
+.pass-pill.bad { background: var(--danger-bg); color: var(--danger); }
+
+.empty-note { font-size: 12px; color: var(--text-muted); padding: 12px 0; }
+.load-note { font-size: 12px; color: var(--text-muted); padding: 40px 0; text-align: center; }
+.cost-caveat { font-size: 10px; color: var(--text-muted); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-icon">⚕</div>
+    ER Triage AI Co-pilot
+  </div>
+  <div class="patient-context">
+    <span class="patient-name">Observability — PM / Engineering View</span>
+    <span class="sep">|</span>
+    <span id="current-time">—</span>
+  </div>
+  <div class="user-info">
+    <span class="badge-shift">Internal · Not patient-facing</span>
+  </div>
+</header>
+
+<nav class="global-nav">
+  <a href="dashboard.html">⌂ Dashboard</a>
+  <span class="nav-sep">·</span>
+  <a href="observability.html" class="nav-cta">📊 Observability</a>
+</nav>
+
+<div class="obs-layout">
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Encounters</div>
+      <div class="stat-value" id="stat-total">—</div>
+      <div class="stat-sub">All-time, this environment</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg ESI Level</div>
+      <div class="stat-value" id="stat-esi">—</div>
+      <div class="stat-sub">1 = most acute</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Est. Token Cost</div>
+      <div class="stat-value" id="stat-cost">—</div>
+      <div class="stat-sub">All-time, GPT-4o rates</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Latest Eval Pass Rate</div>
+      <div class="stat-value" id="stat-pass">—</div>
+      <div class="stat-sub" id="stat-pass-sub">Most recent eval run</div>
+    </div>
+  </div>
+
+  <div class="panel-row">
+    <div class="panel">
+      <div class="panel-title">Branch Split</div>
+      <div class="panel-sub">Share of encounters routed to each WF5 tier</div>
+      <div id="branch-split-bars"><div class="empty-note">Loading…</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Avg Latency by Branch</div>
+      <div class="panel-sub">Milliseconds, client-measured end-to-end</div>
+      <div id="latency-bars"><div class="empty-note">Loading…</div></div>
+    </div>
+  </div>
+
+  <div class="panel-row" style="grid-template-columns: 1fr;">
+    <div class="panel">
+      <div class="panel-title">Token Cost Breakdown</div>
+      <div class="panel-sub">Prompt vs. completion tokens, all-time</div>
+      <div id="token-breakdown"><div class="empty-note">Loading…</div></div>
+    </div>
+  </div>
+
+  <div class="panel-row" style="grid-template-columns: 1fr;">
+    <div class="panel">
+      <div class="panel-title">Eval Pass Rate Trend</div>
+      <div class="panel-sub">One point per <code>live_eval.py</code> run, from <code>eval_results</code></div>
+      <div id="trend-chart-wrap"><div class="load-note">Loading…</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="viz-tooltip" id="viz-tooltip"></div>
+
+<script>
+const OBS_URL = "https://veekayc.app.n8n.cloud/webhook/observability-data";
+
+const BRANCH_COLOR = {
+  critical: getComputedStyle(document.documentElement).getPropertyValue('--danger').trim()  || '#DC2626',
+  urgent:   getComputedStyle(document.documentElement).getPropertyValue('--warning').trim() || '#D97706',
+  low:      getComputedStyle(document.documentElement).getPropertyValue('--success').trim() || '#16A34A'
+};
+const BRANCH_LABEL = { critical: 'Critical', urgent: 'Urgent', low: 'Low' };
+const TOKEN_COLOR = {
+  prompt:     getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#1E3A5F',
+  completion: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()  || '#2563EB'
+};
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById("current-time").textContent = now.toLocaleTimeString("en-CA", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+const tooltipEl = document.getElementById("viz-tooltip");
+function showTooltip(x, y, html) {
+  tooltipEl.textContent = "";
+  tooltipEl.appendChild(html);
+  tooltipEl.style.left = x + "px";
+  tooltipEl.style.top = (y - 10) + "px";
+  tooltipEl.classList.add("show");
+}
+function hideTooltip() { tooltipEl.classList.remove("show"); }
+function ttRow(label, value) {
+  const frag = document.createElement("span");
+  const strong = document.createElement("span");
+  strong.className = "tt-value";
+  strong.textContent = value;
+  frag.appendChild(strong);
+  frag.appendChild(document.createTextNode(" " + label));
+  return frag;
+}
+
+function fmtCompact(n) {
+  if (n == null) return "—";
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + "M";
+  if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+  return String(n);
+}
+function fmtUsd(n) {
+  if (n == null) return "—";
+  return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function renderBranchSplit(branchSplit) {
+  const container = document.getElementById("branch-split-bars");
+  container.textContent = "";
+  const tiers = ["critical", "urgent", "low"];
+  const maxPct = Math.max(1, ...tiers.map(t => (branchSplit[t] && branchSplit[t].pct) || 0));
+
+  tiers.forEach(tier => {
+    const d = branchSplit[tier] || { count: 0, pct: 0 };
+    const row = document.createElement("div");
+    row.className = "bar-row";
+
+    const key = document.createElement("div");
+    key.className = "bar-legend-key";
+    key.style.background = BRANCH_COLOR[tier];
+    row.appendChild(key);
+
+    const label = document.createElement("div");
+    label.className = "bar-label";
+    label.textContent = BRANCH_LABEL[tier];
+    row.appendChild(label);
+
+    const track = document.createElement("div");
+    track.className = "bar-track";
+    const fill = document.createElement("div");
+    fill.className = "bar-fill" + (d.pct >= maxPct ? " full" : "");
+    fill.style.width = Math.max(2, (d.pct / maxPct) * 100) + "%";
+    fill.style.background = BRANCH_COLOR[tier];
+    track.appendChild(fill);
+    row.appendChild(track);
+
+    const value = document.createElement("div");
+    value.className = "bar-value";
+    value.textContent = d.count + " · " + d.pct.toFixed(0) + "%";
+    row.appendChild(value);
+
+    row.addEventListener("pointermove", (e) => {
+      showTooltip(e.clientX, e.clientY, ttRow(BRANCH_LABEL[tier] + " encounters", d.count + " (" + d.pct.toFixed(1) + "%)"));
+    });
+    row.addEventListener("pointerleave", hideTooltip);
+
+    container.appendChild(row);
+  });
+}
+
+function renderLatencyBars(latencyByBranch) {
+  const container = document.getElementById("latency-bars");
+  container.textContent = "";
+  const tiers = ["critical", "urgent", "low"];
+  const vals = tiers.map(t => latencyByBranch[t]).filter(v => v != null);
+  if (vals.length === 0) {
+    const note = document.createElement("div");
+    note.className = "empty-note";
+    note.textContent = "No latency data captured yet.";
+    container.appendChild(note);
+    return;
+  }
+  const maxMs = Math.max(1, ...vals);
+
+  tiers.forEach(tier => {
+    const ms = latencyByBranch[tier];
+    const row = document.createElement("div");
+    row.className = "bar-row";
+
+    const key = document.createElement("div");
+    key.className = "bar-legend-key";
+    key.style.background = BRANCH_COLOR[tier];
+    row.appendChild(key);
+
+    const label = document.createElement("div");
+    label.className = "bar-label";
+    label.textContent = BRANCH_LABEL[tier];
+    row.appendChild(label);
+
+    const track = document.createElement("div");
+    track.className = "bar-track";
+    if (ms != null) {
+      const fill = document.createElement("div");
+      fill.className = "bar-fill" + (ms >= maxMs ? " full" : "");
+      fill.style.width = Math.max(2, (ms / maxMs) * 100) + "%";
+      fill.style.background = BRANCH_COLOR[tier];
+      track.appendChild(fill);
+    }
+    row.appendChild(track);
+
+    const value = document.createElement("div");
+    value.className = "bar-value";
+    value.textContent = ms != null ? (ms / 1000).toFixed(1) + "s" : "no data";
+    row.appendChild(value);
+
+    if (ms != null) {
+      row.addEventListener("pointermove", (e) => {
+        showTooltip(e.clientX, e.clientY, ttRow(BRANCH_LABEL[tier] + " avg latency", (ms / 1000).toFixed(2) + "s"));
+      });
+      row.addEventListener("pointerleave", hideTooltip);
+    }
+
+    container.appendChild(row);
+  });
+}
+
+function renderTokenBreakdown(tokenCost) {
+  const container = document.getElementById("token-breakdown");
+  container.textContent = "";
+
+  const promptTok = tokenCost.prompt_tokens || 0;
+  const completionTok = tokenCost.completion_tokens || 0;
+  const total = promptTok + completionTok;
+
+  const wrap = document.createElement("div");
+  const bar = document.createElement("div");
+  bar.className = "token-bar-wrap";
+  if (total > 0) {
+    const promptSeg = document.createElement("div");
+    promptSeg.className = "token-seg";
+    promptSeg.style.width = (promptTok / total * 100) + "%";
+    promptSeg.style.background = TOKEN_COLOR.prompt;
+    promptSeg.addEventListener("pointermove", (e) => showTooltip(e.clientX, e.clientY, ttRow("prompt tokens", fmtCompact(promptTok))));
+    promptSeg.addEventListener("pointerleave", hideTooltip);
+
+    const compSeg = document.createElement("div");
+    compSeg.className = "token-seg";
+    compSeg.style.width = (completionTok / total * 100) + "%";
+    compSeg.style.background = TOKEN_COLOR.completion;
+    compSeg.style.marginLeft = "2px";
+    compSeg.addEventListener("pointermove", (e) => showTooltip(e.clientX, e.clientY, ttRow("completion tokens", fmtCompact(completionTok))));
+    compSeg.addEventListener("pointerleave", hideTooltip);
+
+    bar.appendChild(promptSeg);
+    bar.appendChild(compSeg);
+  }
+  wrap.appendChild(bar);
+
+  const legend = document.createElement("div");
+  legend.className = "token-legend";
+  legend.innerHTML = "";
+  const promptKey = document.createElement("span");
+  promptKey.className = "key";
+  const promptSwatch = document.createElement("span");
+  promptSwatch.className = "swatch";
+  promptSwatch.style.background = TOKEN_COLOR.prompt;
+  promptKey.appendChild(promptSwatch);
+  promptKey.appendChild(document.createTextNode("Prompt · " + fmtCompact(promptTok)));
+
+  const compKey = document.createElement("span");
+  compKey.className = "key";
+  const compSwatch = document.createElement("span");
+  compSwatch.className = "swatch";
+  compSwatch.style.background = TOKEN_COLOR.completion;
+  compKey.appendChild(compSwatch);
+  compKey.appendChild(document.createTextNode("Completion · " + fmtCompact(completionTok)));
+
+  legend.appendChild(promptKey);
+  legend.appendChild(compKey);
+  wrap.appendChild(legend);
+
+  const caveat = document.createElement("div");
+  caveat.className = "cost-caveat";
+  caveat.textContent = "Estimate only — assumes flat GPT-4o list rates across all requests; does not include Pinecone embedding tokens (tracked separately, not yet captured) or any negotiated/volume pricing. Verify against your OpenAI billing dashboard for actual spend.";
+  wrap.appendChild(caveat);
+
+  container.appendChild(wrap);
+}
+
+function renderTrendChart(trend) {
+  const container = document.getElementById("trend-chart-wrap");
+  container.textContent = "";
+
+  if (!trend || trend.length === 0) {
+    const note = document.createElement("div");
+    note.className = "empty-note";
+    note.textContent = "No eval runs recorded yet.";
+    container.appendChild(note);
+    return;
+  }
+
+  const w = 1000, h = 160, padL = 36, padR = 50, padT = 16, padB = 24;
+  const plotW = w - padL - padR, plotH = h - padT - padB;
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+  svg.setAttribute("class", "trend-svg");
+  svg.setAttribute("preserveAspectRatio", "none");
+
+  const n = trend.length;
+  const xFor = i => padL + (n === 1 ? plotW / 2 : (i / (n - 1)) * plotW);
+  const yFor = pct => padT + plotH - (pct / 100) * plotH;
+
+  // gridlines at 0/50/100
+  [0, 50, 100].forEach(pct => {
+    const y = yFor(pct);
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", padL); line.setAttribute("x2", w - padR);
+    line.setAttribute("y1", y); line.setAttribute("y2", y);
+    line.setAttribute("stroke", "var(--border)"); line.setAttribute("stroke-width", "1");
+    svg.appendChild(line);
+    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    txt.setAttribute("x", padL - 6); txt.setAttribute("y", y + 3);
+    txt.setAttribute("text-anchor", "end"); txt.setAttribute("font-size", "10");
+    txt.setAttribute("fill", "var(--text-muted)");
+    txt.textContent = pct + "%";
+    svg.appendChild(txt);
+  });
+
+  const pts = trend.map((r, i) => [xFor(i), yFor(r.pass_pct)]);
+  const pathD = pts.map((p, i) => (i === 0 ? "M" : "L") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", pathD);
+  path.setAttribute("fill", "none");
+  path.setAttribute("stroke", "var(--accent)");
+  path.setAttribute("stroke-width", "2");
+  path.setAttribute("stroke-linejoin", "round");
+  path.setAttribute("stroke-linecap", "round");
+  svg.appendChild(path);
+
+  const crosshair = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  crosshair.setAttribute("class", "trend-crosshair");
+  crosshair.setAttribute("y1", padT); crosshair.setAttribute("y2", h - padB);
+  crosshair.setAttribute("visibility", "hidden");
+  svg.appendChild(crosshair);
+
+  trend.forEach((r, i) => {
+    const [x, y] = pts[i];
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("class", "trend-dot");
+    dot.setAttribute("cx", x); dot.setAttribute("cy", y); dot.setAttribute("r", 4);
+    svg.appendChild(dot);
+
+    if (i === trend.length - 1) {
+      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("class", "trend-endlabel");
+      label.setAttribute("x", x + 8); label.setAttribute("y", y + 4);
+      label.textContent = r.pass_pct.toFixed(0) + "%";
+      svg.appendChild(label);
+    }
+
+    const hit = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    hit.setAttribute("class", "trend-dot-hit");
+    hit.setAttribute("cx", x); hit.setAttribute("cy", y); hit.setAttribute("r", 14);
+    hit.addEventListener("pointerenter", (e) => {
+      crosshair.setAttribute("x1", x); crosshair.setAttribute("x2", x);
+      crosshair.setAttribute("visibility", "visible");
+      showTooltip(e.clientX, e.clientY, (() => {
+        const frag = document.createElement("span");
+        const strong = document.createElement("span");
+        strong.className = "tt-value";
+        strong.textContent = r.pass_pct.toFixed(1) + "%";
+        frag.appendChild(strong);
+        frag.appendChild(document.createTextNode(" pass · " + r.passed + "/" + r.total + " · " + r.run_date));
+        return frag;
+      })());
+    });
+    hit.addEventListener("pointerleave", () => {
+      crosshair.setAttribute("visibility", "hidden");
+      hideTooltip();
+    });
+    svg.appendChild(hit);
+  });
+
+  const wrap = document.createElement("div");
+  wrap.className = "trend-svg-wrap";
+  wrap.appendChild(svg);
+  container.appendChild(wrap);
+
+  // Table view (accessibility fallback + full precision)
+  const table = document.createElement("table");
+  table.className = "trend-table";
+  const thead = document.createElement("thead");
+  thead.innerHTML = "<tr><th>Eval run</th><th>Date</th><th>Total</th><th>Passed</th><th>Pass rate</th></tr>";
+  table.appendChild(thead);
+  const tbody = document.createElement("tbody");
+  trend.slice().reverse().forEach(r => {
+    const tr = document.createElement("tr");
+    const good = r.pass_pct >= 95;
+    const cells = [
+      r.eval_run_id,
+      r.run_date,
+      String(r.total),
+      String(r.passed)
+    ];
+    cells.forEach(c => {
+      const td = document.createElement("td");
+      td.textContent = c;
+      tr.appendChild(td);
+    });
+    const tdPill = document.createElement("td");
+    const pill = document.createElement("span");
+    pill.className = "pass-pill " + (good ? "good" : "bad");
+    pill.textContent = r.pass_pct.toFixed(1) + "%";
+    tdPill.appendChild(pill);
+    tr.appendChild(tdPill);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  container.appendChild(table);
+}
+
+async function loadObservabilityData() {
+  try {
+    const res = await fetch(OBS_URL);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+
+    document.getElementById("stat-total").textContent = fmtCompact(data.total_encounters);
+    document.getElementById("stat-esi").textContent = data.avg_esi != null ? data.avg_esi.toFixed(1) : "—";
+    document.getElementById("stat-cost").textContent = fmtUsd(data.token_cost && data.token_cost.estimated_cost_usd);
+
+    const trend = data.pass_rate_trend || [];
+    if (trend.length > 0) {
+      const latest = trend[trend.length - 1];
+      document.getElementById("stat-pass").textContent = latest.pass_pct.toFixed(1) + "%";
+      document.getElementById("stat-pass-sub").textContent = latest.eval_run_id;
+    } else {
+      document.getElementById("stat-pass").textContent = "—";
+      document.getElementById("stat-pass-sub").textContent = "No eval runs yet";
+    }
+
+    renderBranchSplit(data.branch_split || {});
+    renderLatencyBars(data.avg_latency_ms || {});
+    renderTokenBreakdown(data.token_cost || {});
+    renderTrendChart(trend);
+  } catch (err) {
+    console.warn("Failed to load observability data:", err.message);
+    ["branch-split-bars", "latency-bars", "token-breakdown"].forEach(id => {
+      document.getElementById(id).textContent = "";
+      const note = document.createElement("div");
+      note.className = "empty-note";
+      note.textContent = "Could not load data: " + err.message;
+      document.getElementById(id).appendChild(note);
+    });
+    const trendWrap = document.getElementById("trend-chart-wrap");
+    trendWrap.textContent = "";
+    const note = document.createElement("div");
+    note.className = "load-note";
+    note.textContent = "Could not load data: " + err.message;
+    trendWrap.appendChild(note);
+  }
+}
+
+loadObservabilityData();
+</script>
+
+</body>
+</html>

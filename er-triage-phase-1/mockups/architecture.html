@@ -213,11 +213,12 @@ body {
 .component.highlight { border-color: rgba(210,153,34,0.5); background: #1f1d17; }
 .component.highlight-ai { border-color: rgba(139,97,255,0.4); background: #1a1625; }
 .component.highlight-alert { border-color: rgba(248,81,73,0.4); background: #1c1519; }
+.component.not-built { border-color: rgba(139,148,158,0.3); background: #1a1a1a; opacity: 0.75; }
 
 /* ── Workflow Boxes (N8N) ── */
 .workflow-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
@@ -338,6 +339,8 @@ body {
   padding: 14px;
 }
 
+.data-store.not-built { border-color: rgba(139,148,158,0.25); background: #17171a; opacity: 0.75; }
+
 .data-title {
   font-size: 12px;
   font-weight: 700;
@@ -448,6 +451,17 @@ body {
 .callout.red-c ul li::before { content: '✕'; color: #ff7b72; }
 .callout.yellow-c ul li::before { content: '⚠'; color: #d29922; }
 
+.stale-note {
+  max-width: 1300px;
+  margin: 0 auto 20px;
+  background: rgba(210,153,34,0.08);
+  border: 1px solid rgba(210,153,34,0.3);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 11px;
+  color: #d29922;
+}
+
 </style>
 </head>
 <body>
@@ -456,12 +470,17 @@ body {
 <div class="page-header">
   <h1>⚕ ER Triage AI Co-pilot — System Architecture</h1>
   <div class="subtitle">
-    <span>V1 MVP · Single-site deployment</span>
-    <span class="stack-pill">🖥 Frontend: Claude HTML/CSS/JS</span>
-    <span class="stack-pill">⚙ Backend: N8N Workflows</span>
+    <span>Current build state — Phase 5 (Enterprise AI Systems), no EMR integration yet</span>
+    <span class="stack-pill">🖥 Frontend: Vanilla HTML/CSS/JS</span>
+    <span class="stack-pill">⚙ Backend: N8N Cloud</span>
     <span class="stack-pill">🤖 AI: OpenAI GPT-4o</span>
-    <span class="stack-pill">🏥 EMR: Read-only (V1)</span>
+    <span class="stack-pill">🔎 RAG: Pinecone</span>
+    <span class="stack-pill">🗄 DB: Supabase</span>
   </div>
+</div>
+
+<div class="stale-note">
+  ⚠ Updated 2026-07-10 to match the live build. Original design (fan-out WF-1/WF-2 inside one N8N workflow, EMR read/write, queue polling) was superseded — N8N does not execute fanned-out branches concurrently, which is why the architecture split into independent webhooks parallelized from the frontend, then evolved further into the single WF5 agentic orchestrator described below.
 </div>
 
 
@@ -473,53 +492,54 @@ body {
 <div class="layer layer-frontend">
   <div class="layer-label">
     <span class="layer-icon">🖥</span>
-    Frontend<br>Claude<br>HTML/CSS/JS
+    Frontend<br>Vanilla<br>HTML/CSS/JS
   </div>
   <div class="layer-body">
     <div class="component-row">
 
       <div class="component highlight">
         <div class="component-title">📝 Intake Form</div>
-        <div class="component-desc">Chief complaint textarea (debounced 300ms trigger). Vitals entry. Allergy + medication fields. ESI selector (nurse-only).</div>
+        <div class="component-desc">Chief complaint textarea + vitals. Client-side Layer-1 guardrail (regex injection check) runs before any network call. On analyze, fires both backend calls concurrently via <code>Promise.all()</code>.</div>
         <div class="component-tags">
           <span class="ctag ctag-blue">intake-normal.html</span>
-          <span class="ctag ctag-gray">fetch() on keyup</span>
+          <span class="ctag ctag-green">wired · live</span>
         </div>
       </div>
 
       <div class="component highlight-alert">
-        <div class="component-title">⚠ AI Sidebar</div>
-        <div class="component-desc">Real-time suggestion panel. Accepts structured field suggestions from N8N. Renders alert cards (amber ≥70%, red ≥90%). Accept / Dismiss per field.</div>
+        <div class="component-title">⚠ AI Sidebar / Alert Card</div>
+        <div class="component-desc">Renders structured fields (from /parse-complaint) and ESI/flag alert card (from /orchestrate-triage). Critical variant disables Review &amp; Submit until <code>esi_level ≤ 2</code> flag is confirmed.</div>
         <div class="component-tags">
           <span class="ctag ctag-orange">intake-flag-moderate.html</span>
           <span class="ctag ctag-red">intake-flag-critical.html</span>
+          <span class="ctag ctag-green">wired · live</span>
         </div>
       </div>
 
       <div class="component">
         <div class="component-title">✅ Intake Summary</div>
-        <div class="component-desc">Pre-submission review. Each field tagged: AI Suggested / Nurse. Nurse signs off. POST to N8N submit endpoint. Nothing enters EMR without this step.</div>
+        <div class="component-desc"><code>sessionStorage</code> handoff — reads <code>erTriageLastAnalysis</code> written by the intake screens, populates complaint/vitals/structured fields/flag card. Falls back to static demo content if empty.</div>
         <div class="component-tags">
           <span class="ctag ctag-green">intake-summary.html</span>
-          <span class="ctag ctag-gray">nurse-gated submit</span>
+          <span class="ctag ctag-green">wired · live</span>
         </div>
       </div>
 
-      <div class="component">
-        <div class="component-title">📊 Queue Panel</div>
-        <div class="component-desc">Read-only acuity dashboard. Polls N8N queue endpoint every 60s. ESI 1–5 breakdown, per-patient cards, AI flag badges.</div>
+      <div class="component not-built">
+        <div class="component-title">📊 Queue Panel — not wired</div>
+        <div class="component-desc">Skipped by product decision: multi-patient list needs a backend that doesn't exist. No polling, no live data.</div>
         <div class="component-tags">
-          <span class="ctag ctag-blue">queue-panel.html</span>
-          <span class="ctag ctag-gray">60s polling</span>
+          <span class="ctag ctag-gray">queue-panel.html</span>
+          <span class="ctag ctag-gray">not built</span>
         </div>
       </div>
 
-      <div class="component">
-        <div class="component-title">⊘ Manual Mode</div>
-        <div class="component-desc">EMR offline fallback. AI sidebar hidden. Manual critical flag checklist shown. Purple state banner. Full form remains editable — zero data loss.</div>
+      <div class="component not-built">
+        <div class="component-title">⊘ Manual Mode — not wired</div>
+        <div class="component-desc">Skipped by product decision: by-design static offline fallback screen. Should never call AI — no auto-detect/health-check logic exists to trigger it.</div>
         <div class="component-tags">
-          <span class="ctag ctag-purple">manual-mode.html</span>
-          <span class="ctag ctag-gray">auto-detect offline</span>
+          <span class="ctag ctag-gray">manual-mode.html</span>
+          <span class="ctag ctag-gray">not built</span>
         </div>
       </div>
 
@@ -534,7 +554,7 @@ body {
   <div class="arrow-line" style="--arrow-color:#2f81f7;">
     <div class="arrow-label">
       <div class="step-num">1</div>
-      Nurse types chief complaint → JS debounce (300ms) → fetch() POST to N8N webhook — JSON payload: {encounter_id, complaint_text, vitals}
+      Nurse types complaint + vitals → client-side Layer-1 guardrail (regex) blocks locally if injection detected, no API call → on clean input, <code>Promise.all()</code> fires two POSTs concurrently
     </div>
   </div>
 </div>
@@ -553,37 +573,27 @@ body {
 
       <div class="component">
         <div class="component-title">POST <code style="font-size:11px;color:#7ee787;">/parse-complaint</code></div>
-        <div class="component-desc">Triggers on every debounced keystroke. Routes to WF-1 (Parser) and WF-2 (Flag Detector) in parallel. Returns structured JSON within 800ms SLA.</div>
+        <div class="component-desc">Structured extraction only (GPT-4o, temp 0.2). Own length-guard before the OpenAI call. Feeds the sidebar fields display — does not drive ESI/flag logic.</div>
         <div class="component-tags">
-          <span class="ctag ctag-green">primary endpoint</span>
-          <span class="ctag ctag-gray">SLA: &lt;800ms</span>
+          <span class="ctag ctag-green">wf-backend.json</span>
+          <span class="ctag ctag-green">CORS live (wildcard)</span>
         </div>
       </div>
 
       <div class="component">
-        <div class="component-title">POST <code style="font-size:11px;color:#7ee787;">/submit-intake</code></div>
-        <div class="component-desc">Nurse-triggered on sign-off. Payload contains only nurse-confirmed fields (accepted AI suggestions + manual entries). Routes to WF-3 (EMR write).</div>
+        <div class="component-title">POST <code style="font-size:11px;color:#7ee787;">/orchestrate-triage</code></div>
+        <div class="component-desc">WF5 — the single agentic call. Runs a length-guard, Layer-2 guardrail, ESI classification, RAG retrieval, clinical brief generation, and Supabase writes in one request/response.</div>
         <div class="component-tags">
-          <span class="ctag ctag-green">nurse-gated</span>
-          <span class="ctag ctag-red">writes EMR (V2)</span>
+          <span class="ctag ctag-green">wf5-orchestrator.json</span>
+          <span class="ctag ctag-green">CORS live (wildcard)</span>
         </div>
       </div>
 
-      <div class="component">
-        <div class="component-title">GET <code style="font-size:11px;color:#7ee787;">/queue-state</code></div>
-        <div class="component-desc">Polled every 60s by Queue Panel. Routes to WF-4. Returns current ESI distribution, patient card list, per-patient AI flag summary.</div>
+      <div class="component not-built">
+        <div class="component-title">/submit-intake · /queue-state · /health — not built</div>
+        <div class="component-desc">The original WF-3 (Intake Submitter), WF-4 (Queue Reader), and WF-H (Health Check) plan was never built. There is no EMR write path, no queue endpoint, no health/offline-detection heartbeat in this project.</div>
         <div class="component-tags">
-          <span class="ctag ctag-green">read-only</span>
-          <span class="ctag ctag-gray">60s poll interval</span>
-        </div>
-      </div>
-
-      <div class="component">
-        <div class="component-title">GET <code style="font-size:11px;color:#7ee787;">/health</code></div>
-        <div class="component-desc">Polled by frontend every 30s to detect EMR connection status. Returns {emr_status, ai_status, latency_ms}. Failure triggers Manual Mode in UI.</div>
-        <div class="component-tags">
-          <span class="ctag ctag-green">heartbeat</span>
-          <span class="ctag ctag-gray">30s interval</span>
+          <span class="ctag ctag-gray">not built</span>
         </div>
       </div>
 
@@ -598,7 +608,7 @@ body {
   <div class="arrow-line" style="--arrow-color:#3fb950;">
     <div class="arrow-label">
       <div class="step-num">2</div>
-      N8N webhook receives POST → validates payload → fan-out: WF-1 (parse) + WF-2 (flag detect) run in parallel → merge results → return JSON response
+      Two independent N8N workflows run in parallel, parallelized at the <strong>frontend</strong> (not inside N8N) — confirmed true concurrency (~2.9s combined vs ~20s when originally fanned out inside one workflow)
     </div>
   </div>
 </div>
@@ -617,61 +627,43 @@ body {
 
       <div class="workflow-box">
         <div class="workflow-title">
-          <span class="workflow-id">WF-1</span>
-          Complaint Parser
+          <span class="workflow-id">Parse</span>
+          Complaint Extraction
         </div>
         <ul class="workflow-steps">
-          <li>Webhook trigger node</li>
-          <li>Validate: complaint_text not empty</li>
-          <li>Build OpenAI prompt (extraction)</li>
-          <li>OpenAI node → GPT-4o call</li>
-          <li>JSON parse structured output</li>
-          <li>Return: {category, duration, onset, symptoms[]}</li>
+          <li>Webhook trigger (/parse-complaint)</li>
+          <li>Length-guard IF node</li>
+          <li>OpenAI: extraction prompt, temp 0.2, JSON mode</li>
+          <li>Return: {structured: {category, onset, duration, symptoms[], trigger, context}}</li>
         </ul>
       </div>
 
       <div class="workflow-box">
         <div class="workflow-title">
-          <span class="workflow-id">WF-2</span>
-          Flag Detector
+          <span class="workflow-id">WF5</span>
+          Orchestrator (Agentic)
         </div>
         <ul class="workflow-steps">
-          <li>Receives same payload as WF-1</li>
-          <li>Build flag detection prompt (10 conditions)</li>
-          <li>OpenAI node → GPT-4o (temp 0)</li>
-          <li>IF node: confidence ≥ 70%?</li>
-          <li>IF ≥ 90% → set urgency: critical</li>
-          <li>Return: {flags[], highest_confidence}</li>
+          <li>Webhook trigger (/orchestrate-triage)</li>
+          <li>Layer-2 guardrail: GPT-4o content classifier → blocks non-clinical/injection input, logs to guardrail_blocks</li>
+          <li>Quick Classify: ESI tier (Critical/Urgent/Low) + primary_flag — hard overrides for STEMI, FAST-positive stroke → ESI 1</li>
+          <li>RAG: embed complaint_text + primary_flag + complaint_summary (never raw vitals) → Pinecone topK=4 (Critical) / topK=2 (Urgent)</li>
+          <li>Build Clinical Brief: GPT-4o + retrieved guidelines → esi_level, disposition, time_targets, structured actions (source-cited, drug/dosage banned)</li>
+          <li>Merge Usage: sums tokens across every OpenAI call in the request</li>
+          <li>Supabase upsert: encounters (no PII) + latency/token columns</li>
         </ul>
       </div>
 
       <div class="workflow-box">
         <div class="workflow-title">
-          <span class="workflow-id">WF-3</span>
-          Intake Submitter
+          <span class="workflow-id">Ingest</span>
+          Knowledge Base
         </div>
         <ul class="workflow-steps">
-          <li>POST /submit-intake trigger</li>
-          <li>Validate nurse_id present</li>
-          <li>Strip any non-confirmed fields</li>
-          <li>Write audit log (DB node)</li>
-          <li>EMR API write (V2 — stubbed V1)</li>
-          <li>Return: {encounter_id, status, timestamp}</li>
-        </ul>
-      </div>
-
-      <div class="workflow-box">
-        <div class="workflow-title">
-          <span class="workflow-id">WF-4</span>
-          Queue Reader
-        </div>
-        <ul class="workflow-steps">
-          <li>GET /queue-state trigger</li>
-          <li>EMR read: active encounters</li>
-          <li>DB read: AI flag summary per encounter</li>
-          <li>Compute ESI distribution</li>
-          <li>Sort by acuity + wait time</li>
-          <li>Return: {esi_counts, patients[]}</li>
+          <li>wf-ingest-and-retrieve.json — run on-demand, not per-request</li>
+          <li>Embeds 24-doc clinical knowledge base</li>
+          <li>Writes embeddings to Pinecone index</li>
+          <li>Re-run required whenever KB docs change</li>
         </ul>
       </div>
 
@@ -686,7 +678,7 @@ body {
   <div class="arrow-line" style="--arrow-color:#d29922;">
     <div class="arrow-label">
       <div class="step-num">3</div>
-      N8N OpenAI node makes API call with system prompt + complaint text → temperature 0 (flag detection) / 0.2 (extraction) → structured JSON response (max 800ms)
+      WF5 makes 2–3 OpenAI calls per request (guardrail + classify + brief) plus a Pinecone embedding call — token usage across all of them is summed and attached to the response
     </div>
   </div>
 </div>
@@ -705,45 +697,65 @@ body {
 
       <div class="prompt-box">
         <div class="prompt-title">
-          Prompt A — Structured Extraction
+          Structured Extraction
           <span class="prompt-model">GPT-4o · temp 0.2 · JSON mode</span>
         </div>
         <div class="io-block">
-          <div class="io-label">System</div>
-          You are a clinical NLP assistant. Extract structured fields from ER triage chief complaints. Return JSON only. Never infer beyond what is stated. If field is unclear, return null.
-        </div>
-        <div class="io-block">
-          <div class="io-label">Input</div>
-          complaint_text: "Bee sting 5 min ago, throat feels tight, tongue swelling"
+          <div class="io-label">Used by</div>
+          /parse-complaint (independent of WF5)
         </div>
         <div class="io-block">
           <div class="io-label">Output (JSON)</div>
-          { "complaint_category": "Insect sting / allergic reaction",<br>
-            "onset": "acute — 5 minutes",<br>
-            "symptoms": ["throat tightness", "tongue swelling"],<br>
-            "trigger": "bee sting" }
+          { "structured": { "complaint_category", "onset", "duration",<br>
+            "symptoms": [], "trigger", "context" } }
         </div>
       </div>
 
       <div class="prompt-box">
         <div class="prompt-title">
-          Prompt B — Flag Detection
+          Layer-2 Guardrail Classifier
           <span class="prompt-model">GPT-4o · temp 0 · JSON mode</span>
         </div>
         <div class="io-block">
-          <div class="io-label">System</div>
-          You are a critical flag detector for ER triage. Assess the following 10 conditions: stroke, acute MI, anaphylaxis, sepsis, respiratory distress, suicidal ideation, major trauma, hypertensive crisis, altered mental status, anaphylactoid reaction. Return confidence 0–100 and source_text citation. Do not surface flags below 70.
-        </div>
-        <div class="io-block">
-          <div class="io-label">Input</div>
-          complaint_text + vitals (BP, HR, SpO₂, RR)
+          <div class="io-label">Purpose</div>
+          Content-safety check — non-clinical input, prompt injection, out-of-scope requests. 16/16 test cases passing.
         </div>
         <div class="io-block">
           <div class="io-label">Output (JSON)</div>
-          { "flags": [{ "condition": "anaphylaxis",<br>
-            "confidence": 96,<br>
-            "urgency": "critical",<br>
-            "source_text": "throat feels tight, tongue swelling" }] }
+          { "blocked": true/false, "message": "..." }
+        </div>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-title">
+          Quick Classify
+          <span class="prompt-model">GPT-4o · JSON mode</span>
+        </div>
+        <div class="io-block">
+          <div class="io-label">Purpose</div>
+          Routes to Critical / Urgent / Low branch. ESI criteria embedded in system prompt. Hard "always ESI 1" overrides for STEMI and FAST-positive stroke — do-not-downgrade instruction.
+        </div>
+        <div class="io-block">
+          <div class="io-label">Output (JSON)</div>
+          { "esi_level": 1, "primary_flag": "stroke" }
+        </div>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-title">
+          Build Clinical Brief
+          <span class="prompt-model">GPT-4o · JSON mode · RAG-grounded</span>
+        </div>
+        <div class="io-block">
+          <div class="io-label">Purpose</div>
+          Combines classify result + Pinecone-retrieved guidelines into the final response. Drug/dosage recommendations banned; every action carries a source citation.
+        </div>
+        <div class="io-block">
+          <div class="io-label">Output (JSON)</div>
+          { "esi_level", "acuity", "disposition", "confidence",<br>
+            "primary_flag", "time_targets", "clinical_protocol",<br>
+            "immediate_actions": [{action, category, source}],<br>
+            "retrieved_guidelines": [], "usage": {prompt_tokens, completion_tokens} }
         </div>
       </div>
 
@@ -752,20 +764,20 @@ body {
     <!-- Guardrails -->
     <div style="background:rgba(0,0,0,0.2);border:1px solid rgba(139,97,255,0.2);border-radius:8px;padding:12px 16px;margin-top:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
       <div>
-        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Confidence Gate</div>
-        <div style="font-size:11px;color:#7d8590;">Flag surfaces only if confidence ≥ 70%. Urgency banner triggers at ≥ 90%. Below 70 → silent drop.</div>
+        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">ESI Routing</div>
+        <div style="font-size:11px;color:#7d8590;">ESI ≤ 2 → critical (red, submit-gated). ESI 3 → urgent (amber). ESI 4–5 → low (no flag).</div>
       </div>
       <div>
-        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Rejection Rule</div>
-        <div style="font-size:11px;color:#7d8590;">If complaint_text &lt; 10 chars or ambiguous → return "Insufficient detail" — no low-confidence guess.</div>
+        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Clinical Action Safety</div>
+        <div style="font-size:11px;color:#7d8590;">Drug/dosage recommendations banned. Actions are structured {action, category, source} — source citation required.</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">PII Scope</div>
+        <div style="font-size:11px;color:#7d8590;">Name/MRN collected in the form for display + prompt context only — never written to Supabase (Option B, R4-4).</div>
       </div>
       <div>
         <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Nurse Override</div>
-        <div style="font-size:11px;color:#7d8590;">Nurse-confirmed field always wins. AI never overwrites a manually accepted value.</div>
-      </div>
-      <div>
-        <div style="font-size:10px;font-weight:700;color:#d2a8ff;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">EMR Safety</div>
-        <div style="font-size:11px;color:#7d8590;">AI output never touches EMR directly. All writes go through nurse sign-off on /submit-intake only.</div>
+        <div style="font-size:11px;color:#7d8590;">Accept/dismiss logged to nurse_actions. Field-level edit capture (AI value vs. nurse-changed value) not yet built (P5-2, partial).</div>
       </div>
     </div>
   </div>
@@ -778,7 +790,7 @@ body {
   <div class="arrow-line" style="--arrow-color:#8b949e;">
     <div class="arrow-label">
       <div class="step-num">4</div>
-      WF-3/WF-4 read EMR for context display + queue state (V1: read-only). WF-3 writes EMR only on nurse-confirmed /submit-intake (V1: stubbed, V2: live write).
+      No EMR integration exists in this build. WF5 writes directly to Supabase — encounters (de-identified) and nurse_actions (audit). External EHR/FHIR integration (P6-2) is on hold, not started.
     </div>
   </div>
 </div>
@@ -796,35 +808,32 @@ body {
     <div class="data-grid">
 
       <div class="data-store">
-        <div class="data-title">🏥 EMR System</div>
+        <div class="data-title">🔎 Pinecone (Vector DB)</div>
         <ul class="data-items">
-          <li>Epic / Cerner (pilot site)</li>
-          <li>V1: Read-only (patient context, queue)</li>
-          <li>V2: Write via confirmed submit</li>
-          <li>Access: REST / FHIR R4</li>
-          <li>Auth: OAuth 2.0 (SMART on FHIR)</li>
+          <li>24-doc clinical knowledge base</li>
+          <li>Embedded via wf-ingest-and-retrieve.json</li>
+          <li>topK=4 (Critical branch) / topK=2 (Urgent branch)</li>
+          <li>Query embeds complaint_text + primary_flag + complaint_summary only</li>
         </ul>
       </div>
 
       <div class="data-store">
-        <div class="data-title">📋 N8N Database</div>
+        <div class="data-title">📋 Supabase</div>
         <ul class="data-items">
-          <li>Intake session state</li>
-          <li>AI suggestion audit log (per field)</li>
-          <li>Nurse accept / dismiss events</li>
-          <li>Alert surfaced + confidence history</li>
-          <li>Override rate metrics (for KPIs)</li>
+          <li>encounters — upsert per request, no PII, +latency_ms/prompt_tokens/completion_tokens</li>
+          <li>nurse_actions — accept/dismiss audit (field-level edits: partial)</li>
+          <li>guardrail_blocks — SHA-256 hash only, no plaintext</li>
+          <li>eval_results — from live_eval.py 300-case HHH runs</li>
         </ul>
       </div>
 
-      <div class="data-store">
-        <div class="data-title">📊 Metrics Store</div>
+      <div class="data-store not-built">
+        <div class="data-title">🏥 EMR — Not Built</div>
         <ul class="data-items">
-          <li>Critical flag recall rate</li>
-          <li>Documentation time per intake</li>
-          <li>Alert override rate (&lt;20% target)</li>
-          <li>False positive rate (&lt;15% target)</li>
-          <li>AI latency p95 (&lt;800ms SLA)</li>
+          <li>No EMR connection exists in this build</li>
+          <li>No read, no write, no auth</li>
+          <li>FHIR R4 integration (P6-2) is on hold</li>
+          <li>Original Epic/Cerner pilot-site plan never started</li>
         </ul>
       </div>
 
@@ -841,92 +850,89 @@ body {
 <div class="legend">
 
   <div class="legend-box">
-    <div class="legend-title">Numbered Data Flow — Happy Path</div>
+    <div class="legend-title">Numbered Data Flow — Current Build</div>
 
     <div class="flow-step">
       <div class="num" style="background:#2f81f7;color:#000;">1</div>
-      <div class="text"><strong>Nurse types</strong> chief complaint → JS debounce 300ms → <strong>POST /parse-complaint</strong> with complaint text + vitals</div>
+      <div class="text"><strong>Nurse types</strong> complaint + vitals → client-side Layer-1 guardrail (regex) → clean input fires <strong>POST /parse-complaint</strong> + <strong>POST /orchestrate-triage</strong> concurrently via <code>Promise.all()</code></div>
     </div>
     <div class="flow-step">
       <div class="num" style="background:#3fb950;color:#000;">2</div>
-      <div class="text">N8N receives → <strong>fans out WF-1 + WF-2 in parallel</strong> → merges structured fields + flag array → returns JSON to frontend in &lt;800ms</div>
+      <div class="text">/parse-complaint returns structured fields for the sidebar. WF5 (/orchestrate-triage) runs Layer-2 guardrail → Quick Classify → RAG retrieval → Build Clinical Brief → merges token usage → writes to Supabase</div>
     </div>
     <div class="flow-step">
       <div class="num" style="background:#d29922;color:#000;">3</div>
-      <div class="text">WF-1/WF-2 each <strong>call OpenAI GPT-4o</strong> with domain-specific system prompt → structured JSON response (JSON mode, temp 0–0.2)</div>
+      <div class="text">Frontend renders sidebar fields + ESI/flag alert card (amber for ESI 3, red/gated for ESI ≤ 2), persists to <code>sessionStorage</code> for the Intake Summary handoff</div>
     </div>
     <div class="flow-step">
       <div class="num" style="background:#8b949e;color:#000;">4</div>
-      <div class="text"><strong>Sidebar updates</strong> with suggestions + alert cards. Nurse accepts / dismisses. On sign-off → <strong>POST /submit-intake</strong> → WF-3 → EMR write</div>
+      <div class="text">Nurse reviews on Intake Summary, accepts/dismisses. Logged to <code>nurse_actions</code> — but only as accept/dismiss, not which field was edited or what the AI originally said</div>
     </div>
     <div class="flow-step">
       <div class="num" style="background:#58a6ff;color:#000;">5</div>
-      <div class="text"><strong>/health</strong> polled every 30s. EMR offline detected → frontend switches to <strong>Manual Mode</strong> silently. No data loss. Auto-reconnect on restore.</div>
+      <div class="text">Nothing writes to an EMR, no queue panel, no offline auto-detection — those layers were never built in this project</div>
     </div>
   </div>
 
   <div class="legend-box">
-    <div class="legend-title">Alert Confidence Routing</div>
+    <div class="legend-title">ESI-Based Alert Routing</div>
 
     <div style="display:flex;flex-direction:column;gap:8px;">
       <div style="background:#1c1519;border:1px solid rgba(248,81,73,0.3);border-radius:6px;padding:10px 14px;">
-        <div style="font-size:11px;font-weight:700;color:#ff7b72;margin-bottom:4px;">🔴 CRITICAL · Confidence ≥ 90%</div>
-        <div style="font-size:11px;color:#7d8590;">Red pulsing alert card + urgency banner + audio indicator. Submit <strong>blocked</strong> until nurse explicitly confirms. Dismissal requires mandatory escalation note.</div>
+        <div style="font-size:11px;font-weight:700;color:#ff7b72;margin-bottom:4px;">🔴 CRITICAL · ESI ≤ 2</div>
+        <div style="font-size:11px;color:#7d8590;">Red alert card. STEMI and FAST-positive stroke are hard-overridden to ESI 1 regardless of Quick Classify's initial read. Review &amp; Submit disabled until confirmed.</div>
       </div>
       <div style="background:#1f1c15;border:1px solid rgba(210,153,34,0.3);border-radius:6px;padding:10px 14px;">
-        <div style="font-size:11px;font-weight:700;color:#ffa657;margin-bottom:4px;">⚠ MODERATE · Confidence 70–89%</div>
-        <div style="font-size:11px;color:#7d8590;">Amber alert card in sidebar. Source text citation shown. Nurse may accept or dismiss. Dismissed alerts logged with optional free-text reason.</div>
+        <div style="font-size:11px;font-weight:700;color:#ffa657;margin-bottom:4px;">⚠ URGENT · ESI 3</div>
+        <div style="font-size:11px;color:#7d8590;">Amber alert card. Not submit-gated.</div>
       </div>
       <div style="background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 14px;">
-        <div style="font-size:11px;font-weight:700;color:#7d8590;margin-bottom:4px;">— NO FLAG · Confidence &lt; 70%</div>
-        <div style="font-size:11px;color:#7d8590;">Silent. Flag is not surfaced. "Insufficient detail" shown if complaint too short to parse. No low-confidence guesses exposed to nurse.</div>
+        <div style="font-size:11px;font-weight:700;color:#7d8590;margin-bottom:4px;">— LOW · ESI 4–5</div>
+        <div style="font-size:11px;color:#7d8590;">No flag surfaced.</div>
       </div>
     </div>
   </div>
 </div>
 
 
-<!-- ── V1 Scope Callouts ── -->
+<!-- ── Current Scope Callouts ── -->
 <div class="callout-row">
 
   <div class="callout green-c">
-    <div class="callout-label green">✓ In Scope — V1 MVP</div>
+    <div class="callout-label green">✓ Built &amp; Live</div>
     <ul>
-      <li>Chief complaint NLP parsing</li>
-      <li>10-condition critical flag detection</li>
-      <li>Confidence-gated alert surfacing</li>
-      <li>Structured field suggestions (nurse-confirmed)</li>
-      <li>EMR read for context + queue state</li>
-      <li>Nurse sign-off gating on all EMR writes</li>
-      <li>Manual mode fallback (EMR offline)</li>
-      <li>AI suggestion audit log</li>
+      <li>Chief-complaint structured extraction</li>
+      <li>ESI-tiered triage classification (STEMI/stroke hard overrides)</li>
+      <li>RAG-grounded clinical brief (Pinecone, 24-doc KB)</li>
+      <li>2-layer guardrails (client regex + LLM classifier)</li>
+      <li>Clinical action safety (drug/dosage ban, source citation)</li>
+      <li>De-identified Supabase persistence</li>
+      <li>Nurse accept/dismiss audit logging</li>
+      <li>Latency + token instrumentation (data captured)</li>
     </ul>
   </div>
 
   <div class="callout red-c">
-    <div class="callout-label red">✕ Out of Scope — V1</div>
+    <div class="callout-label red">✕ Not Built / Deferred</div>
     <ul>
-      <li>Autonomous ESI scoring (nurse only)</li>
-      <li>EMR write access (V2)</li>
-      <li>Vitals hardware integration</li>
-      <li>Queue optimisation / staffing</li>
-      <li>Medication / referral doc ingestion (Phase 2)</li>
-      <li>Multi-site deployment</li>
-      <li>Non-English complaint parsing</li>
-      <li>Paediatric flag threshold tuning</li>
+      <li>Any EMR integration (FHIR R4 — P6-2, on hold)</li>
+      <li>Queue panel (no multi-patient backend)</li>
+      <li>Manual mode auto-detection (static screen only)</li>
+      <li>Observability dashboard UI (P5-1, in progress)</li>
+      <li>Field-level nurse-edit audit (P5-2, partial)</li>
+      <li>Validator agent, multi-turn interaction, audio intake (P5-3/4/6)</li>
+      <li>Prior-visit history (P6-1)</li>
     </ul>
   </div>
 
   <div class="callout yellow-c">
-    <div class="callout-label yellow">⚠ Open Decisions</div>
+    <div class="callout-label yellow">⚠ Open / Recently Decided</div>
     <ul>
-      <li>EMR system at pilot site (Epic vs Cerner)</li>
-      <li>N8N Cloud vs self-hosted</li>
-      <li>OpenAI API key management + cost cap</li>
-      <li>FDA SaMD classification (legal review needed)</li>
-      <li>Translation / language barrier handling</li>
-      <li>Paediatric flag threshold values</li>
-      <li>Auth: nurse login / SSO integration</li>
+      <li>CORS scope — resolved: wildcard on both webhooks, backstopped by cost cap</li>
+      <li>OpenAI cost cap — resolved: $5/mo hard limit, alert at $3</li>
+      <li>PII scope — resolved: Option B (display-only, never persisted)</li>
+      <li>embedding_tokens as separate dashboard figure — decided, not yet implemented</li>
+      <li>P5-1 dashboard webhook + dashboard.html wiring — in progress</li>
     </ul>
   </div>
 

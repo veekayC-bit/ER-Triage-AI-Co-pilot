@@ -6,6 +6,7 @@
 <title>Intake — Normal State | ER Triage AI Co-pilot</title>
 <link rel="stylesheet" href="mockup-styles.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="env.local.js"></script>
 </head>
 <body>
 
@@ -328,8 +329,8 @@ async function logGuardrailBlock(layer, reason) {
 const PARSE_URL       = "https://veekayc.app.n8n.cloud/webhook/parse-complaint";
 const ORCHESTRATE_URL = "https://veekayc.app.n8n.cloud/webhook/orchestrate-triage";
 
-const SUPABASE_URL  = "https://lcaslbfjygzniosaobue.supabase.co";
-const SUPABASE_KEY  = "NOKEY";
+const SUPABASE_URL  = window.SUPABASE_URL || "https://lcaslbfjygzniosaobue.supabase.co";
+const SUPABASE_KEY  = window.SUPABASE_KEY || "NOKEY";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const ENCOUNTER_ID = (() => {
@@ -620,9 +621,9 @@ function applyUrgencyTheme(wf5) {
   }
 }
 
-async function persistToSupabase(complaintText, vitals, structured, wf5) {
+async function persistToSupabase(complaintText, vitals, structured, wf5, latencyMs) {
   try {
-    const { error } = await db.from("encounters").upsert({
+    const { error } = await db.from("encounters").insert({
       encounter_id:        ENCOUNTER_ID,
       patient_dob:         $("patient-dob")?.value || null,
       patient_sex:         $("patient-sex")?.value || null,
@@ -639,8 +640,11 @@ async function persistToSupabase(complaintText, vitals, structured, wf5) {
       retrieved_guidelines: wf5.retrieved_guidelines || null,
       ai_branch:           wf5.esi_level <= 2 ? "critical" : wf5.esi_level === 3 ? "urgent" : "low",
       ai_brief:            wf5,
-      structured_fields:   structured
-    }, { onConflict: "encounter_id" });
+      structured_fields:   structured,
+      latency_ms:          latencyMs ?? null,
+      prompt_tokens:       wf5.usage?.prompt_tokens ?? null,
+      completion_tokens:   wf5.usage?.completion_tokens ?? null
+    });
     if (error) console.warn("Supabase write failed:", error.message);
   } catch (err) {
     console.warn("Supabase unreachable:", err.message);
@@ -734,7 +738,7 @@ async function analyze() {
     renderConfidenceWarning(wf5);
     applyUrgencyTheme(wf5);
     persistAnalysis(complaintText, vitals, structured, wf5);
-    persistToSupabase(complaintText, vitals, structured, wf5);
+    persistToSupabase(complaintText, vitals, structured, wf5, Math.round(parseFloat(latency) * 1000));
     setStatus("ok", `Active · ${latency}s latency`);
     clearManualMode();
   } catch (err) {

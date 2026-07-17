@@ -396,3 +396,173 @@ Repo reorganized: fresh exports promoted to canonical names (`wf-backend.json`, 
 HHH scorecard: 9 of 10 dimensions passing. Only **P5-1 (observability dashboard)** remains open. Next up per the sequenced queue: P5-1 → P5-2 (nurse field modification capture, currently partial) → P5-4 (validator agent) → P5-6 (audio-to-text intake) → P5-3 (multi-turn) → P5-5 (queue intelligence) → P6-1 (prior visit history) → Phase 7 (portfolio wrap-up). P6-2 (FHIR) on hold indefinitely.
 
 *Next immediate action: P5-1, Observability dashboard (2-3 hr) — reads from `encounters` + `eval_results` tables, closes the last open HHH gap.*
+
+---
+
+## Session 5 — 2026-07-06: P5-1 Observability Dashboard — Instrumentation Layer (Steps 1-3 of 4)
+
+### Design Decision: Instrument First, Don't Fake the Numbers
+
+**What we found:** Before locking a JSON shape for the dashboard, checked whether `avg latency by branch` and `token cost estimate` — two of the required P5-1 outputs — were actually backed by data anywhere. They weren't:
+- Latency was computed client-side in `intake-normal.html` (`performance.now()` diff) and shown once in the status bar, but never included in the Supabase `upsert` — discarded on every request.
+- Token usage: `wf5-orchestrator.json`'s branch-generation calls (`Build Clinical Brief` / `Build Urgent Summary`) hit the OpenAI API directly via HTTP Request nodes, so the raw response included a `usage` block — but the `Respond Critical`/`Respond Urgent` nodes forwarded only `choices[0].message.content`, stripping `usage` before it ever reached the frontend or database.
+
+**Options considered:** (a) instrument properly — add DB columns + capture usage in N8N + persist from frontend, ~30-45 min extra; (b) ship the dashboard without these two fields, mark partial, fast-follow later; (c) estimate them (hardcoded avg latency, char-count token estimate).
+
+**Decision: Option A.** P5-1 is explicitly the "Honest Q4" HHH dimension — shipping an estimated/fake number for the one dashboard whose entire purpose is auditability would defeat the point. Chose to spend the extra time now rather than defer.
+
+### What Was Built
+
+- **`supabase/schema_dashboard.sql`** — new migration (following the same standalone-file pattern as `schema_eval.sql`) adding `latency_ms INTEGER`, `prompt_tokens INTEGER`, `completion_tokens INTEGER` to `encounters`. Run against live Supabase.
+- **`wf5-orchestrator.json`** — added three `Merge Usage: Critical` / `Merge Usage: Urgent` / `Merge Usage: Low` Code nodes, inserted between each branch's brief-generation step and its Respond node. Each sums `prompt_tokens`/`completion_tokens` across every OpenAI call in that request's execution path (Guardrail Check + Quick Classify + the branch-specific brief call, where applicable) and attaches a `usage: { prompt_tokens, completion_tokens, total_tokens }` object to the response. Simplified all three Respond nodes' response body expressions to `={{ JSON.stringify($json) }}` since the Code nodes now own the parsing/merging. Deliberately excluded the two embedding calls (Embed Query Critical/Urgent) from the token sum — embedding tokens are ~50x cheaper than chat tokens, and disclosing the exclusion beats silently folding in a negligible, complexity-adding partial number.
+- **`intake-normal.html`** — `persistToSupabase` now accepts a `latencyMs` argument and writes `latency_ms`, `prompt_tokens` (`wf5.usage?.prompt_tokens`), `completion_tokens` (`wf5.usage?.completion_tokens`) into the upsert. Derived `latency_ms` from the already-computed `latency` display value (`Math.round(parseFloat(latency) * 1000)`) rather than calling `performance.now()` a second time, so the persisted number always matches what's shown in the UI.
+
+### Problems Encountered
+
+**Problem:** Live N8N Cloud editing (per the established repo-sync gotcha — local JSON edits don't push to N8N Cloud automatically) required manually recreating the three Code nodes in the UI. First live test of the Critical branch threw a JS syntax error (`Unexpected token '"'`) in `Merge Usage: Critical`.
+**Root cause:** Turned out to be unrelated to the code itself — a **Pinecone authentication issue** surfaced at the same time and was fixed independently. Once fixed, Critical and Urgent branches both returned correct, fully-populated responses on retest.
+
+**Problem:** After the Pinecone fix, Critical and Urgent worked (confirmed via direct production webhook `curl` calls — `usage` populated correctly: Critical `2010/347/2357` prompt/completion/total tokens, Urgent `1794/280/2074`), but **Low kept returning HTTP 200 with a 0-byte body**.
+**Root cause:** Low's `Merge Usage: Low` node had accidentally been pasted with the **Critical** node's code (`$input.all()[0].json.choices[0].message.content`) instead of its own. The Low branch's input (from `Route by Tier` → `Extract and Route`'s shape) has no `.choices` array — a plain object with `{tier, esi_level, acuity, primary_flag, complaint_summary}` — so `.choices[0]` threw `Cannot read properties of undefined (reading '0')`.
+**Solution:** Replaced with the correct Low-specific merge code (reads `input.esi_level` etc., no `.choices` access).
+**Follow-on problem:** Even after fixing the node's own logic (confirmed via the node's own output panel showing a correct `usage` object), the actual webhook response still came back without a `usage` field — same shape as the old pre-instrumentation Low response. Diagnosis: the "Respond Low" node either still had its old hardcoded response-body expression, or a leftover direct wire from `Route by Tier` → `Respond Low` was bypassing the new `Merge Usage: Low` node. Confirmed fixed on the next retest — all three branches now verified end-to-end via direct production webhook calls, `usage` populated correctly on all three (Low: `1133/56/1189`).
+
+### Validation
+
+Confirmed via direct `curl` against the production webhook (`veekayc.app.n8n.cloud/webhook/orchestrate-triage`), not just the N8N editor's per-node test view:
+
+| Branch | ESI | prompt_tokens | completion_tokens | total_tokens |
+|---|---|---|---|---|
+| Critical (STEMI) | 1 | 2010 | 347 | 2357 |
+| Urgent (dizziness) | 3 | 1794 | 280 | 2074 |
+| Low (sore throat) | 5 | 1133 | 56 | 1189 |
+
+### What Remains (Step 4, next session)
+
+1. Do one real intake through `intake-normal.html` in the browser (not curl) and confirm the resulting Supabase `encounters` row has non-null `latency_ms`/`prompt_tokens`/`completion_tokens` — the write path is built but not yet confirmed end-to-end through the actual UI.
+2. Build the `GET /dashboard-data` N8N webhook: query `encounters` + `eval_results`, aggregate (total encounters, branch split %, avg ESI, avg latency by branch, token cost estimate, pass rate trend), return one JSON payload. Keep the service_role key inside N8N's credential store — never client-side — consistent with how `wf-backend.json` already fronts privileged operations for the rest of the app.
+3. Wire `mockups/dashboard.html` to call that webhook and render real numbers, replacing the static June 16 mockup values.
+
+---
+
+## Session 6 — 2026-07-08: Revisited Embedding-Token Exclusion Decision
+
+**What happened:** Session 5's "Merge Usage" nodes deliberately excluded the two Pinecone embedding calls (`Embed Query Critical`/`Urgent`) from the token sum and documented that as a settled decision, without surfacing it to Venkat as a choice first. Flagged as a process issue: decisions that change what a metric measures or what's included/excluded from it are his call, not something to decide and retroactively document. Captured as a standing practice in agent memory (`feedback-discuss-judgment-calls.md`) — judgment calls of this kind get discussed before implementation, going forward.
+
+**Revisited decision — options considered:**
+- **A. Exclude (Session 5's original choice):** Simplest, no code changes. Embedding tokens (`text-embedding-3-small`, ~$0.02/1M) are real spend but a small fraction of GPT-4o chat costs (~$2.50-10/1M) — understates true cost by a small amount.
+- **B. Include, blended into one total:** Most "complete" number, but silently mixes two very different cost-per-token rates into one figure — a nurse/PM looking at "total tokens" wouldn't know how much is cheap embedding vs. expensive chat.
+- **C. Include, but broken out separately:** Two distinct figures (LLM tokens vs. embedding tokens) rather than one blended total. More transparent, costs additional schema/dashboard surface area.
+
+**Decision: Option C.** Chosen by Venkat. Matches the intent of P5-1 (closing the "Honest" HHH auditability gap) better than either A or B — the point of this dashboard is to show real numbers, not a simplified approximation.
+
+**Implementation impact (not yet built — folds into the remaining P5-1 work above):**
+- Confirm the OpenAI embeddings endpoint response (used by `Embed Query Critical`/`Urgent`) includes a `usage` block (embeddings only report `prompt_tokens` — no `completion_tokens`, since there's no generation).
+- `supabase/schema_dashboard.sql`: add an `embedding_tokens INTEGER` column (or similar) to `encounters`, separate from existing `prompt_tokens`/`completion_tokens`.
+- `wf5-orchestrator.json`: update `Merge Usage: Critical`/`Urgent` Code nodes to also read `$('Embed Query Critical'/'Urgent').item.json.usage` and attach as a separate field (not folded into `prompt_tokens`). `Merge Usage: Low` has no embedding call (Low branch doesn't hit RAG), so it stays unaffected — embedding_tokens will be 0/null there by design, not a gap.
+- `intake-normal.html` `persistToSupabase`: write the new `embedding_tokens` field alongside the existing two.
+- `mockups/dashboard.html` (once built): show LLM token cost and embedding token cost as separate line items, not blended.
+
+### Local dev setup: .env + generated env.local.js
+
+`intake-normal.html` had `SUPABASE_KEY = "NOKEY"` hardcoded (placeholder, real key never committed). Set up a proper local-secrets pattern for this no-build-step static-HTML project:
+- `er-triage-phase-1/.env` (gitignored) — canonical store for `SUPABASE_URL`, `SUPABASE_KEY`, `PINECONE_API_KEY`, `PINECONE_INDEX_HOST`. Real values filled in by Venkat.
+- `er-triage-phase-1/.gitignore` — created (none existed before, anywhere in the repo). Excludes `.env`, `.env.*`, `mockups/env.local.js`.
+- `scripts/gen-env-local.sh` — reads `.env`, generates gitignored `mockups/env.local.js` (`window.SUPABASE_URL`/`window.SUPABASE_KEY`). Re-run after editing `.env`.
+- `intake-normal.html` — loads `env.local.js` before the main script; `SUPABASE_URL`/`SUPABASE_KEY` now read `window.*` with the old hardcoded values as fallback.
+- Pinecone key isn't consumed client-side (Pinecone calls happen inside N8N, not the browser) — stored in `.env` for reference/future scripts, not currently wired into anything.
+
+### Blocker: CORS breaks the browser intake test (first real-browser attempt at P5-1 Step 4)
+
+First attempt to confirm the intake write-path through an actual browser (not curl) failed immediately with a CORS preflight error on both `parse-complaint` and `orchestrate-triage`. Root cause: neither webhook node has "Allowed Origins (CORS)" configured (`"options": {}` in both `wf-backend.json` and `wf5-orchestrator.json`), so N8N never answers the browser's `OPTIONS` preflight. Every previous check of these endpoints used `curl`, which doesn't send an `Origin` header or trigger CORS at all — so this was invisible until now. Likely the real reason "confirm via real browser" had remained an open checklist item rather than an oversight.
+
+**Discussed and paused, not yet decided:** initial instinct was to just set Allowed Origins to `*` to unblock. Caught and corrected mid-discussion: this was about to become another unilateral "just pick something and note it" decision — the exact pattern flagged earlier this session (see above). Corrected framing: CORS is a browser-only protection; it does nothing against direct script/curl calls, and the webhook URL is already sitting in plaintext in `intake-normal.html`'s client-side source — so it's already directly callable regardless of the CORS setting. A wildcard's *marginal* added risk is therefore low (it only adds a browser-driven abuse vector on top of an already-scriptable endpoint), and the actual mitigation for unauthenticated-cost-abuse risk is a webhook auth header or an OpenAI budget cap, not CORS scope.
+
+Venkat asked to capture this and pause rather than decide now. See `ROADMAP.md` P5-1 section for the tracked follow-up checklist (CORS scope decision, OpenAI budget cap, re-run of Step 4).
+
+---
+
+## Session 7 — 2026-07-10: Cost Cap, CORS Resolution, WF5 Length-Guard, and the Upsert/RLS Bug (P5-1 Step 4 Closed)
+
+### OpenAI Budget Cap — Decided
+
+Checked actual last-month OpenAI spend before picking a number: **$1.26/month** actual usage (far below an initial rough estimate of $6-7 per 300-case eval run — that estimate was too high, or actual per-case token cost is lower than assumed; not re-derived exactly). Set **$5/month hard cap, alert at $3** (60%) — gives ~4x headroom over real usage while still catching a runaway/scraped-webhook scenario well before it gets expensive. Applied directly in the OpenAI dashboard (Billing → Limits), not scriptable from here.
+
+### CORS Decision — Resolved
+
+Continuing the paused Session 6 discussion: went with **wildcard (`*`) Allowed Origins now**, backstopped by the budget cap above. Applied to both webhook trigger nodes' Options in N8N Cloud (`wf-backend.json` → parse-complaint, `wf5-orchestrator.json` → orchestrate-triage), toggled Active off/on to re-register. Verified via direct preflight `curl -X OPTIONS` against both endpoints — both now return `204` with `access-control-allow-methods: OPTIONS, POST` and `access-control-allow-headers: Content-Type` (previously nothing answered the preflight at all, even though the actual POST response headers were already correct). Local JSON copies updated to match (`parameters.options.allowedOrigins: "*"` on both `Webhook` nodes — `wf-backend.json`'s `Webhook1`/detect-flags was deliberately left alone, see below).
+
+### Found: `/detect-flags` endpoint appears to be dead code
+
+While reviewing `wf-backend.json`'s two parallel branches (`Webhook`/parse-complaint and `Webhook1`/detect-flags), confirmed via `grep` on `intake-normal.html` that the frontend only ever fetches `PARSE_URL` (`/parse-complaint`) and `ORCHESTRATE_URL` (`/orchestrate-triage`) — `/detect-flags` is never called. Likely a leftover from the pre-WF5 split architecture (WF-1/WF-2 era) that was never removed once WF5 took over flag detection internally. **Not yet verified or deactivated in N8N Cloud** — flagged in `architecture.html` as an open item to confirm and clean up.
+
+### WF5 Length-Guard Added
+
+Discovered WF5 (`/orchestrate-triage`) had no minimum-length validation of its own — only `/parse-complaint` did (`Check Complaint Length` IF node, `< 10 chars`). Since the frontend fires both webhooks concurrently via `Promise.all()` regardless of complaint length, every short/insufficient complaint was still running WF5's full pipeline (guardrail check, Quick Classify, and for Critical/Urgent tiers RAG + brief generation) and writing a real row to Supabase `encounters` — wasted OpenAI spend and audit-data pollution for complaints the product already treats as unassessable.
+
+**Fix:** Added matching `Check Complaint Length` IF node + `Respond: Insufficient Detail` node to `wf5-orchestrator.json`, inserted between `Webhook` and `Guardrail Check` (same `< 10 chars` threshold, same 400 response shape as `/parse-complaint`, CORS header included). Rewired `Webhook` → `Check Complaint Length` → (true: Respond Insufficient Detail / false: Guardrail Check → rest of pipeline unchanged). Applied manually in N8N Cloud UI (step-by-step: insert IF node via the `+` on the connection line, configure condition, wire Respond node off the true branch, reconnect false branch to Guardrail Check, save, toggle Active off/on).
+
+**Validated via direct production `curl`:**
+- Short complaint (`"tired"`) → `400`, `{"error":"Insufficient detail","complaint_text":"tired"}` — guardrail/classify/brief pipeline never runs.
+- Real STEMI complaint → unaffected, still `200` with full clinical brief (`esi_level:1`, `resuscitation_room`, ECG time target, `usage: {2003/343/2346}`) — confirms the new guard doesn't regress the main path.
+
+### Bug: Browser Intake Never Wrote to Supabase (RLS + upsert Interaction)
+
+First real browser-based intake test (Step 4 of P5-1, finally unblocked by the CORS fix) produced zero new rows in `encounters`, no matter what was submitted. Root-caused in two layers, not one:
+
+**Layer 1 — missing UPDATE policy.** `persistToSupabase` uses `.upsert(..., { onConflict: "encounter_id" })`, which compiles to `INSERT ... ON CONFLICT DO UPDATE`. Postgres requires both INSERT and UPDATE privileges to plan that statement at all — even on a request that ends up doing a fresh insert with no actual conflict. `schema.sql` only ever granted `anon` an INSERT policy. Added an UPDATE policy (`FOR UPDATE TO anon USING (true) WITH CHECK (true)`) as the first fix attempt.
+
+**Layer 2 — still failed after the UPDATE policy.** Browser console confirmed the exact RLS error (`new row violates row-level security policy for table "encounters"`) persisted. Root cause: `schema.sql` also deliberately has **no SELECT policy** for `anon` (explicit original design choice — "anon key can insert but NOT read other sessions"). Resolving `ON CONFLICT` requires Postgres to check row visibility via the SELECT policy to detect whether a conflicting row exists; with zero SELECT policy, every row is invisible to `anon`, so the conflict check can never resolve and the statement is rejected regardless of the UPDATE policy being present.
+
+**Decision point — three ways to unblock, evaluated on security exposure:**
+- *Grant blanket SELECT to anon* — rejected. The anon key is public (embedded in `intake-normal.html`'s client-side source), so this would make every patient's complaint text, vitals, ESI level, and clinical brief readable by anyone holding that key — real exposure, not just a config detail. (Name/MRN are already excluded per R4-4, but the rest is still clinically sensitive.)
+- *Switch to `ignoreDuplicates: true`* — considered but not chosen; less certain whether this actually avoids the same RLS gate without live testing, and it silently drops the "latest analysis wins" behavior on a repeat analyze of the same encounter.
+- **Switch to plain `.insert()` — chosen.** Uses the exact INSERT-only policy already proven to work; needs zero new grants, zero new exposure. Tradeoff: one row per `analyze()` call instead of one row upserted per encounter (debounced typing can trigger `analyze()` more than once per visit) — recoverable later at query time (`GROUP BY encounter_id ORDER BY created_at DESC LIMIT 1`) once the observability dashboard is built, not a data-loss concern now.
+
+**Implementation:**
+- `intake-normal.html` line 626: `.upsert(payload, { onConflict: "encounter_id" })` → `.insert(payload)`.
+- `schema.sql`: removed the UPDATE policy added above — with insert-only writes, an UPDATE policy is pure unused attack surface (would let anyone with the public anon key rewrite any other patient's existing encounter row). Left a comment explaining why it's deliberately absent.
+- Live DB: ran `DROP POLICY "anon can update own encounters" ON encounters;` in Supabase SQL Editor to match.
+
+**Validated:** real browser intake, no console errors, confirmed new row present in `encounters`. **P5-1 Step 4 is now closed** — the only remaining piece of P5-1 is building the actual `GET /dashboard-data` webhook + wiring `dashboard.html` (unchanged scope from Session 5's "What Remains" list, items 2-3).
+
+### `architecture.html` Rewritten
+
+The architecture diagram mockup was stale since June 3 — described the pre-Phase-3/4 design (WF-1/WF-2 fan-out inside one N8N workflow, no RAG, no guardrails, no Supabase, no WF5), which was explicitly reverted early on (N8N doesn't truly run fanned-out branches concurrently). Rewrote it to reflect the actual current flow: dual-webhook parallel-from-frontend architecture (`/parse-complaint` for structured extraction feeding the sidebar, `/orchestrate-triage`/WF5 for the full agentic ESI/RAG/brief pipeline), honest call-outs on what's built vs. not (no EMR integration at all, queue panel and manual-mode never wired, observability dashboard UI still pending), and this session's open items (CORS, cost cap, `/detect-flags` dead-code flag).
+
+### `/detect-flags` Removed (Cleanup Closed)
+
+Confirmed dead and removed entirely — both the live N8N Cloud branch and the local `wf-backend.json` copy (`Webhook1`/`Extract Fields1`/`Check Complaint Length1`/`Respond: Insufficient Detail1`/`OpenAI: Detect Critical Flags`/`Parse Flag Output`/`Respond: Flags JSON`, plus their connections). `wf-backend.json` now only contains the `/parse-complaint` branch. `architecture.html` updated to drop the "unverified" callout.
+
+### P5-1 Closed: Built `observability.html` Instead of Wiring `dashboard.html`
+
+**Scope check before building:** `mockups/dashboard.html` already existed (June 16 static mockup) but turned out to be the wrong target for what P5-1 actually specifies. It's a nurse-facing ER floor view — today's intake count, critical flag count, avg triage time, recent patient list, queue-by-ESI bars, AI system status dots — with none of P5-1's actual required metrics (branch split %, avg latency by branch, token cost estimate, eval pass-rate trend) anywhere in it. Surfaced as a decision rather than silently building against the wrong page or awkwardly bolting PM/cost metrics onto a clinical shift-floor screen. Venkat chose: build a separate `observability.html` page, leave `dashboard.html` as the nurse-facing screen it already is. Linked the two pages via nav (`dashboard.html` → Observability; `observability.html` → Dashboard).
+
+**Palette:** asked before building any charts — chose to reuse the app's existing palette (`--danger`/`--warning`/`--success` for Critical/Urgent/Low, matching the ESI-severity colors already used elsewhere) rather than a new custom one. Validated the 3-color categorical set with the dataviz skill's `validate_palette.js` — all checks passed (lightness band, chroma floor, CVD separation, contrast).
+
+**Backend built — new workflow `wf-observability.json` → `GET /observability-data`:**
+- `Webhook` → `Fetch Encounters` (Supabase node, `Get Many`, table `encounters`) → `Fetch Eval Results` (Supabase node, `Get Many`, table `eval_results`) → `Aggregate Observability Stats` (Code node) → `Respond to Webhook`.
+- Uses a new `Supabase Service Role` credential (URL + `service_role` secret) created in N8N's credential store — deliberately never client-side, since `service_role` bypasses RLS entirely (unlike the `anon` key the frontend uses for writes).
+- `Aggregate Observability Stats` computes: total encounters; branch split count/% per tier; avg ESI; avg latency ms per tier; token cost estimate (sums `prompt_tokens`/`completion_tokens` across all encounters × approximate GPT-4o list rates — $2.50/$10 per 1M tokens, flagged in the UI as an estimate, excludes Pinecone embedding tokens per the still-open Session 6 `embedding_tokens` item); and pass-rate trend grouped by `eval_run_id` from `eval_results`, sorted by date.
+
+**Debugging chain (four distinct N8N-specific issues, resolved one at a time via isolation):**
+1. `{"code":0,"message":"Unused Respond to Webhook node found in the workflow"}` — the Webhook trigger's **Response Mode** defaulted to `Immediately` instead of `Using 'Respond to Webhook' Node`, so the workflow responded before ever reaching the Respond node. Fixed by changing the mode; re-toggled Active off/on to re-register.
+2. `200` with `content-length: 0` on the next test — matched the project's own documented N8N Cloud quirk (edits not propagating to the live webhook without a fresh Active toggle); resolved by toggling again.
+3. `Cannot assign to read only property 'name' of object 'Error: Referenced node doesn't exist'` — recurred across several fix attempts. Root cause was **not** a wiring/ancestor problem (confirmed both `Fetch Encounters` and `Fetch Eval Results` were valid ancestors via the Code node's `$('` autocomplete) but an actual node-name mismatch — resolved by isolating one `$()` reference at a time (`return [{ json: { test1: $('Fetch Encounters').all().length } }]`, then adding the second reference) to identify `Fetch Eval Results` specifically as the mismatched one, then fixing its name.
+4. `Invalid JSON in 'Response Body' field` — after the above fixes, the Respond to Webhook node's Response Body field was holding the literal text `={{ JSON.stringify($json) }}` rather than evaluating it as an expression (the `fx` toggle wasn't actually engaged). Fixed by re-entering it in genuine expression mode as `{{ $json }}` (dropping the redundant `JSON.stringify` — the node's own `JSON` response mode handles serialization).
+
+**Validated:** `curl` against the live endpoint returns real aggregated data (5 encounters, avg ESI 2.4, branch split 60/20/20% critical/urgent/low, ~$0.01 estimated token cost, one historical eval run at 25% pass rate predating the R4-2 recall fixes). Confirmed in-browser: `observability.html` renders all panels (stat tiles, branch-split bars, latency bars, token-cost breakdown, pass-rate trend chart + table) against the live data with no console errors.
+
+**P5-1 is now fully closed** — full HHH pass achieved (10/10 dimensions), per `ROADMAP.md`.
+
+### New Phase 7 Scope: External Trial Access (Planning Only — Not Built)
+
+Venkat requested adding a new capability to the roadmap: host the app somewhere real, add real user accounts, and let external reviewers try it with a capped number of transactions each — the goal being controlled external sharing for portfolio/feedback purposes, not just a recorded demo video. This expanded Phase 7's thin "Live demo link" line into three fully-speced items (`P7-A`, `P7-B`, `P7-C`) in `ROADMAP.md`. Nothing below is built yet — this session was planning/decision-making only.
+
+**P7-A — Production Hosting.** Decided: Vercel or Netlify over GitHub Pages, specifically so real environment-variable injection can replace the current pattern of committing a generated `env.local.js`. Discussed the tradeoff directly: GitHub Pages has no env-var injection at all, so once this repo goes public, `env.local.js` would have to be committed (low risk since it only holds the public-safe `anon` key, but not clean); Vercel/Netlify support real dashboard-configured secrets, but only if a small build step is added to generate `env.local.js` from those platform env vars at deploy time — this project currently has no build step by design, so that's new infrastructure, not a checkbox. Also flagged as a natural follow-up once hosted: tighten the N8N webhooks' CORS from the current wildcard `*` to the real production origin (closing the loop on the Session 6/7 CORS decision, which explicitly deferred tightening until a real origin existed).
+
+**P7-B — Auth + Admin User Management.** Decided: Supabase Auth (already the data vendor, no new service). Admin creates users directly via the Supabase dashboard — no custom admin UI for v1. The harder design question: once real logins exist, do Supabase writes (`encounters`/`nurse_actions`) move to `authenticated`-role access scoped by `auth.uid()` (real per-user data isolation, enforced by the database), or stay exactly as they are today (`anon` key, unchanged, with "who's allowed in at all" handled purely as an N8N-layer login gate)? **Decided: Option B (stay as-is)** for v1 — this is trial/demo data, nobody can currently read `encounters` at all regardless (no SELECT policy exists, by design, from this session's earlier RLS hardening), and it avoids reopening the RLS work just finished. Option A captured as the documented upgrade path rather than discarded, with the specific migration mechanics spelled out: if `user_id` is populated with the real Supabase Auth UUID from day one (not a placeholder/email/`NULL`), moving to Option A later needs no data rewrite at all — just a stricter RLS policy and pointing the frontend at the authenticated session instead of the bare anon key. Only becomes a real backfill job if that discipline was ever violated.
+
+**P7-C — Per-User Transaction Quota.** Decided: 10-15 transactions per user (exact number, e.g. 12, to be picked at implementation time), with admin-resettable counts. Design choice: track quota in a **separate `user_quotas` table** rather than counting `encounters` rows directly — counting real rows would tie "reset the quota" to either deleting genuine triage test data or fudging the count logic. The dedicated table keeps the audit trail intact while quota tracking resets cleanly. Admin reset is a direct Supabase dashboard edit (`transactions_used` → `0`), consistent with how P7-B's admin user creation also has no custom UI for v1 — a proper admin panel is a reasonable later upgrade, not required to close this item. Enforcement point: a new `Check Quota` step in WF5, gating the expensive Guardrail/Classify/RAG/Brief chain the same way the complaint length-guard already does — reject before any OpenAI/Pinecone spend, not after.
+
+**Status at end of session:** all three items fully speced in `ROADMAP.md` (What/Why/Architecture/Outcome-required-to-close, matching the rest of the document's format) and in the Sequenced Work Queue. Nothing implemented — next session picks up wherever Venkat wants to start (P7-A hosting first is the natural order, since P7-B depends on having a real origin for auth redirect URLs, and P7-C depends on P7-B for user identity).
