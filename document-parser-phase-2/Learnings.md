@@ -117,6 +117,37 @@ Technology Experiments:
 LangChain Retrievers
 Custom Hybrid Search
 
+### Phase 6.5 — Knowledge Graph Retrieval
+
+Goal:
+Add a third retrieval mode — graph traversal — for the one class of question BM25/embeddings/hybrid can't answer: multi-hop relational queries (drug↔drug interactions, drug↔condition contraindications, patient↔prescription↔drug history).
+
+Prerequisite (blocking):
+Phase 6 (Hybrid Retrieval) complete. A KG retriever is evaluated against, and routed alongside, BM25 + embeddings — building it before hybrid retrieval exists means there's nothing to compare it to.
+
+Seed Dataset (must exist before any graph is built — none of this data exists in the repo today):
+- ~20-30 hand-curated drug-drug interaction pairs, scoped to what's already in `knowledge_base/` (anticoagulants, NSAIDs, opioids, antibiotics — reuse `antibiotics_guidelines.md` as the starting entity list)
+- ~10 drug-condition contraindication pairs (e.g., NSAID ↔ renal impairment)
+- 5-10 synthetic multi-prescription patient histories (same synthetic-data pattern as the ER Triage project's `ER_AI_Assist_Synthetic_1000_Patients`, scaled down to a handful of patients with 2-3 prescriptions each so there are real multi-hop paths to traverse)
+- Store as source CSV/JSON in `knowledge_base/graph_seed/` before any graph-building code is written
+
+Learning Path (simple first):
+6.5.1 NetworkX — in-memory Python graph, zero infrastructure, enough to prove the traversal logic and query patterns work before adding a database
+
+Production Recommendation:
+Neo4j — property graph + Cypher query language; standard for this domain, pairs with LangChain/LlamaIndex GraphRAG retrievers
+
+Technology Experiments:
+6.5.2 Neo4j
+6.5.3 Amazon Neptune
+6.5.4 ArangoDB (multi-model, compare against a dedicated graph DB)
+
+Eval Criteria (the actual justification step — do this before calling the phase done):
+- Build a small eval set of multi-hop questions the seed data supports (e.g., "Patient is on Drug A — is Drug B safe to add given their condition?")
+- Run the same eval set through: (1) hybrid retrieval alone, (2) graph traversal alone, (3) hybrid + graph combined
+- Record precision/recall per method in a results doc, same pattern as `tests/test_retrieval_evaluation.py`
+- Only keep the graph in the production path if it measurably beats hybrid-alone on the multi-hop question set — this phase is explicitly allowed to conclude "not worth it yet" if the seed dataset is too small to show a real gap
+
 ### Phase 7 — Evaluation & Observability
 
 Technology Experiments:
@@ -124,6 +155,7 @@ LangSmith
 Weights & Biases Weave
 OpenTelemetry
 Custom Evaluation Framework
+(include the Phase 6.5 graph-vs-hybrid eval results in this phase's scope, not as a one-off)
 
 ### Phase 8 — Agent Foundations
 
