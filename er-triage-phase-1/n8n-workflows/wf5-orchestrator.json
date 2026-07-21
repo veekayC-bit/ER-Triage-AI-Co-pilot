@@ -1,4 +1,5 @@
 {
+  "_comment": "Webhook: POST /orchestrate-triage. Tiered ESI triage agent: 2-layer guardrail (client + LLM) -> Quick Classify (ESI 1-5) -> route by tier -> RAG (Pinecone) + GPT-4o clinical brief for Critical (ESI 1-2, Build Clinical Brief) and Urgent (ESI 3, Build Urgent Summary), static response for Low (ESI 4-5). Supports the AI Triage Assessment badge (ESI/acuity/disposition), Primary Flag banner, Clinical Actions, Clinical Notes/Time Targets, and Clinical Context (RAG guidelines) sidebar sections, plus the header/sidebar urgency theme, on intake-normal.html only. Also writes the audit row to Supabase encounters via the frontend after a successful response. Node prompt sources: n8n-workflows/node-prompts/*.txt.",
   "name": "ER Triage: Orchestrator Agent",
   "nodes": [
     {
@@ -7,7 +8,7 @@
         "path": "orchestrate-triage",
         "responseMode": "responseNode",
         "options": {
-          "allowedOrigins": "*"
+          "allowedOrigins": "https://er-triage-ai-co-pilot.pages.dev"
         }
       },
       "id": "ef5c0957-0f66-452a-a99c-eba07700d5f9",
@@ -180,7 +181,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "*"
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
               },
               {
                 "name": "Content-Type",
@@ -292,7 +293,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "*"
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
               },
               {
                 "name": "Content-Type",
@@ -321,7 +322,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "*"
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
               },
               {
                 "name": "Content-Type",
@@ -414,7 +415,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "*"
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
               },
               {
                 "name": "Content-Type",
@@ -515,7 +516,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "*"
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
               }
             ]
           }

@@ -1,4 +1,5 @@
 {
+  "_comment": "Webhook: POST /detect-flags. Two-evaluation critical-condition flag detection via GPT-4.1-mini: Evaluation 1 reasons over the raw complaint text against 10 named conditions (MI, stroke, anaphylaxis, sepsis, respiratory distress, suicidal ideation, major trauma, hypertensive crisis, altered mental status, anaphylactoid reaction), requiring a literal quotable phrase as evidence; Evaluation 2 is an independent vitals-consistency check (unexplained abnormal vital not covered by the complaint text). Supports the 'Critical Flag Screening' alert card (flag type, confidence %, source citation, reasoning, acknowledge/dismiss) and 'Vitals Consistency Check' section on intake-flag-moderate.html and intake-flag-critical.html; also gates the Review & Submit button (updateSubmitGate) on intake-flag-critical.html. NOTE: known overlap with wf5-orchestrator.json's Quick Classify step (both reason over the same complaint text for overlapping critical conditions) -- flagged 2026-07-21 as architectural debt, not yet consolidated; see project-build-state.md.",
   "name": "ER Triage: Detect Flags",
   "nodes": [
     {

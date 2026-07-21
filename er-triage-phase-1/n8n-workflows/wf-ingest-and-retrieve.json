@@ -1,4 +1,5 @@
 {
+  "_comment": "Two independent paths in one workflow. (1) Webhook: POST /retrieve-context, production path -- embeds the complaint (+ category/flag_type context) via OpenAI and queries Pinecone for the top 4 matching clinical guidelines (score > 0.3). Supports the 'Clinical Context (RAG)' guideline cards on intake-flag-moderate.html and intake-flag-critical.html. (2) Manual Trigger path -- embeds and upserts the full static clinical knowledge base (ESI criteria, critical conditions, vital thresholds, triage protocols) into Pinecone; run manually from the N8N editor when the knowledge base content changes, never called by the frontend.",
   "name": "ER Triage: Ingest Clinical Knowledge Base",
   "nodes": [
     {

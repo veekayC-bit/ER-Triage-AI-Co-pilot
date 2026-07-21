@@ -1,4 +1,5 @@
 {
+  "_comment": "Webhook: POST /parse-complaint. Extracts structured fields (complaint_category, onset, duration, symptoms, trigger, context) from the nurse's raw free-text complaint via GPT-4o. Supports the 'Suggested Structured Fields' sidebar list and 'Coded Chief Complaint' chip suggestions on intake-normal.html, intake-flag-moderate.html, and intake-flag-critical.html. Guards against complaints under 10 chars (Check Complaint Length -> Respond: Insufficient Detail, 400).",
   "name": "ER Triage: Backend",
   "nodes": [
     {
@@ -7,7 +8,7 @@
         "path": "parse-complaint",
         "responseMode": "responseNode",
         "options": {
-          "allowedOrigins": "*"
+          "allowedOrigins": "https://er-triage-ai-co-pilot.pages.dev"
         }
       },
       "id": "62ad51bc-95a5-4d11-96ed-df0cfe2cebdb",
@@ -76,7 +77,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "*"
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
               }
             ]
           }
@@ -150,7 +151,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "*"
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
               }
             ]
           }
