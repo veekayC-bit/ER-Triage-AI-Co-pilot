@@ -63,6 +63,11 @@ CREATE POLICY "anon can insert encounters"
 -- (one row per analyze() call, not one row upserted per encounter), so
 -- anon never needs update access. An UPDATE policy here would let anyone
 -- holding the public anon key rewrite any patient's existing encounter row.
+--
+-- Do NOT add a UNIQUE constraint on encounter_id — that requires upsert,
+-- which requires the UPDATE policy this comment argues against. See
+-- schema_drop_encounter_unique.sql for the migration that removed a
+-- leftover unique constraint from an earlier (pre-Session 7) design.
 
 CREATE POLICY "anon can insert nurse_actions"
   ON nurse_actions FOR INSERT TO anon WITH CHECK (true);
