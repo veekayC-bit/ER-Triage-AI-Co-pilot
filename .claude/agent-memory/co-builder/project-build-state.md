@@ -7,9 +7,19 @@ metadata:
 
 # ER Triage AI Co-pilot — Build State
 
-Last updated: 2026-06-16 (see note below for current state)
+Last updated: 2026-07-20 (see note below for current state)
 
-## ⚠️ Superseded — see `er-triage-phase-1/ROADMAP.md` and `er-triage-phase-1/project_build_summary.md` (Session 4, 2026-07-03) for current state
+## 2026-07-20 session — P7-A (Cloudflare Pages hosting) shipped
+
+- App is now live in production: **https://er-triage-ai-co-pilot.pages.dev** (repo: `veekayC-bit/ER-Triage-AI-Co-pilot`, **public**).
+- Local `er-triage-phase-1/.env` and `mockups/env.local.js` had been lost (never committed — both gitignored by design). Recovered: `SUPABASE_URL` was already recoverable from a hardcoded fallback in `intake-normal.html`; `SUPABASE_KEY` (anon/public key) was re-pulled from the Supabase dashboard. `.env` recreated locally, `scripts/gen-env-local.sh` re-run to regenerate `env.local.js`.
+- First Cloudflare Pages deploy failed: the build command (`scripts/gen-env-cloudflare.sh`, root dir `er-triage-phase-1`, output dir `mockups`) was configured in the Cloudflare dashboard but the script itself was never committed — 127/"not found" on every build. Root cause: P7-A's roadmap spec called for this script but it was scoped/described, never actually written before wiring it into Cloudflare's build settings.
+- Fix: wrote `er-triage-phase-1/scripts/gen-env-cloudflare.sh` (mirrors `gen-env-local.sh` but reads `SUPABASE_URL`/`SUPABASE_KEY` directly from Cloudflare's build-time env vars, which were already correctly configured in the dashboard as plaintext — anon key is public-safe by design). Committed `ebe08f5` to `main`, pushed, deploy succeeded, verified live with no console errors.
+- **Local git push friction (environment note, not project note):** pushing from this machine hangs — the Bash tool's sandbox can't reach the macOS Keychain (osxkeychain credential helper hangs indefinitely), and even the user's own `!`-prefixed terminal session lacks a real TTY for interactive prompts ("Device not configured"), so `GIT_ASKPASS`/VS Code's askpass.sh can't complete either. Only working path found: user opens a genuinely separate terminal window (Terminal.app or a real VS Code terminal, not through Claude Code at all) and runs `git push` there interactively with a GitHub PAT. Expect to hit this again on the next push.
+- **Outstanding to fully close P7-A:** CORS on the three N8N webhooks (`parse-complaint`, `orchestrate-triage`, `observability-data`) is still wildcard `*` — needs tightening to `https://er-triage-ai-co-pilot.pages.dev`. Deliberately deferred (user call, 2026-07-20) since the repo/link isn't being actively shared yet; real exposure is bounded by the repo already being public with zero request-level auth (P7-B, not yet built) regardless of CORS — CORS only closes the browser-drive-by vector, not direct curl access. **Do this before the link is sent to any external recruiter/reviewer.**
+- Next up per `ROADMAP.md`'s 2026-07-17 re-prioritization: CORS tightening (finish P7-A), then Phase 7 wrap-up (README, case study, resume), then the open P7-B/C scope decision (full Supabase Auth vs. cheap shared-password gate) before building auth.
+
+## ⚠️ Everything below is superseded — see `er-triage-phase-1/ROADMAP.md` and `er-triage-phase-1/project_build_summary.md` (Session 4, 2026-07-03) for current state
 
 As of 2026-07-03: Phase 4 (Agentic Architecture) is fully complete. HHH scorecard 9/10 passing, only P5-1 (observability dashboard) open. Next task: P5-1. P6-2 (FHIR EHR integration) is ON HOLD; Phase 7 (portfolio wrap-up) moved up ahead of it.
 
