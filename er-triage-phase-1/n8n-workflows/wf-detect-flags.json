@@ -1,0 +1,254 @@
+{
+  "name": "ER Triage: Detect Flags",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
+              }
+            ]
+          }
+        }
+      },
+      "id": "d75321d4-d127-4b79-9f18-8e66b12d8a74",
+      "name": "Respond: Flags JSON",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        176,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "detect-flags",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://er-triage-ai-co-pilot.pages.dev"
+        }
+      },
+      "id": "d671e7a8-32b9-4d44-8b26-5a0f95b48866",
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        336
+      ],
+      "webhookId": "3e310117-920b-4c5e-b2b7-df283a7412ea"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "2dc9a64a-b277-4f71-a706-c83a2ec00f98",
+      "name": "Extract Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        -720,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "cond-001",
+              "leftValue": "={{ $json.body.complaint_text.length }}",
+              "rightValue": 10,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7a8cafe8-98d5-4f61-8010-f6749ea8d948",
+      "name": "Check Complaint Length1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -496,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ \"error\": \"Insufficient detail\", \"complaint_text\": $json.complaint_text }) }}",
+        "options": {
+          "responseCode": 400,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
+              }
+            ]
+          }
+        }
+      },
+      "id": "06d4a8ad-a34e-4df5-a331-8a04d3f52f40",
+      "name": "Respond: Insufficient Detail1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4.1-mini",
+        "prompt": {
+          "messages": [
+            {
+              "role": "system",
+              "content": "=You are a clinical AI flag detection engine for ER triage. Given a nurse's raw free-text chief complaint and vitals, perform TWO separate evaluations on every request. Both are mandatory — never skip either one, regardless of the other's result.\n\nEVALUATION 1 — Named condition flags\nReason directly over the raw complaint text against these 10 conditions. Each condition requires its defining symptom(s) — listed below — to be explicitly, literally stated in the complaint text. Do not infer or imply a defining symptom from a different, related-sounding symptom (e.g. dizziness is NOT headache, visual change, or chest pain — do not treat it as evidence of any of them). You must be able to quote a literal phrase from the complaint text that itself names the defining symptom; if you cannot, the condition is not met. Vitals may only corroborate a match once the complaint text already literally states the defining symptom (e.g. low SpO2 alongside a dyspnea complaint) — vitals must NEVER be the deciding evidence for any of these 10 conditions, no matter how extreme. If the complaint text does not literally state a condition's defining symptom(s), do not raise that flag, regardless of how abnormal the vitals are — route any unexplained abnormal vital to the vitals consistency check (Evaluation 2) instead.\n\n1. Acute MI — chest pain, left arm/jaw radiation, diaphoresis, pain at rest\n2. Stroke — sudden confusion, facial droop, speech slurring, unilateral weakness, acute onset\n3. Anaphylaxis — insect sting/allergen trigger, throat tightness, tongue/lip swelling, hives, rapid onset\n4. Sepsis — fever/chills, suspected infection source, altered mental status, tachycardia\n5. Respiratory distress — dyspnea, low SpO2 (< 94%), accessory muscle use, cyanosis\n6. Suicidal ideation — explicit self-harm statement, brought in by police/family for safety concern\n7. Major trauma — high-energy mechanism (MVA, fall from height, assault), multi-system involvement\n8. Hypertensive crisis — complaint text must literally contain the words/phrases severe headache, visual changes (e.g. blurred vision), or chest pain; dizziness, nausea, or feeling unwell do NOT qualify as any of these; elevated BP alone, however extreme, is never sufficient on its own\n9. Altered mental status — acute confusion, unresponsiveness, disorientation without other flag\n10. Anaphylactoid reaction — allergic-type skin or systemic symptoms (rash, hives, swelling, itching) following a new medication, food, or other exposure, without airway/breathing involvement; trigger may or may not be identified\n\nEVALUATION 2 — Vitals consistency check (run this on every request, independent of Evaluation 1's outcome)\nCompare each provided vital against its critical threshold:\n- SpO2 < 90%\n- Systolic BP >= 180 OR diastolic BP >= 120\n- GCS <= 13\n- HR >= 150 OR HR <= 40\n- Temp >= 39.5°C\n\nFor every vital that crosses its threshold, check whether the complaint text plausibly explains that specific abnormality (e.g. low SpO2 explained by a shortness-of-breath complaint). If a crossed threshold is NOT explained by the complaint text, you MUST set vitals_mismatch.triggered to true and name the vital and reason — do not default to false. Only return triggered: false if no vital crosses its threshold, or every crossed threshold is already explained by the complaint text (in which case let it support Evaluation 1 instead).\n\nReturn JSON only:\n{\n  \"flag_detected\": boolean,\n  \"flag_type\": \"string or null\",\n  \"confidence\": \"number 0.0 to 1.0 or null\",\n  \"urgency\": \"standard or high or null\",\n  \"source_citation\": \"string or null\",\n  \"reasoning\": \"string or null\",\n  \"vitals_mismatch\": {\n    \"triggered\": boolean,\n    \"vital\": \"string or null\",\n    \"reason\": \"string or null\"\n  }\n}\n\nRules:\n- flag_detected: true only if confidence >= 0.70 (Evaluation 1 only)\n- urgency: 'high' if confidence >= 0.90, 'standard' if 0.70 to 0.89\n- source_citation: quote the exact phrase from the raw complaint text (not a paraphrase) that triggered the flag — this phrase must itself literally contain the condition's defining symptom wording, not a related symptom; if no such literal phrase exists, flag_detected must be false\n- reasoning: one sentence explaining the clinical basis for the flag\n- If no flag matches or confidence < 0.70: return flag_detected false, flag_type/confidence/urgency/source_citation/reasoning null\n- vitals_mismatch is fully independent of flag_detected — evaluate Evaluation 2 every time, even when flag_detected is false, and even when no vitals threshold relates to any of the 10 conditions"
+            },
+            {
+              "content": "=Chief complaint: {{ $json.body.complaint_text }} Vitals: {{ JSON.stringify($json.body.vitals) }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0
+        },
+        "requestOptions": {}
+      },
+      "id": "5126692b-cd77-46cc-89db-a3640f522890",
+      "name": "OpenAI: Detect Critical Flags1",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        416
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2lPRNHpRQH3SQk51",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const parsed = JSON.parse($input.item.json.message.content);\nreturn { flags: parsed };"
+      },
+      "id": "a24d8da0-1284-4d35-a558-35c36b8dbbab",
+      "name": "Parse Flag Output1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        416
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Extract Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Fields1": {
+      "main": [
+        [
+          {
+            "node": "Check Complaint Length1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Complaint Length1": {
+      "main": [
+        [
+          {
+            "node": "Respond: Insufficient Detail1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI: Detect Critical Flags1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: Detect Critical Flags1": {
+      "main": [
+        [
+          {
+            "node": "Parse Flag Output1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Flag Output1": {
+      "main": [
+        [
+          {
+            "node": "Respond: Flags JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "26baa11a-ca2d-4152-a5db-e74f19e75efa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "294d336059e5429b44436f1afb8c14d8d95f883334bccebec8219fb0f7a7ad18"
+  },
+  "nodeGroups": [],
+  "id": "SsCNmELIoMtSbSS8",
+  "tags": [
+    {
+      "updatedAt": "2026-06-04T16:56:33.858Z",
+      "createdAt": "2026-06-04T16:56:33.858Z",
+      "id": "tw9xxpoH1JUJJufd",
+      "name": "er-triage"
+    }
+  ]
+}
