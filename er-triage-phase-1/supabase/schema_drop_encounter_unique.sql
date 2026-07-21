@@ -18,4 +18,13 @@
 -- 2026-07-10. This migration closes that gap — no RLS/policy change,
 -- no new grants, no new exposure.
 
+-- First attempt (run 2026-07-21): no-op. DROP CONSTRAINT silently does
+-- nothing if encounters_encounter_id_key isn't a real table constraint —
+-- confirmed live: uniqueness was actually enforced by a plain unique
+-- INDEX of the same name (e.g. created via Supabase Table Editor), which
+-- DROP CONSTRAINT cannot touch. Verified by reproducing the same 409 on
+-- a live intake immediately after running the line below with no error.
 ALTER TABLE encounters DROP CONSTRAINT IF EXISTS encounters_encounter_id_key;
+
+-- Actual fix — run this one:
+DROP INDEX IF EXISTS encounters_encounter_id_key;
