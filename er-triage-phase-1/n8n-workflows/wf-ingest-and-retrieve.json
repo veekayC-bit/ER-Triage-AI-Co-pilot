@@ -6,7 +6,9 @@
         "httpMethod": "POST",
         "path": "retrieve-context",
         "responseMode": "responseNode",
-        "options": {}
+        "options": {
+          "allowedOrigins": "https://er-triage-ai-co-pilot.pages.dev"
+        }
       },
       "id": "28339758-03a2-42f5-a678-8e09aaa2b99f",
       "name": "Webhook",
@@ -136,7 +138,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "*"
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
               },
               {
                 "name": "Content-Type",
