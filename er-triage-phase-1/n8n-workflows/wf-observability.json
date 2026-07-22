@@ -1,0 +1,199 @@
+{
+  "_comment": "Webhook: POST /observability-data. Aggregates encounters and eval_results tables into ESI branch split (critical/urgent/low), average latency per branch, average ESI, token/cost totals (GPT-4o list rates, excludes Pinecone embedding tokens), and eval pass-rate trend by run. Feeds observability.html dashboard.",
+  "name": "observability",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "observability-data",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://er-triage-ai-co-pilot.pages.dev"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "157bab38-a171-461a-a3b1-4c48676f3834",
+      "name": "Webhook",
+      "webhookId": "0e730b0c-d8d2-4255-902c-2d7a11e817b5"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "encounters",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "096ca746-626d-449a-8f5e-9d9b33f02435",
+      "name": "Fetch Encounters",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9sG78aeIJb4nUqMx",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const encounterItems = $('Fetch Encounters').all().map(i => i.json);\nconst evalItems =$('Fetch Eval Results').all().map(i => i.json);\n\n// GPT-4o list rates — approximate, verify against current OpenAI pricing page.\n// Excludes Pinecone embedding tokens (tracked separately, not yet captured).\nconst RATE_PROMPT_PER_1M = 2.50;\nconst RATE_COMPLETION_PER_1M = 10.00;\n\nconst tiers = ['critical', 'urgent', 'low'];\nconst branch_split = {};\nconst latency_sum = {}, latency_count = {};\ntiers.forEach(t => { branch_split[t] = { count: 0, pct: 0 }; latency_sum[t] = 0; latency_count[t] = 0; });\n\nlet esi_sum = 0, esi_count = 0;\nlet prompt_tokens_total = 0, completion_tokens_total = 0;\n\nencounterItems.forEach(row => {\nconst branch = row.ai_branch;\nif (branch && branch_split[branch]) branch_split[branch].count += 1;\nif (row.esi_level != null) { esi_sum += Number(row.esi_level); esi_count += 1; }\nif (branch && latency_sum.hasOwnProperty(branch) && row.latency_ms != null) {\nlatency_sum[branch] += Number(row.latency_ms);\nlatency_count[branch] += 1;\n}\nif (row.prompt_tokens != null) prompt_tokens_total += Number(row.prompt_tokens);\nif (row.completion_tokens != null) completion_tokens_total += Number(row.completion_tokens);\n});\n\nconst total_encounters = encounterItems.length;\ntiers.forEach(t => { branch_split[t].pct = total_encounters > 0 ? (branch_split[t].count / total_encounters * 100) : 0; });\n\nconst avg_latency_ms = {};\ntiers.forEach(t => { avg_latency_ms[t] = latency_count[t] > 0 ? Math.round(latency_sum[t] / latency_count[t]) : null; });\n\nconst avg_esi = esi_count > 0 ? (esi_sum / esi_count) : null;\nconst estimated_cost_usd = (prompt_tokens_total / 1e6 * RATE_PROMPT_PER_1M) + (completion_tokens_total / 1e6 * RATE_COMPLETION_PER_1M);\n\nconst runMap = {};\nevalItems.forEach(row => {\nconst id = row.eval_run_id;\nif (!runMap[id]) runMap[id] = { eval_run_id: id, total: 0, passed: 0, dates: [] };\nrunMap[id].total += 1;\nif (row.overall_pass) runMap[id].passed += 1;\nif (row.created_at) runMap[id].dates.push(row.created_at);\n});\n\nconst pass_rate_trend = Object.values(runMap).map(r => ({\neval_run_id: r.eval_run_id,\ntotal: r.total,\npassed: r.passed,\npass_pct: r.total > 0 ? (r.passed / r.total * 100) : 0,\nrun_date: r.dates.sort()[0]?.slice(0, 10) || null\n})).sort((a, b) => (a.run_date || '').localeCompare(b.run_date || ''));\n\nreturn [{ json: {\ntotal_encounters,\navg_esi,\nbranch_split,\navg_latency_ms,\ntoken_cost: {\nprompt_tokens: prompt_tokens_total,\ncompletion_tokens: completion_tokens_total,\nestimated_cost_usd: Math.round(estimated_cost_usd * 100) / 100\n},\npass_rate_trend\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "ed3d5230-b623-4293-b311-c053838f5f49",
+      "name": "Aggregate Observability Stats."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "https://er-triage-ai-co-pilot.pages.dev"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        800,
+        0
+      ],
+      "id": "9660a114-1b83-4bd4-9e66-64fc796971b9",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "eval_results",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "3c35696a-ea12-4c52-b8d4-703e1332227a",
+      "name": "Fetch Eval Results",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9sG78aeIJb4nUqMx",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "veekayc.app.n8n.cloud",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "172.59.161.70",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "a193673d4e0cebe7-SJC",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "x-forwarded-for": "172.59.161.70, 162.158.167.34",
+            "x-forwarded-host": "veekayc.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-117-7b6f78bddb-x8299",
+            "x-is-trusted": "yes",
+            "x-real-ip": "172.59.161.70"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://veekayc.app.n8n.cloud/webhook/observability-data",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Fetch Encounters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Encounters": {
+      "main": [
+        [
+          {
+            "node": "Fetch Eval Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Observability Stats.": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Eval Results": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Observability Stats.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "b480804a-d4ca-474c-a99e-bc060da0c732",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "294d336059e5429b44436f1afb8c14d8d95f883334bccebec8219fb0f7a7ad18"
+  },
+  "nodeGroups": [],
+  "id": "mD1AdTWENHbkRrDa",
+  "tags": []
+}
