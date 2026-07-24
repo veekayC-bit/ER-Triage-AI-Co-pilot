@@ -470,7 +470,7 @@ body {
 <div class="page-header">
   <h1>⚕ ER Triage AI Co-pilot — System Architecture</h1>
   <div class="subtitle">
-    <span>Current build state — Phase 5 (Enterprise AI Systems), no EMR integration yet</span>
+    <span>Current build state — Phase 7 (Portfolio wrap-up), hosted live, no EMR integration yet</span>
     <span class="stack-pill">🖥 Frontend: Vanilla HTML/CSS/JS</span>
     <span class="stack-pill">⚙ Backend: N8N Cloud</span>
     <span class="stack-pill">🤖 AI: OpenAI GPT-4o</span>
@@ -480,7 +480,7 @@ body {
 </div>
 
 <div class="stale-note">
-  ⚠ Updated 2026-07-10 to match the live build. Original design (fan-out WF-1/WF-2 inside one N8N workflow, EMR read/write, queue polling) was superseded — N8N does not execute fanned-out branches concurrently, which is why the architecture split into independent webhooks parallelized from the frontend, then evolved further into the single WF5 agentic orchestrator described below.
+  ⚠ Updated 2026-07-22. Original design (fan-out WF-1/WF-2 inside one N8N workflow, EMR read/write, queue polling) was superseded — N8N does not execute fanned-out branches concurrently, which is why the architecture split into independent webhooks parallelized from the frontend, then evolved further into the single WF5 agentic orchestrator described below. As of 2026-07-22: the orchestrator's classification step and the separate flag-detection endpoint (previously two independently-drifting GPT-4o prompts) were consolidated into one shared "Classify Complaint" sub-workflow, called via N8N's in-instance Execute Sub-workflow node from both — see Layer 3 and Layer 4 below. App is also now hosted live (Cloudflare Pages) with CORS scoped to the production origin, not wildcard.
 </div>
 
 
@@ -576,16 +576,25 @@ body {
         <div class="component-desc">Structured extraction only (GPT-4o, temp 0.2). Own length-guard before the OpenAI call. Feeds the sidebar fields display — does not drive ESI/flag logic.</div>
         <div class="component-tags">
           <span class="ctag ctag-green">wf-backend.json</span>
-          <span class="ctag ctag-green">CORS live (wildcard)</span>
+          <span class="ctag ctag-green">CORS scoped to prod origin</span>
         </div>
       </div>
 
       <div class="component">
         <div class="component-title">POST <code style="font-size:11px;color:#7ee787;">/orchestrate-triage</code></div>
-        <div class="component-desc">WF5 — the single agentic call. Runs a length-guard, Layer-2 guardrail, ESI classification, RAG retrieval, clinical brief generation, and Supabase writes in one request/response.</div>
+        <div class="component-desc">WF5 — the single agentic call. Runs a length-guard, Layer-2 guardrail, calls the shared Classify Complaint sub-workflow for ESI routing, then RAG retrieval, clinical brief generation, and Supabase writes in one request/response.</div>
         <div class="component-tags">
           <span class="ctag ctag-green">wf5-orchestrator.json</span>
-          <span class="ctag ctag-green">CORS live (wildcard)</span>
+          <span class="ctag ctag-green">CORS scoped to prod origin</span>
+        </div>
+      </div>
+
+      <div class="component">
+        <div class="component-title">POST <code style="font-size:11px;color:#7ee787;">/detect-flags</code></div>
+        <div class="component-desc">Feeds the nurse-facing flag-alert screens (moderate/critical). Own length-guard + body-flattening step, then calls the same shared Classify Complaint sub-workflow the orchestrator uses, reshapes the result into <code>{ flags: {...} }</code>.</div>
+        <div class="component-tags">
+          <span class="ctag ctag-green">wf-detect-flags.json</span>
+          <span class="ctag ctag-green">CORS scoped to prod origin</span>
         </div>
       </div>
 
@@ -646,11 +655,36 @@ body {
         <ul class="workflow-steps">
           <li>Webhook trigger (/orchestrate-triage)</li>
           <li>Layer-2 guardrail: GPT-4o content classifier → blocks non-clinical/injection input, logs to guardrail_blocks</li>
-          <li>Quick Classify: ESI tier (Critical/Urgent/Low) + primary_flag — hard overrides for STEMI, FAST-positive stroke → ESI 1</li>
+          <li>Calls shared Classify Complaint sub-workflow → ESI tier (Critical/Urgent/Low) + primary_flag</li>
           <li>RAG: embed complaint_text + primary_flag + complaint_summary (never raw vitals) → Pinecone topK=4 (Critical) / topK=2 (Urgent)</li>
           <li>Build Clinical Brief: GPT-4o + retrieved guidelines → esi_level, disposition, time_targets, structured actions (source-cited, drug/dosage banned)</li>
           <li>Merge Usage: sums tokens across every OpenAI call in the request</li>
           <li>Supabase upsert: encounters (no PII) + latency/token columns</li>
+        </ul>
+      </div>
+
+      <div class="workflow-box" style="border-color:rgba(210,168,255,0.4);">
+        <div class="workflow-title">
+          <span class="workflow-id" style="background:#2a1a2a;color:#d2a8ff;">Shared</span>
+          Classify Complaint (sub-workflow)
+        </div>
+        <ul class="workflow-steps">
+          <li>Entry via N8N Execute Sub-workflow node — in-instance call, not a public webhook (no double-paying for RAG/brief generation, no added N8N execution-quota cost per caller)</li>
+          <li>Single GPT-4o call: ESI 1-5 ladder + 10-condition flag detection + independent vitals-mismatch check, in one prompt</li>
+          <li>Called by both WF5 Orchestrator (ESI routing) and Detect Flags (nurse alert screens) — single source of truth, replaces two independently-drifting prompts (2026-07-22 consolidation)</li>
+        </ul>
+      </div>
+
+      <div class="workflow-box">
+        <div class="workflow-title">
+          <span class="workflow-id">Flags</span>
+          Detect Flags
+        </div>
+        <ul class="workflow-steps">
+          <li>Webhook trigger (/detect-flags)</li>
+          <li>Length-guard + body-flattening, then calls the shared Classify Complaint sub-workflow</li>
+          <li>Reshapes shared output into { flags: { flag_detected, flag_type, confidence, urgency, source_citation, reasoning, vitals_mismatch } }</li>
+          <li>Feeds intake-flag-moderate.html / intake-flag-critical.html — zero frontend changes from the 2026-07-22 consolidation</li>
         </ul>
       </div>
 
@@ -726,18 +760,21 @@ body {
         </div>
       </div>
 
-      <div class="prompt-box">
+      <div class="prompt-box" style="border-color:rgba(210,168,255,0.4);">
         <div class="prompt-title">
-          Quick Classify
-          <span class="prompt-model">GPT-4o · JSON mode</span>
+          Quick Classify <span style="color:#d2a8ff;font-size:10px;">(shared sub-workflow, called by WF5 + Detect Flags)</span>
+          <span class="prompt-model">GPT-4o · temp 0 · JSON mode</span>
         </div>
         <div class="io-block">
           <div class="io-label">Purpose</div>
-          Routes to Critical / Urgent / Low branch. ESI criteria embedded in system prompt. Hard "always ESI 1" overrides for STEMI and FAST-positive stroke — do-not-downgrade instruction.
+          Single consolidated prompt (2026-07-22) doing two jobs in one call: routes to Critical / Urgent / Low via the ESI ladder (hard "always ESI 1" overrides for STEMI and FAST-positive stroke, do-not-downgrade instruction) — additive-only, never modified — plus flag detection against 10 named conditions, each requiring a literal quotable phrase from the complaint text (vitals can corroborate, never independently decide), and an independent vitals-mismatch check that fires on every request regardless of flag outcome.
         </div>
         <div class="io-block">
           <div class="io-label">Output (JSON)</div>
-          { "esi_level": 1, "primary_flag": "stroke" }
+          { "esi_level", "acuity", "primary_flag", "complaint_summary",<br>
+            "flag_detected", "flag_type", "confidence", "urgency",<br>
+            "source_citation", "reasoning",<br>
+            "vitals_mismatch": {"triggered", "vital", "reason"} }
         </div>
       </div>
 
@@ -858,7 +895,7 @@ body {
     </div>
     <div class="flow-step">
       <div class="num" style="background:#3fb950;color:#000;">2</div>
-      <div class="text">/parse-complaint returns structured fields for the sidebar. WF5 (/orchestrate-triage) runs Layer-2 guardrail → Quick Classify → RAG retrieval → Build Clinical Brief → merges token usage → writes to Supabase</div>
+      <div class="text">/parse-complaint returns structured fields for the sidebar. WF5 (/orchestrate-triage) runs Layer-2 guardrail → calls the shared Classify Complaint sub-workflow → RAG retrieval → Build Clinical Brief → merges token usage → writes to Supabase. The flag screens' /detect-flags call hits the same shared sub-workflow independently.</div>
     </div>
     <div class="flow-step">
       <div class="num" style="background:#d29922;color:#000;">3</div>
@@ -909,6 +946,9 @@ body {
       <li>De-identified Supabase persistence</li>
       <li>Nurse accept/dismiss audit logging</li>
       <li>Latency + token instrumentation (data captured)</li>
+      <li>Observability dashboard (observability.html + /observability-data) — done 2026-07-10</li>
+      <li>Shared Classify Complaint sub-workflow — single source of truth for ESI routing + flag detection (2026-07-22)</li>
+      <li>Hosted live — Cloudflare Pages, CORS scoped to production origin</li>
     </ul>
   </div>
 
@@ -918,21 +958,21 @@ body {
       <li>Any EMR integration (FHIR R4 — P6-2, on hold)</li>
       <li>Queue panel (no multi-patient backend)</li>
       <li>Manual mode auto-detection (static screen only)</li>
-      <li>Observability dashboard UI (P5-1, in progress)</li>
       <li>Field-level nurse-edit audit (P5-2, partial)</li>
       <li>Validator agent, multi-turn interaction, audio intake (P5-3/4/6)</li>
       <li>Prior-visit history (P6-1)</li>
+      <li>Auth + per-user quota (P7-B/C — scope decision open: full Supabase Auth vs. shared-password gate)</li>
     </ul>
   </div>
 
   <div class="callout yellow-c">
     <div class="callout-label yellow">⚠ Open / Recently Decided</div>
     <ul>
-      <li>CORS scope — resolved: wildcard on both webhooks, backstopped by cost cap</li>
+      <li>CORS scope — resolved: scoped to the production origin on all five browser-facing webhooks (2026-07-21), no longer wildcard</li>
       <li>OpenAI cost cap — resolved: $5/mo hard limit, alert at $3</li>
       <li>PII scope — resolved: Option B (display-only, never persisted)</li>
       <li>embedding_tokens as separate dashboard figure — decided, not yet implemented</li>
-      <li>P5-1 dashboard webhook + dashboard.html wiring — in progress</li>
+      <li>Classify/Detect-Flags consolidation (2026-07-22) — built, 9/9 validation cases pass; mandatory 300-case ESI/acuity eval rerun still outstanding</li>
     </ul>
   </div>
 

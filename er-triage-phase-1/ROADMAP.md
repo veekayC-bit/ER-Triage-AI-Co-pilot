@@ -1,7 +1,7 @@
 # ER Triage AI Co-pilot — Roadmap
 **Project:** ER Assisted Triage Workflow System  
 **Stack:** N8N Cloud · OpenAI GPT-4o · Pinecone · Supabase · Vanilla JS  
-**Last Updated:** July 17, 2026 (Roadmap Revision)
+**Last Updated:** July 22, 2026 (R4-5 consolidation added)
 
 ---
 
@@ -15,8 +15,8 @@
 
 | Priority | Item | Effort | Status | Rationale |
 |---|---|---|---|---|
-| 1 | **P7-A: Production Hosting** | 1-2 hr | ⏳ Not started | Real URL — table stakes for a portfolio link in an interview |
-| 2 | **Phase 7 wrap-up** (README + architecture diagram, case study, EB1 content angle, resume/LinkedIn update) | 1-2 days | ⏳ Not started | The actual job-search-facing asset. Sequenced *before* auth/quota — a well-documented hosted demo beats an undocumented gated one |
+| 1 | **P7-A: Production Hosting** | 1-2 hr | ✅ Done (2026-07-20, CORS tightened 2026-07-21) | Real URL — table stakes for a portfolio link in an interview |
+| 2 | **Phase 7 wrap-up** (README + architecture diagram, case study, EB1 content angle, resume/LinkedIn update) | 1-2 days | 🔄 In progress (2026-07-22) | The actual job-search-facing asset. Sequenced *before* auth/quota — a well-documented hosted demo beats an undocumented gated one |
 | 3 | **P7-B + P7-C: Auth + per-user quota** | 6-9 hr combined | ⏳ Not started — **scope decision still open, see below** | Only needed once the link is actually being sent to external reviewers unsupervised |
 | Optional stretch | **P5-4: Validator Agent** | 3-4 hr | ⏳ Not started | Only worth doing if a technical-heavy interview loop specifically calls for a second agentic story beyond the orchestrator |
 
@@ -43,7 +43,7 @@ P7-B/C as originally specced below is full Supabase Auth (per-user accounts) + a
 | 4 | Agentic Architecture | ✅ Complete |
 | 5 | Enterprise AI Systems | ⏳ Not Started |
 | 6 | Patient Context Intelligence | ⏳ Not Started (P6-2 on hold) |
-| 7 | Portfolio + Resume + Public Presence | ⏳ Not Started (next after P6-1) |
+| 7 | Portfolio + Resume + Public Presence | 🔄 In progress (P7-A done; wrap-up started 2026-07-22) |
 
 ---
 
@@ -85,6 +85,7 @@ To reach **full HHH pass** before shadow mode: 4 items must close.
 - 2-layer input guardrail: client-side regex (Layer 1) + gpt-4o LLM classifier (Layer 2) — 16/16 tests passing
 - `guardrail_blocks` audit table live in Supabase (SHA-256 hash only, no plaintext)
 - Clinical action constraints: `immediate_actions` / `recommended_actions` changed to structured `{ action, category, source }` objects — drug/dosage ban enforced, category taxonomy restricted, source citation required per action
+- Classify/Detect-Flags consolidation (2026-07-22) — single classification sub-workflow now backs both `wf5-orchestrator.json` and `wf-detect-flags.json`, replacing two independently-drifting prompts (see R4-5 below)
 
 ### Remaining Phase 4 Items
 
@@ -174,6 +175,30 @@ Hash name and MRN before writing to Supabase. Reversible for authorized queries.
 - WF5 write node: explicit omit of name/MRN from upsert payload ✅
 
 **HHH impact:** Closes Harmless PII risk. Required before any public demo or shadow mode.
+
+---
+
+#### R4-5: Classify/Detect-Flags Consolidation
+
+**Status:** ✅ Complete (2026-07-22) — pending mandatory 300-case eval rerun, see below
+**Type:** Architecture consolidation (duplicated clinical-reasoning fix)
+**Effort:** ~1 day, including extensive N8N debugging
+
+**What:** `wf-detect-flags.json`'s flag-detection reasoning and `wf5-orchestrator.json`'s Quick Classify step previously ran as two separately-maintained GPT-4o prompts, each independently reasoning over the same complaint text for overlapping critical conditions (STEMI, stroke, sepsis, anaphylaxis, etc.). The two had already drifted apart — `detect-flags` carried a distinct "Anaphylactoid reaction" condition and a `vitals_mismatch` independence check that Quick Classify's ESI criteria didn't have.
+
+**Why it matters:** Duplicated clinical reasoning across two independently-maintained prompts is a patient-safety-adjacent risk, not just tech debt — the two could silently diverge further over time, giving a nurse a different flag/confidence answer for the same complaint depending on which screen happened to call which endpoint.
+
+**Architecture:** Extracted Quick Classify's ESI-ladder logic (unchanged, byte-for-byte) plus the 10-condition/vitals-mismatch flag-detection logic (previously `detect-flags`' exclusive scope) into one consolidated GPT-4o prompt, inside a new N8N sub-workflow (`ER Triage: Classify Complaint`). Both `wf5-orchestrator.json` and `wf-detect-flags.json` now call this single sub-workflow via an **Execute Sub-workflow** node — an in-instance call, not a public webhook hop, to avoid double-paying for RAG/clinical-brief generation on every flag-screen request, avoid doubling N8N execution/concurrency quota usage under load, and avoid coupling `detect-flags`' failure domain to the heavier orchestrator chain. `wf5-orchestrator.json`'s `Extract and Route` node consumes the sub-workflow's full output for ESI/tier routing (downstream unchanged). `wf-detect-flags.json`'s `Parse Flag Output1` reshapes the same output into the pre-existing `{ flags: {...} } }` contract — zero frontend changes to either flag screen.
+
+**Validation:** All 9 of 9 test cases (the 8 PRD acceptance cases plus one dedicated vitals-mismatch stress case) pass against production `/detect-flags` — confirms the flag-detection layer, including the historically hard-to-get-right vitals-mismatch independence check, survived the merge intact.
+
+**Outcome required to close:**
+- Single source of truth for classification reasoning ✅
+- Zero frontend changes to either flag screen ✅
+- 9/9 flag-detection validation cases pass ✅
+- 300-case ESI/acuity eval rerun (confirms no regression from the sub-workflow extraction itself, separate from the prompt-content validation above) — ⏳ not yet done, deferred by explicit decision, next session's starting point
+
+**HHH impact:** Removes a patient-safety-adjacent drift risk (Harmless). No change to Helpful/Honest pillars pending the eval rerun confirming no ESI regression.
 
 ---
 
@@ -427,8 +452,8 @@ Prior visits (last 3):
 
 ### P7-A: Production Hosting
 
-**Status:** ⏳ Not started
-**Effort:** ~1-2 hr
+**Status:** ✅ Complete (2026-07-20 deploy, 2026-07-21 CORS tightening) — live at https://er-triage-ai-co-pilot.pages.dev (repo: `veekayC-bit/ER-Triage-AI-Co-pilot`, public)
+**Effort:** ~1-2 hr (plus CORS follow-up, see below)
 **Dependency:** None
 
 **Decided (2026-07-17): Cloudflare Pages.** Superseded the original "Vercel or Netlify, TBD" framing below (kept for context, not the active plan).
@@ -451,9 +476,9 @@ Prior visits (last 3):
 - **Follow-up this triggers:** CORS on the N8N webhooks (`parse-complaint`, `orchestrate-triage`, `observability-data`) is currently wildcard `*`, deliberately deferred until there was a real production origin to scope to (see Session 6/7 CORS decision history above). Once hosted, tighten Allowed Origins from `*` to the actual `*.pages.dev` (or custom domain, if configured).
 
 **Outcome required to close:**
-- App reachable at a public Cloudflare Pages URL
-- No secret values committed to the git history
-- CORS tightened from wildcard to the actual production origin on all three webhooks
+- App reachable at a public Cloudflare Pages URL ✅
+- No secret values committed to the git history ✅
+- CORS tightened from wildcard to the actual production origin on all three webhooks ✅ (2026-07-21 — all five browser-facing webhooks confirmed: `parse-complaint`, `orchestrate-triage`, `retrieve-context`, `detect-flags`, `observability-data`)
 
 ---
 
@@ -531,13 +556,14 @@ Items ordered by dependency and HHH criticality:
 | ✅ | R4-2: Stroke RAG source fix (ingestion + eval harness bug) | 4 | Done | Helpful (recall ≥ 98%) · Honest (source) | ~1 hr |
 | ✅ | R4-3: Consistency test | 4 | Done | Honest (consistency) | 20 min |
 | ✅ | P5-1: Observability dashboard (`observability.html`) | 5 | Done (2026-07-10) | Honest (auditability) | 2-3 hr |
+| ✅ | R4-5: Classify/Detect-Flags consolidation | 4 | Done (2026-07-22), eval rerun pending | Harmless (reasoning drift) | ~1 day |
 | 2 | P5-2: Nurse field modification capture | 5 | ⚠️ Partial | Harmless (override audit) | 1 hr |
 | 3 | P5-4: Validator agent | 5 | ⏳ Not started | Harmless (action verification) | 3-4 hr |
 | 4 | P5-6: Audio-to-text intake capture | 5 | ⏳ Not started | — | 3-4 hr |
 | 5 | P5-3: Multi-turn interaction | 5 | ⏳ Not started | — | ~1 wk |
 | 6 | P5-5: Queue intelligence | 5 | ⏳ Not started | — | 2 hr |
 | 7 | P6-1: Prior visit history (internal Supabase) | 6 | ⏳ Not started | Helpful (longitudinal context) | 4-6 hr |
-| 8 | P7-A: Production hosting (Cloudflare Pages) | 7 | ⏳ Not started | — | 1-2 hr |
+| 8 | P7-A: Production hosting (Cloudflare Pages) | 7 | ✅ Done (2026-07-20/21) | — | 1-2 hr |
 | 9 | P7-B: Auth + admin user management | 7 | ⏳ Not started | — | 4-6 hr |
 | 10 | P7-C: Per-user transaction quota | 7 | ⏳ Not started | Harmless (cost containment) | 2-3 hr |
 | 11 | Phase 7: Portfolio wrap-up (README, case study, EB1 content, resume) | 7 | ⏳ Not started | — | 1-2 days |
