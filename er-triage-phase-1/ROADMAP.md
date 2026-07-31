@@ -17,7 +17,7 @@
 |---|---|---|---|---|
 | 1 | **P7-A: Production Hosting** | 1-2 hr | ✅ Done (2026-07-20, CORS tightened 2026-07-21) | Real URL — table stakes for a portfolio link in an interview |
 | 2 | **Phase 7 wrap-up** (README + architecture diagram, case study, EB1 content angle, resume/LinkedIn update) | 1-2 days | 🔄 In progress (2026-07-22) | The actual job-search-facing asset. Sequenced *before* auth/quota — a well-documented hosted demo beats an undocumented gated one |
-| 3 | **P7-B + P7-C: Auth + per-user quota** | 6-9 hr combined | ⏳ Not started — **scope decision still open, see below** | Only needed once the link is actually being sent to external reviewers unsupervised |
+| 3 | **P7-B + P7-C: Auth + per-user quota** | 6-9 hr combined | ⏳ Not started — scope decided 2026-07-31, see below | Only needed once the link is actually being sent to external reviewers unsupervised |
 | Optional stretch | **P5-4: Validator Agent** | 3-4 hr | ⏳ Not started | Only worth doing if a technical-heavy interview loop specifically calls for a second agentic story beyond the orchestrator |
 
 ### Shelved — off the active queue, not deleted
@@ -26,9 +26,9 @@ P5-2 (Nurse Field Modification Capture — partial state is sufficient for the a
 
 **Still on hold, no change:** P6-2 (FHIR EHR Integration) — 2-3 weeks for a story unlikely to get audited past the README.
 
-### Open decision — P7-B/C scope (not yet decided)
+### P7-B/C scope — decided 2026-07-31
 
-P7-B/C as originally specced below is full Supabase Auth (per-user accounts) + a dedicated `user_quotas` table (~6-9 hr combined). A cheaper alternative: a single shared-password gate in front of the app, relying on the existing $5/mo OpenAI budget cap for cost containment (~1-2 hr) — loses the "individually identifiable external users" story but frees most of that time for the case study, which is the piece that actually moves a resume. **Decide this before starting Priority 3.**
+**Decision: full Supabase Auth (per-user accounts) + dedicated `user_quotas` table, as originally specced below (~6-9 hr combined).** The cheaper shared-password-gate alternative (~1-2 hr, relying on the existing $5/mo OpenAI budget cap for cost containment) was considered and explicitly rejected — Venkat wants the "individually identifiable external users" story intact rather than trading it for time back toward the case study.
 
 ---
 

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In | ER Triage AI Co-pilot</title>
+<link rel="stylesheet" href="mockup-styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="env.local.js"></script>
+<style>
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+.login-card {
+  width: 360px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 32px 28px;
+}
+.login-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.login-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  color: var(--white);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.login-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.login-error {
+  display: none;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  margin-bottom: 16px;
+}
+.login-note {
+  margin-top: 20px;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="login-logo"><div class="login-logo-icon">⚕</div>ER Triage AI Co-pilot</div>
+  <div class="login-sub">Admin sign-in</div>
+
+  <div class="login-error" id="login-error"></div>
+
+  <form id="login-form">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="login-email" autocomplete="username" required>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-password" autocomplete="current-password" required>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width:100%;" id="login-submit">Sign In</button>
+  </form>
+
+  <div class="login-note">
+    Trial access is by invite — if you have a demo link from Venkat, just open it directly, no sign-in needed here.
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = window.SUPABASE_URL || "https://lcaslbfjygzniosaobue.supabase.co";
+const SUPABASE_KEY = window.SUPABASE_KEY || "NOKEY";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $ = (id) => document.getElementById(id);
+
+function nextUrl() {
+  const params = new URLSearchParams(location.search);
+  return params.get("next") || "intake-normal.html";
+}
+
+function showError(message) {
+  const el = $("login-error");
+  el.textContent = message;
+  el.style.display = "block";
+}
+
+// Already signed in (or arrived via a magic link that landed here instead
+// of a deep page) — just forward on, no form needed.
+(async function checkExistingSession() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) location.replace(nextUrl());
+})();
+
+$("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $("login-error").style.display = "none";
+  $("login-submit").disabled = true;
+  $("login-submit").textContent = "Signing in…";
+
+  const { error } = await db.auth.signInWithPassword({
+    email: $("login-email").value.trim(),
+    password: $("login-password").value
+  });
+
+  if (error) {
+    showError(error.message || "Sign in failed — check your email and password.");
+    $("login-submit").disabled = false;
+    $("login-submit").textContent = "Sign In";
+    return;
+  }
+
+  location.replace(nextUrl());
+});
+</script>
+
+</body>
+</html>
