@@ -20,6 +20,20 @@
 | 3 | **P7-B + P7-C: Auth + per-user quota** | 6-9 hr combined | ⏳ Not started — scope decided 2026-07-31, see below | Only needed once the link is actually being sent to external reviewers unsupervised |
 | Optional stretch | **P5-4: Validator Agent** | 3-4 hr | ⏳ Not started | Only worth doing if a technical-heavy interview loop specifically calls for a second agentic story beyond the orchestrator |
 
+### P7-D: Self-service demo request flow — BACKLOG (proposed 2026-08-01, not started)
+
+**What:** Replace "recruiter emails Venkat, Venkat manually runs `generate-magic-link.js`" with a proper acquisition funnel: unauthenticated visitors can browse a read-only preview, then request real access themselves.
+
+**Design decided (2026-08-01), not yet built:**
+1. **Public preview screens:** static reference copies of the core intake flow (landing/index + intake-normal, intake-flag-moderate, intake-flag-critical, intake-summary), separate from the authenticated pages — frozen with one canned example case, all inputs/buttons disabled, zero API calls, no Supabase/auth-guard scripts loaded at all. Rejected: live screens with disabled controls only (more UI work, no real benefit) and live screens firing one real backend call per anonymous page view (reintroduces the exact cost-exposure problem the scrapped public-demo-link idea had).
+2. **"Interested to Demo Test" CTA** on those preview pages opens a modal with an email field **and a confirm-email field** (must match before submit) — catches typos, no separate verification round-trip.
+3. **On submit:** new N8N webhook (e.g. `/request-demo`) inserts into a new `demo_requests` Supabase table (`email`, `status: pending`, `requested_at`) via `service_role`, then sends Venkat a notification email via an N8N email node. Rejected: Slack/Telegram notification (not a channel Venkat actively monitors for this) and silent logging with no push notification (too easy to miss).
+4. **Approval stays manual**, consistent with this project's existing "no custom admin UI" pattern: Venkat sees the notification, runs `generate-magic-link.js <email>` himself same as today, flips the `demo_requests` row to `approved` in the Supabase Table Editor, and pastes the link into his own personal reply email. Rejected: fully automatic link generation + send (would work, but loses the personal-outreach touch and requires wiring real outbound email sending for this specific message — more infra for a marginal gain).
+
+**Not yet resolved, needs a decision before building:** exactly which screens belong in the public preview set (proposed above: landing + the 4 core intake screens; queue-panel/manual-mode/dashboard/observability/architecture excluded as secondary) — confirm before building, don't assume the proposal is final. Also unaddressed: basic spam/abuse protection on the public `/request-demo` webhook (low cost per submission — one row + one email, not an OpenAI call — but still open, no honeypot/rate-limit discussed yet).
+
+**Effort:** not estimated yet — spans a new Supabase table, a new N8N workflow (Venkat builds in N8N Cloud editor, same as every other workflow in this project), new static frontend pages + modal, and the request/approve UX. Likely comparable to or larger than P7-B+C.
+
 ### Shelved — off the active queue, not deleted
 
 P5-2 (Nurse Field Modification Capture — partial state is sufficient for the audit story as-is), P5-3 (Multi-Turn Interaction), P5-5 (Queue Intelligence), P5-6 (Audio-to-Text Intake Capture), P6-1 (Prior Visit History). None of these change what's currently claimable on a resume. Revisit only if a specific job description calls for the exact capability. Full specs unchanged below.
@@ -29,6 +43,20 @@ P5-2 (Nurse Field Modification Capture — partial state is sufficient for the a
 ### P7-B/C scope — decided 2026-07-31
 
 **Decision: full Supabase Auth (per-user accounts) + dedicated `user_quotas` table, as originally specced below (~6-9 hr combined).** The cheaper shared-password-gate alternative (~1-2 hr, relying on the existing $5/mo OpenAI budget cap for cost containment) was considered and explicitly rejected — Venkat wants the "individually identifiable external users" story intact rather than trading it for time back toward the case study.
+
+### Public demo link — decided 2026-08-01, reversed same day
+
+Briefly considered: a shared demo Supabase Auth account (`login.html?demo=1`, auto `signInWithPassword`) so Venkat could put one reusable link in a resume/portfolio instead of minting a per-recruiter magic link each time. Built (frontend + env-script wiring) and verified working against the live Supabase project, but **reversed before any manual setup (no demo account was ever created) after a risk review surfaced too much exposure for a portfolio side-project:**
+
+- Zero rate-limit until the full P7-B (webhook JWT verification) + P7-C (`user_quotas`) work lands — three separate cost surfaces exposed at once (OpenAI tokens, N8N Cloud execution quota, Pinecone queries), not just the $5/mo OpenAI cap.
+- The shared password isn't just link-shareable, it's visible in plaintext to any demo visitor who opens devtools during the normal `?demo=1` flow (the `signInWithPassword` POST body) — a stronger exposure than "the link could leak."
+- Undercuts the actual reason full Supabase Auth was chosen over the cheap password gate in the first place (individually identifiable external users) — anonymous demo traffic would mix into the same audit data.
+- Public + no-friction is an open invitation for adversarial input testing (prompt injection, offensive input) on a clinical-triage AI, a worse look on a portfolio piece than the same behavior behind a per-recruiter link.
+- Crawlers/link-unfurlers (Slack/LinkedIn preview bots) that execute JS against a public URL could trigger the auto-login unintentionally.
+
+**Decision: scrapped. Back to per-recruiter-only magic links** (`scripts/generate-magic-link.js`, kept — one-time, minted on request per person, not public). `login.html` and the two `gen-env-*.sh` scripts reverted to their pre-demo-link state (no `SUPABASE_DEMO_EMAIL`/`SUPABASE_DEMO_PASSWORD`, no `?demo=1` handling). Kept as a documented "considered and rejected" decision rather than deleted outright, consistent with how other reversed architecture calls are tracked in `project_build_summary.md`.
+
+**Still real and still needed:** `SUPABASE_SERVICE_ROLE_KEY` in `.env` (from Supabase dashboard > Settings > API) so `generate-magic-link.js` works — untested against the live Admin API so far, this is the only outstanding setup step now that the demo-account steps are moot.
 
 ---
 

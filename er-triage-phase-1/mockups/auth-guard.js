@@ -37,9 +37,22 @@ function reveal() {
       return;
     }
 
-    // Magic-link tokens land in the URL hash — drop it once consumed so it
-    // never sits in the address bar or gets copy-pasted onward.
+    // Magic-link tokens always land here (index.html) — Supabase's Admin API
+    // drops any subpath from redirectTo and always resolves to the bare
+    // Site URL, regardless of what generate-magic-link.js requests. Forward
+    // straight to the dashboard instead of revealing this overview page,
+    // preserving the hash so dashboard.html's own auth-guard run picks up
+    // the session normally. Scoped to index.html only — this must never
+    // fire on other pages (e.g. an admin's normal password-login landing
+    // on intake-normal.html should never be redirected elsewhere).
     if (location.hash.includes("access_token")) {
+      const onIndexPage = location.pathname === "/" || location.pathname.endsWith("/index.html");
+      if (onIndexPage) {
+        location.replace("dashboard.html" + location.hash);
+        return;
+      }
+      // Drop the hash once consumed so it never sits in the address bar or
+      // gets copy-pasted onward.
       history.replaceState(null, "", location.pathname + location.search);
     }
 
