@@ -532,13 +532,25 @@ async function analyze() {
   const vitals = collectVitals();
   const payload = JSON.stringify({ complaint_text: complaintText, vitals });
 
+  // P7-B: attach the current Supabase session's JWT so N8N's Verify Auth
+  // step can validate the caller. Every webhook now rejects unauthenticated
+  // requests with 401 — see the Verify Auth node on each workflow.
+  const { data: { session: authSession } } = await window.authDb.auth.getSession();
+  const authHeaders = { "Content-Type": "application/json", "Authorization": `Bearer ${authSession?.access_token || ""}` };
+
   try {
     const [parseRes, flagsRes, contextRes] = await Promise.all([
-      fetch(PARSE_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: payload }),
-      fetch(FLAGS_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: payload }),
-      fetch(CONTEXT_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: payload })
+      fetch(PARSE_URL, { method: "POST", headers: authHeaders, body: payload }),
+      fetch(FLAGS_URL, { method: "POST", headers: authHeaders, body: payload }),
+      fetch(CONTEXT_URL, { method: "POST", headers: authHeaders, body: payload })
     ]);
 
+    if (parseRes.status === 401 || flagsRes.status === 401) {
+      setStatus("error", "Session expired — signing you out");
+      await window.authDb.auth.signOut();
+      location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+      return;
+    }
     if (parseRes.status === 400 || flagsRes.status === 400) {
       setStatus("error", "Insufficient detail");
       return;
